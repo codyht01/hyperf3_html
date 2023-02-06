@@ -87,6 +87,7 @@ const state = reactive({
 	},
 });
 let captcha_src = ref("/api/captcha?math="+Math.random())
+
 const click_Captcha = ()=>{
   captcha_src.value = "/api/captcha?math="+Math.random()
 }
