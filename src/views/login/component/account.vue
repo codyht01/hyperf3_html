@@ -44,7 +44,7 @@
 			</el-col>
 			<el-col :span="1"></el-col>
 			<el-col :span="8">
-				<el-button class="login-content-code" v-waves>1234</el-button>
+          <img :src="captcha_src" alt="" class="login-content-code" v-waves @click="click_Captcha">
 			</el-col>
 		</el-form-item>
 		<el-form-item class="login-animation4">
@@ -56,7 +56,7 @@
 </template>
 
 <script setup lang="ts" name="loginAccount">
-import { reactive, computed } from 'vue';
+import {reactive, computed, ref} from 'vue'
 import { useRoute, useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus';
 import { useI18n } from 'vue-i18n';
@@ -86,7 +86,10 @@ const state = reactive({
 		signIn: false,
 	},
 });
-
+let captcha_src = ref("/api/captcha?math="+Math.random())
+const click_Captcha = ()=>{
+  captcha_src.value = "/api/captcha?math="+Math.random()
+}
 // 时间获取
 const currentTime = computed(() => {
 	return formatAxis(new Date());
