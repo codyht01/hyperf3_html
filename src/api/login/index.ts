@@ -9,19 +9,29 @@ import request from '/@/utils/request';
  */
 export function useLoginApi() {
 	return {
+		//账号密码登录
 		signIn: (data: object) => {
 			return request({
-				url: '/user/signIn',
+				url: '/login/doLogin',
 				method: 'post',
 				data,
 			});
 		},
+		//退出登录
 		signOut: (data: object) => {
 			return request({
-				url: '/user/signOut',
+				url: '/login/logout',
 				method: 'post',
 				data,
 			});
 		},
+		//发送验证码
+		sendCode:(data:object)=>{
+			return request({
+				url: '/login/sendCode',
+				method: 'post',
+				params:data,
+			});
+		}
 	};
 }
