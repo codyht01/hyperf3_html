@@ -19,10 +19,10 @@ export function useMenuApi() {
                 params,
             })
         },
-        getTestMenu: (params?: object) => {
+        getIndexMenu: (params?: object) => {
             return request({
-                url: '/gitee/lyt-top/vue-next-admin-images/raw/master/menu/testMenu.json',
-                method: 'get',
+                url: '/api/menu/index',
+                method: 'post',
                 params,
             })
         },
