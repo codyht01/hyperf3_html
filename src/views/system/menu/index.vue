@@ -107,14 +107,12 @@ const onTabelRowDel = (row: RouteRecordRaw) => {
     confirmButtonText: '删除',
     cancelButtonText: '取消',
     type: 'warning',
+  }).then(() => {
+    ElMessage.success('删除成功')
+    getTableData()
+    //await setBackEndControlRefreshRoutes() // 刷新菜单，未进行后端接口测试
+  }).catch(() => {
   })
-      .then(() => {
-        ElMessage.success('删除成功')
-        getTableData()
-        //await setBackEndControlRefreshRoutes() // 刷新菜单，未进行后端接口测试
-      })
-      .catch(() => {
-      })
 }
 // 页面加载时
 onMounted(() => {
