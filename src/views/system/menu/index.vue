@@ -35,14 +35,9 @@
             <span>{{ scope.row.component }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="权限标识" show-overflow-tooltip>
-          <template #default="scope">
-            <span>{{ scope.row.meta.roles }}</span>
-          </template>
-        </el-table-column>
         <el-table-column label="排序" show-overflow-tooltip width="80">
           <template #default="scope">
-            {{ scope.$index }}
+            {{ scope.row.sort }}
           </template>
         </el-table-column>
         <el-table-column label="类型" show-overflow-tooltip width="80">
@@ -69,7 +64,7 @@ import {RouteRecordRaw} from 'vue-router'
 import {ElMessage, ElMessageBox} from 'element-plus'
 import {storeToRefs} from 'pinia'
 import {useRoutesList} from '/@/stores/routesList'
-// import { setBackEndControlRefreshRoutes } from "/@/router/backEnd";
+import {setBackEndControlRefreshRoutes} from "/@/router/backEnd"
 
 // 引入组件
 const MenuDialog = defineAsyncComponent(() => import('/@/views/system/menu/dialog.vue'))
@@ -86,7 +81,15 @@ const state = reactive({
 })
 
 // 获取路由数据，真实请从接口获取
-const getTableData = () => {
+const getTableData = async () => {
+  await setBackEndControlRefreshRoutes()
+  // state.tableData.loading = true
+  // useMenuApi().getAdminMenu().then(data => {
+  //   state.tableData.loading = false
+  //   state.tableData.data = data
+  //   state.tableData.loading = false
+  // })
+
   state.tableData.loading = true
   state.tableData.data = routesList.value
   setTimeout(() => {
@@ -107,10 +110,10 @@ const onTabelRowDel = (row: RouteRecordRaw) => {
     confirmButtonText: '删除',
     cancelButtonText: '取消',
     type: 'warning',
-  }).then(() => {
+  }).then(async () => {
     ElMessage.success('删除成功')
     getTableData()
-    //await setBackEndControlRefreshRoutes() // 刷新菜单，未进行后端接口测试
+    await setBackEndControlRefreshRoutes() // 刷新菜单，未进行后端接口测试
   }).catch(() => {
   })
 }

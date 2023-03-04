@@ -12,18 +12,18 @@ import request from '/@/utils/request'
  */
 export function useMenuApi() {
     return {
-        getAdminMenu: (params?: object) => {
+        getAdminMenu: (data?: object) => {
             return request({
                 url: '/api/menu/getMenuListInfo',
                 method: 'post',
-                params,
+                data,
             })
         },
-        getIndexMenu: (params?: object) => {
+        addMenuApi: (data?: object) => {
             return request({
-                url: '/api/menu/index',
+                url: '/api/menu/add',
                 method: 'post',
-                params,
+                data,
             })
         },
     }
