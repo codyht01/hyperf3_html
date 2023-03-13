@@ -159,6 +159,7 @@ const saveLoading = ref(false)
 const state = reactive({
   // 参数请参考 `/src/router/route.ts` 中的 `dynamicRoutes` 路由菜单格式
   ruleForm: {
+    id: 0,
     menuSuperior: [], // 上级菜单
     menuType: 'menu', // 菜单类型
     name: '', // 路由名称
@@ -203,9 +204,9 @@ const openDialog = (type: string, row?: any) => {
   if (type === 'edit') {
     let menuSuperior: any = []
     if (row.pid == 0) {
-      menuSuperior = [row.id]
+      menuSuperior = []
     } else {
-      menuSuperior = [row.pid, row.id]
+      menuSuperior = [row.pid]
     }
     // 模拟数据，实际请走接口
     // row.menuType = 'menu';
@@ -222,7 +223,6 @@ const openDialog = (type: string, row?: any) => {
     state.ruleForm.sort = row.sort // 菜单排序
     state.ruleForm.path = row.path // 路由路径
     state.ruleForm.redirect = row.redirect // 路由重定向，有子集 children 时
-
     state.ruleForm.meta.title = row.meta.title // 菜单名称
     state.ruleForm.meta.icon = row.meta.icon // 菜单图标
     state.ruleForm.meta.isHide = row.meta.isHide // 是否隐藏
@@ -231,6 +231,7 @@ const openDialog = (type: string, row?: any) => {
     state.ruleForm.meta.link_url = row.meta.link_url // 外链/内嵌时链接地址（http:xxx.com），开启外链条件，`1、isLink: 链接地址不为空`
     state.ruleForm.meta.isIframe = row.meta.isIframe // 是否内嵌，开启条件，`1、isIframe:true 2、isLink：链接地址不为空`
     state.ruleForm.meta.roles = row.meta.roles // 权限标识，取角色管理
+    state.ruleForm.id = row.id
     // 菜单类型为按钮时，权限标识
     state.dialog.title = '修改菜单'
     state.dialog.submitTxt = '修 改'
@@ -252,6 +253,7 @@ const openDialog = (type: string, row?: any) => {
     state.ruleForm.meta.isIframe = false // 是否内嵌，开启条件，`1、isIframe:true 2、isLink：链接地址不为空`
     state.dialog.title = '新增菜单'
     state.dialog.submitTxt = '新 增'
+    state.ruleForm.id = 0
     // 清空表单，此项需加表单验证才能使用
     // nextTick(() => {
     // 	menuDialogFormRef.value.resetFields();
@@ -276,11 +278,17 @@ const onCancel = () => {
 // 提交
 const onSubmit = () => {
   saveLoading.value = true
+  let pid = 0
+  if (state.ruleForm.menuSuperior.length != 0) {
+    pid = state.ruleForm.menuSuperior[state.ruleForm.menuSuperior.length - 1]
+  }
   useMenuApi().addMenuApi({
-    ...state.ruleForm
+    ...state.ruleForm,
+    pid
   }).then(res => {
     saveLoading.value = false
     closeDialog() // 关闭弹窗
+    window.location.reload()
     emit('refresh')
   }).catch(() => {
     saveLoading.value = false
