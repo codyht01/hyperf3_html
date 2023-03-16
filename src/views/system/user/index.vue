@@ -67,7 +67,6 @@ const userDialogRef = ref()
 
 const whereData = reactive({})
 const tableData = usePagination({
-  url: '/api/user/index',
   path: 'user',
   page: undefined,
   size: undefined

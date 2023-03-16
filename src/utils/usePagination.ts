@@ -1,8 +1,7 @@
-import {AxiosRequestConfig} from 'axios'
 import {computed, onMounted, onUnmounted, reactive, ref} from 'vue'
 import {useBaseApi} from '../api/base'
 
-function usePagination(option: { page: any; size: any; path: string; url: string }, formData: AxiosRequestConfig<any> | undefined) {
+function usePagination(option: { page: any; size: any; path: string }, formData: any | undefined) {
     const resData = ref({})
     const data = ref([])
     const pageIndex = ref(option.page || 1)

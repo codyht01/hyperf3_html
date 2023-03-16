@@ -15,6 +15,14 @@ export function useBaseApi() {
                 method: 'post',
                 data
             })
+        },
+        download: (path: string, data: object, header: object) => {
+            return request({
+                url: '/api/' + path + '/index',
+                method: 'get',
+                params: data,
+                headers: header
+            })
         }
 
     }
