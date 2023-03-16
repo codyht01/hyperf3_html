@@ -286,10 +286,12 @@ const onSubmit = () => {
     ...state.ruleForm,
     pid
   }).then(res => {
-    saveLoading.value = false
-    closeDialog() // 关闭弹窗
-    window.location.reload()
-    emit('refresh')
+    if (res.code == 1) {
+      saveLoading.value = false
+      closeDialog() // 关闭弹窗
+      window.location.reload()
+      emit('refresh')
+    }
   }).catch(() => {
     saveLoading.value = false
   })

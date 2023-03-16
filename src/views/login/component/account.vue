@@ -32,8 +32,8 @@
         </el-input>
       </el-col>
       <el-col :span="1"></el-col>
-      <el-col :span="8">
-        <img v-waves :src="captcha_src" alt="" class="login-content-code" @click="click_Captcha">
+      <el-col :span="8" class="captcha_bg">
+        <el-image v-waves :src="captcha_src" class="login-content-code" fit="contain" @click="click_Captcha"/>
       </el-col>
     </el-form-item>
     <el-form-item class="login-animation4">
@@ -89,20 +89,22 @@ const onSignIn = async () => {
   state.loading.signIn = true
   useLoginApi().signIn({
     ...state.ruleForm
-  }).then(async data => {
-    state.loading.signIn = false
-    // 存储 token 到浏览器缓存
-    Session.set('token', data.token)
-    if (!themeConfig.value.isRequestRoutes) {
-      // 前端控制路由，2、请注意执行顺序
-      const isNoPower = await initFrontEndControlRoutes()
-      signInSuccess(isNoPower)
-    } else {
-      // 模拟后端控制路由，isRequestRoutes 为 true，则开启后端控制路由
-      // 添加完动态路由，再进行 router 跳转，否则可能报错 No match found for location with path "/"
-      const isNoPower = await initBackEndControlRoutes()
-      // 执行完 initBackEndControlRoutes，再执行 signInSuccess
-      signInSuccess(isNoPower)
+  }).then(async res => {
+    if (res.code == 1) {
+      state.loading.signIn = false
+      // 存储 token 到浏览器缓存
+      Session.set('token', res.data.token)
+      if (!themeConfig.value.isRequestRoutes) {
+        // 前端控制路由，2、请注意执行顺序
+        const isNoPower = await initFrontEndControlRoutes()
+        signInSuccess(isNoPower)
+      } else {
+        // 模拟后端控制路由，isRequestRoutes 为 true，则开启后端控制路由
+        // 添加完动态路由，再进行 router 跳转，否则可能报错 No match found for location with path "/"
+        const isNoPower = await initBackEndControlRoutes()
+        // 执行完 initBackEndControlRoutes，再执行 signInSuccess
+        signInSuccess(isNoPower)
+      }
     }
   }).catch(() => {
     state.loading.signIn = false
@@ -172,5 +174,10 @@ const signInSuccess = (isNoPower: boolean | undefined) => {
     font-weight: 300;
     margin-top: 15px;
   }
+}
+
+.captcha_bg {
+  border: 1px solid var(--next-bg-main-color);
+  cursor: pointer;
 }
 </style>

@@ -2,7 +2,6 @@
   <div class="system-menu-container layout-pd">
     <el-card shadow="hover">
       <div class="system-menu-search mb15">
-        <el-input placeholder="请输入菜单名称" size="default" style="max-width: 180px"></el-input>
         <el-button class="ml10" size="default" type="primary">
           <el-icon>
             <ele-Search/>
