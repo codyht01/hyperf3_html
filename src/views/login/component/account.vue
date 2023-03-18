@@ -23,7 +23,7 @@
     </el-form-item>
     <el-form-item class="login-animation3">
       <el-col :span="15">
-        <el-input v-model="state.ruleForm.code" :placeholder="$t('message.account.accountPlaceholder3')" autocomplete="off" clearable maxlength="4" text>
+        <el-input v-model="state.ruleForm.code" :placeholder="$t('message.account.accountPlaceholder3')" autocomplete="off" clearable maxlength="4" text @keyup.enter.native="onSignIn">
           <template #prefix>
             <el-icon class="el-input__icon">
               <ele-Position/>

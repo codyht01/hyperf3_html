@@ -3,7 +3,7 @@
     <el-card class="layout-padding-auto" shadow="hover">
       <div class="system-user-search mb15">
         <el-input placeholder="请输入用户名称" size="default" style="max-width: 180px"></el-input>
-        <el-button class="ml10" size="default" type="primary" @click="tableData.fetchData()">
+        <el-button v-loading="tableData.loading" class="ml10" size="default" type="primary" @click="tableData.fetchData()">
           <el-icon>
             <ele-Search/>
           </el-icon>
