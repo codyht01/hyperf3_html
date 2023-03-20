@@ -8,7 +8,7 @@
           </el-icon>
           查询
         </el-button>
-        <el-button class="ml10" size="default" type="success" @click="onOpenAddMenu">
+        <el-button class="ml10" size="default" type="success" @click="onOpenAddMenu('add',{})">
           <el-icon>
             <ele-FolderAdd/>
           </el-icon>
@@ -46,7 +46,7 @@
         </el-table-column>
         <el-table-column label="操作" show-overflow-tooltip width="140">
           <template #default="scope">
-            <el-button size="small" text type="primary" @click="onOpenAddMenu('add')">新增</el-button>
+            <el-button size="small" text type="primary" @click="onOpenAddMenu('add',scope.row)">新增</el-button>
             <el-button size="small" text type="primary" @click="onOpenEditMenu('edit', scope.row)">修改</el-button>
             <el-button size="small" text type="primary" @click="onTabelRowDel(scope.row)">删除</el-button>
           </template>
@@ -64,6 +64,7 @@ import {ElMessage, ElMessageBox} from 'element-plus'
 import {storeToRefs} from 'pinia'
 import {useRoutesList} from '/@/stores/routesList'
 import {setBackEndControlRefreshRoutes} from "/@/router/backEnd"
+import {useBaseApi} from "/@/api/base"
 
 // 引入组件
 const MenuDialog = defineAsyncComponent(() => import('/@/views/system/menu/dialog.vue'))
@@ -96,8 +97,8 @@ const getTableData = async () => {
   }, 500)
 }
 // 打开新增菜单弹窗
-const onOpenAddMenu = (type: string) => {
-  menuDialogRef.value.openDialog(type)
+const onOpenAddMenu = (type: string, row: any) => {
+  menuDialogRef.value.openDialog(type, row)
 }
 // 打开编辑菜单弹窗
 const onOpenEditMenu = (type: string, row: RouteRecordRaw) => {
@@ -110,9 +111,17 @@ const onTabelRowDel = (row: RouteRecordRaw) => {
     cancelButtonText: '取消',
     type: 'warning',
   }).then(async () => {
-    ElMessage.success('删除成功')
-    getTableData()
-    await setBackEndControlRefreshRoutes() // 刷新菜单，未进行后端接口测试
+    useBaseApi().del('menu', row.id).then(async res => {
+      if (res.code == 1) {
+        ElMessage.success('删除成功')
+        await getTableData()
+        window.location.reload()
+        await setBackEndControlRefreshRoutes() // 刷新菜单，未进行后端接口测试
+      } else {
+        ElMessage.error(res.msg)
+      }
+    })
+
   }).catch(() => {
   })
 }

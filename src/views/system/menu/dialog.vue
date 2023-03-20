@@ -204,7 +204,7 @@ const openDialog = (type: string, row?: any) => {
   if (type === 'edit') {
     let menuSuperior: any = []
     if (row.pid == 0) {
-      menuSuperior = []
+      menuSuperior = [row.id]
     } else {
       menuSuperior = [row.pid]
     }
@@ -236,7 +236,13 @@ const openDialog = (type: string, row?: any) => {
     state.dialog.title = '修改菜单'
     state.dialog.submitTxt = '修 改'
   } else {
-    state.ruleForm.menuSuperior = [] // 上级菜单
+    let menuSuperior: any = []
+    if (row.pid == 0) {
+      menuSuperior = [row.id]
+    } else {
+      menuSuperior = [row.pid, row.id]
+    }
+    state.ruleForm.menuSuperior = menuSuperior // 上级菜单
     state.ruleForm.menuType = 'menu' // 菜单类型
     state.ruleForm.name = '' // 路由名称
     state.ruleForm.component = '' // 组件路径

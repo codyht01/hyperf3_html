@@ -23,7 +23,13 @@ export function useBaseApi() {
                 params: data,
                 headers: header
             })
-        }
+        },
+        del: (path: string, id: number) => {
+            return request({
+                url: '/api/' + path + '/del?id=' + id,
+                method: 'get',
+            })
+        },
 
     }
 }
