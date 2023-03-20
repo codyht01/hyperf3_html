@@ -51,9 +51,12 @@
 </template>
 
 <script lang="ts" name="systemRoleDialog" setup>
-import {reactive, ref} from 'vue'
-import {ElTree} from "element-plus"
+import {nextTick, reactive, ref} from 'vue'
+import {ElMessage, ElTree} from "element-plus"
 import {useBaseApi} from "/@/api/base"
+import {i18n} from "/@/i18n"
+import {useRoutesList} from "/@/stores/routesList"
+import {storeToRefs} from "pinia"
 
 // 定义子组件向父组件传值/事件
 const emit = defineEmits(['refresh'])
@@ -73,12 +76,14 @@ const dialogTitle = ref('')
 const menuData = ref([] as TreeType[])
 const menuProps = reactive({
   children: 'children',
-  label: 'label',
+  label: 'title',
 })
 const dialogSubmitTxt = ref('')
 const treeFilter = ref<InstanceType<typeof ElTree>>()
 const submitLoading = ref(false)
 const rules = reactive({})
+const stores = useRoutesList()
+const {routesList} = storeToRefs(stores)
 // 打开弹窗
 const openDialog = (type: string, row: { roleName: string; roleSign: string; sort: number; status: number; id: number; menuProps: string }) => {
   if (type === 'edit') {
@@ -94,8 +99,11 @@ const openDialog = (type: string, row: { roleName: string; roleSign: string; sor
     dialogForm.roleName = ''
     dialogForm.roleSign = ''
     dialogForm.sort = 0
-    dialogForm.status = 0
+    dialogForm.status = 1
     dialogForm.id = 0
+    nextTick(() => {
+      treeFilter.value?.setCheckedKeys([])
+    })
     dialogTitle.value = '新增角色'
     dialogSubmitTxt.value = '新 增'
     // 清空表单，此项需加表单验证才能使用
@@ -104,7 +112,8 @@ const openDialog = (type: string, row: { roleName: string; roleSign: string; sor
     // });
   }
   isShowDialog.value = true
-  getMenuData()
+  //getMenuData()
+  menuData.value = getMenuData(routesList.value)
 }
 // 提交
 const onSubmit = () => {
@@ -114,120 +123,134 @@ const onSubmit = () => {
     ...dialogForm,
     menuProps: treeKeys
   }).then(res => {
-
+    if (res.code === 1) {
+      ElMessage.success(res.msg)
+      isShowDialog.value = false
+      emit('refresh')
+    }
   }).catch(() => {
     submitLoading.value = false
   })
-  //emit('refresh')
-  // if (state.dialog.type === 'add') { }
+}
+const getMenuData = (routes: RouteItems) => {
+  const arr: RouteItems = []
+  routes.map((val: RouteItem) => {
+    if (val.id != 1) {
+      val['title'] = i18n.global.t(val.meta?.title as string)
+      arr.push({...val})
+      if (val.children) getMenuData(val.children)
+    }
+  })
+  return arr
 }
 // 获取菜单结构数据
-const getMenuData = () => {
-  menuData.value = [
-    {
-      id: 1,
-      label: '系统管理',
-      children: [
-        {
-          id: 11,
-          label: '菜单管理',
-          children: [
-            {
-              id: 111,
-              label: '菜单新增',
-            },
-            {
-              id: 112,
-              label: '菜单修改',
-            },
-            {
-              id: 113,
-              label: '菜单删除',
-            },
-            {
-              id: 114,
-              label: '菜单查询',
-            },
-          ],
-        },
-        {
-          id: 12,
-          label: '角色管理',
-          children: [
-            {
-              id: 121,
-              label: '角色新增',
-            },
-            {
-              id: 122,
-              label: '角色修改',
-            },
-            {
-              id: 123,
-              label: '角色删除',
-            },
-            {
-              id: 124,
-              label: '角色查询',
-            },
-          ],
-        },
-        {
-          id: 13,
-          label: '用户管理',
-          children: [
-            {
-              id: 131,
-              label: '用户新增',
-            },
-            {
-              id: 132,
-              label: '用户修改',
-            },
-            {
-              id: 133,
-              label: '用户删除',
-            },
-            {
-              id: 134,
-              label: '用户查询',
-            },
-          ],
-        },
-      ],
-    },
-    {
-      id: 2,
-      label: '权限管理',
-      children: [
-        {
-          id: 21,
-          label: '前端控制',
-          children: [
-            {
-              id: 211,
-              label: '页面权限',
-            },
-            {
-              id: 212,
-              label: '页面权限',
-            },
-          ],
-        },
-        {
-          id: 22,
-          label: '后端控制',
-          children: [
-            {
-              id: 221,
-              label: '页面权限',
-            },
-          ],
-        },
-      ],
-    },
-  ]
-}
+// const getMenuData = () => {
+//
+//   menuData.value = [
+//     {
+//       id: 1,
+//       label: '系统管理',
+//       children: [
+//         {
+//           id: 11,
+//           label: '菜单管理',
+//           children: [
+//             {
+//               id: 111,
+//               label: '菜单新增',
+//             },
+//             {
+//               id: 112,
+//               label: '菜单修改',
+//             },
+//             {
+//               id: 113,
+//               label: '菜单删除',
+//             },
+//             {
+//               id: 114,
+//               label: '菜单查询',
+//             },
+//           ],
+//         },
+//         {
+//           id: 12,
+//           label: '角色管理',
+//           children: [
+//             {
+//               id: 121,
+//               label: '角色新增',
+//             },
+//             {
+//               id: 122,
+//               label: '角色修改',
+//             },
+//             {
+//               id: 123,
+//               label: '角色删除',
+//             },
+//             {
+//               id: 124,
+//               label: '角色查询',
+//             },
+//           ],
+//         },
+//         {
+//           id: 13,
+//           label: '用户管理',
+//           children: [
+//             {
+//               id: 131,
+//               label: '用户新增',
+//             },
+//             {
+//               id: 132,
+//               label: '用户修改',
+//             },
+//             {
+//               id: 133,
+//               label: '用户删除',
+//             },
+//             {
+//               id: 134,
+//               label: '用户查询',
+//             },
+//           ],
+//         },
+//       ],
+//     },
+//     {
+//       id: 2,
+//       label: '权限管理',
+//       children: [
+//         {
+//           id: 21,
+//           label: '前端控制',
+//           children: [
+//             {
+//               id: 211,
+//               label: '页面权限',
+//             },
+//             {
+//               id: 212,
+//               label: '页面权限',
+//             },
+//           ],
+//         },
+//         {
+//           id: 22,
+//           label: '后端控制',
+//           children: [
+//             {
+//               id: 221,
+//               label: '页面权限',
+//             },
+//           ],
+//         },
+//       ],
+//     },
+//   ]
+// }
 
 // 暴露变量
 defineExpose({
