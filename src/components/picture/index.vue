@@ -28,7 +28,6 @@
               <div class="bottom_li">
                 这是分类
               </div>
-
             </div>
           </el-card>
         </div>
