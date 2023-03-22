@@ -29,7 +29,7 @@
 				</span>
       </template>
     </el-dialog>
-    <PictureDialog ref="pictureRef" @refresh="pictureRefresh"/>
+    <PictureDialog ref="pictureRef" :maxLength="0" minType="image" @refresh="pictureRefresh"/>
   </div>
 </template>
 

@@ -40,6 +40,12 @@ const viteConfig = defineConfig((mode: ConfigEnv) => {
                     changeOrigin: true,
                     rewrite: (path) => path.replace(/^\//, ''),
                 },
+                '/public': {
+                    target: 'http://192.168.0.88:9501',
+                    ws: false,
+                    changeOrigin: true,
+                    rewrite: (path) => path.replace(/^\//, ''),
+                },
             },
         },
         build: {

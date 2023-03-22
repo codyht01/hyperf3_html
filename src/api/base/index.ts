@@ -24,7 +24,7 @@ export function useBaseApi() {
                 headers: header
             })
         },
-        del: (path: string, id: number) => {
+        del: (path: string, id: number | string) => {
             return request({
                 url: '/api/' + path + '/del?id=' + id,
                 method: 'get',
