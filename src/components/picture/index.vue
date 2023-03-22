@@ -44,7 +44,7 @@
       <el-container>
         <el-card class="dialog_con">
           <el-button-group>
-            <el-button size="small">使用选中的图片</el-button>
+            <el-button :disabled="selectIndex.checked.length <= 0" size="small" @click="handleSubmit">使用选中的图片</el-button>
             <el-upload
                 ref="uploadFile"
                 :accept="fileType.accept"
@@ -154,7 +154,11 @@ const deletePicture = () => {
     }
   })
 }
-
+const emit = defineEmits(['refresh'])
+const handleSubmit = () => {
+  dialogVisible.value = false
+  emit('refresh', selectIndex.checked)
+}
 const tableData = usePagination({
   path: 'upload',
   page: undefined,

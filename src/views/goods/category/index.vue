@@ -18,20 +18,17 @@
       </div>
       <el-table v-loading="tableData.loading" :data="tableData.data" style="width: 100%">
         <el-table-column label="序号" type="index" width="60"/>
-        <el-table-column label="账户名称" prop="userName" show-overflow-tooltip></el-table-column>
-        <el-table-column label="最后登录ip" prop="last_login_ip" show-overflow-tooltip></el-table-column>
-        <el-table-column :formatter="formatTime" label="最后登录时间" prop="last_login_time" show-overflow-tooltip></el-table-column>
-        <el-table-column label="用户状态" prop="status" show-overflow-tooltip>
+        <el-table-column label="标题" prop="title" show-overflow-tooltip></el-table-column>
+        <el-table-column label="图标" prop="status" show-overflow-tooltip>
           <template #default="scope">
-            <el-tag v-if="scope.row.status" type="success">启用</el-tag>
-            <el-tag v-else type="info">禁用</el-tag>
+            <el-image :src="scope.row.logo" style="width:40px;height: 40px"/>
           </template>
         </el-table-column>
         <el-table-column :formatter="formatTime" label="创建时间" prop="create_time" show-overflow-tooltip></el-table-column>
         <el-table-column label="操作" width="100">
           <template #default="scope">
-            <el-button :disabled="scope.row.id === 1" size="small" text type="primary" @click="onOpenEditUser('edit', scope.row)">修改</el-button>
-            <el-button :disabled="scope.row.id === 1" size="small" text type="primary" @click="onRowDel(scope.row)">删除</el-button>
+            <el-button size="small" text type="primary" @click="onOpenEditUser('edit', scope.row)">修改</el-button>
+            <el-button size="small" text type="primary" @click="onRowDel(scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -55,9 +52,10 @@
 
 <script lang="ts" name="systemUser" setup>
 import {defineAsyncComponent, onMounted, reactive, ref} from 'vue'
-import {ElMessage, ElMessageBox} from 'element-plus'
+import {ElMessageBox} from 'element-plus'
 import usePagination from "/@/utils/usePagination"
 import {formatTime} from "/@/utils/formatTime"
+import {useBaseApi} from "/@/api/base"
 
 // 引入组件
 const UserDialog = defineAsyncComponent(() => import('/@/views/goods/category/dialog.vue'))
@@ -67,7 +65,7 @@ const userDialogRef = ref()
 
 const whereData = reactive({})
 const tableData = usePagination({
-  path: 'goods_category',
+  path: 'goodsCategory',
   page: undefined,
   size: undefined
 }, whereData)
@@ -81,14 +79,18 @@ const onOpenEditUser = (type: string, row: RowUserType) => {
   userDialogRef.value.openDialog(type, row)
 }
 // 删除用户
-const onRowDel = (row: RowUserType) => {
-  ElMessageBox.confirm(`此操作将永久删除账户名称：“${row.userName}”，是否继续?`, '提示', {
+const onRowDel = (row: { id: string | number; }) => {
+  ElMessageBox.confirm(`此操作将永久删除，是否继续?`, '提示', {
     confirmButtonText: '确认',
     cancelButtonText: '取消',
     type: 'warning',
   }).then(() => {
-    tableData.fetchData()
-    ElMessage.success('删除成功')
+    useBaseApi().del('goodsCategory', row.id).then(res => {
+      if (res.code == 1) {
+        tableData.fetchData()
+        ElMessage.success('删除成功')
+      }
+    })
   }).catch(() => {
   })
 }
