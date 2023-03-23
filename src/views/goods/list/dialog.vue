@@ -4,41 +4,54 @@
       <el-form ref="userDialogFormRef" :model="dialogForm" :rules="dialogRules" autocapitalize="off" label-width="90px" size="default">
         <el-row :gutter="35">
           <el-col :lg="12" :md="12" :sm="12" :xl="12" :xs="24" class="mb20">
-            <el-form-item label="账户名称" prop="userName">
-              <el-input v-model="dialogForm.userName" clearable placeholder="请输入账户名称"></el-input>
+            <el-form-item label="商品名称" prop="title">
+              <el-input v-model="dialogForm.title" clearable placeholder="请输入商品名称"></el-input>
             </el-form-item>
           </el-col>
           <el-col :lg="12" :md="12" :sm="12" :xl="12" :xs="24" class="mb20">
-            <el-form-item label="手机号" prop="phone">
-              <el-input v-model="dialogForm.phone" clearable placeholder="请输入手机号"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :lg="12" :md="12" :sm="12" :xl="12" :xs="24" class="mb20">
-            <el-form-item label="账户密码" prop="password">
-              <el-input v-model="dialogForm.password" clearable placeholder="请输入" type="password"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :lg="12" :md="12" :sm="12" :xl="12" :xs="24" class="mb20">
-            <el-form-item label="确认密码" prop="password_confirmation">
-              <el-input v-model="dialogForm.password_confirmation" clearable placeholder="请输入" type="password"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :lg="12" :md="12" :sm="12" :xl="12" :xs="24" class="mb20">
-            <el-form-item label="邮箱">
-              <el-input v-model="dialogForm.email" clearable placeholder="请输入"></el-input>
-            </el-form-item>
-          </el-col>
-
-          <el-col :lg="12" :md="12" :sm="12" :xl="12" :xs="24" class="mb20">
-            <el-form-item label="用户状态">
-              <el-switch v-model="dialogForm.status" :active-value="1" :inactive-value="0" active-text="启" inactive-text="禁" inline-prompt></el-switch>
+            <el-form-item label="商品分类" prop="category_id">
+              <el-select v-model="dialogForm.category_id" filterable placeholder="选择商品分类">
+                <el-option v-for="item in seleCategory" :key="item.id" :label="item.title" :value="item.id"/>
+              </el-select>
             </el-form-item>
           </el-col>
           <el-col :lg="24" :md="24" :sm="24" :xl="24" :xs="24" class="mb20">
-            <el-form-item label="用户描述">
-              <el-input v-model="dialogForm.description" :maxlength="200" placeholder="请输入用户描述" show-word-limit type="textarea"></el-input>
+            <el-form-item label="商品类型" prop="category_id">
+              <el-radio-group v-model="dialogForm.specification">
+                <el-radio :label="1">单规格</el-radio>
+                <el-radio :label="2">多规格</el-radio>
+              </el-radio-group>
             </el-form-item>
           </el-col>
+          <div v-if="dialogForm.specification === 1" class="content">
+            <el-col :lg="12" :md="12" :sm="12" :xl="12" :xs="24" class="mb20">
+              <el-form-item label="销售金额" prop="category_id">
+                <el-input-number v-model="dialogForm.price" :min="0" :precision="2" placeholder="请输入销售金额"/>
+              </el-form-item>
+            </el-col>
+            <el-col :lg="12" :md="12" :sm="12" :xl="12" :xs="24" class="mb20">
+              <el-form-item label="库存" prop="category_id">
+                <el-input-number v-model="dialogForm.stock" :min="1" :precision="0" :step="1"/>
+              </el-form-item>
+            </el-col>
+            <el-col :lg="12" :md="12" :sm="12" :xl="12" :xs="24" class="mb20">
+              <el-form-item label="商品原价" prop="category_id">
+                <el-input-number v-model="dialogForm.cost_price" :min="0" :precision="2" placeholder="请输入商品原价"/>
+              </el-form-item>
+            </el-col>
+            <el-col :lg="12" :md="12" :sm="12" :xl="12" :xs="24" class="mb20">
+              <el-form-item label="成本价格" prop="category_id">
+                <el-input-number v-model="dialogForm.market_price" :min="0" :precision="2" placeholder="请输入成本价格"/>
+              </el-form-item>
+            </el-col>
+          </div>
+          <div v-if="dialogForm.specification === 2" class="content">
+            <el-form-item label="">
+              <el-button class="mb20" type="primary" @click="btnShowSpecs">添加规格</el-button>
+              <TableSku ref="getSpecsTableData" :specData="specData"></TableSku>
+            </el-form-item>
+          </div>
+
         </el-row>
       </el-form>
       <template #footer>
@@ -48,33 +61,46 @@
 				</span>
       </template>
     </el-dialog>
+    <Specs ref="showSpecsRef" @isSpecsRefresh="isSpecsRefresh"></Specs>
   </div>
 </template>
 
 <script lang="ts" name="systemUserDialog" setup>
-import {reactive, ref} from 'vue'
+import {onMounted, reactive, ref} from 'vue'
 import {ElMessage, FormRules} from "element-plus"
 import {useBaseApi} from "/@/api/base"
-
+import {useGoodsCategoryApi} from "/@/api/goodsCategory"
+import TableSku from "/@/components/tableSku/index.vue"
+import Specs from "/@/views/goods/list/specs.vue"
 // 定义子组件向父组件传值/事件
 const emit = defineEmits(['refresh'])
 
+const specData = ref([])
+const showSpecsRef = ref()
+const isSpecsRefresh = (row: any) => {
+  console.log(row)
+}
+const btnShowSpecs = () => {
+  showSpecsRef.value.openDialog()
+}
 // 定义变量内容
 const userDialogFormRef = ref()
 const dialogTitle = ref('')
 const dialogSubmitTitle = ref('')
 const dialogForm = reactive({
   id: 0,
-  userName: '',
-  password: '',
-  password_confirmation: '',
-  phone: '',
-  email: '',
-  status: 1,
-  description: ''
+  title: '', //标题
+  category_id: '', //分类
+  specification: 1, //规格类型
+  price: 0,//销售金额
+  stock: 0, //库存
+  cost_price: 0, //原价
+  market_price: 0,//成本
+
 })
 const isShowDialog = ref(false)
 const submitLoading = ref(false)
+const seleCategory = ref([])
 const dialogRules = reactive<FormRules>({
   userName: [
     {required: true, message: '请输入用户名', trigger: ['blur', 'change']},
@@ -121,8 +147,8 @@ const openDialog = (type: string, row: any) => {
     dialogTitle.value = "新 增"
     dialogSubmitTitle.value = "添 加"
   }
-
   isShowDialog.value = true
+  getGoodsCategory()
 }
 // 提交
 const onSubmit = () => {
@@ -142,9 +168,25 @@ const onSubmit = () => {
 
   // if (state.dialog.type === 'add') { }
 }
+const getGoodsCategory = () => {
+  useGoodsCategoryApi().getGoodsCategoryByList({}).then(res => {
+    if (res.code) {
+      seleCategory.value = res.data
+    }
+  })
+}
+onMounted(() => {
 
+})
 // 暴露变量
 defineExpose({
   openDialog,
 })
 </script>
+<style lang="scss">
+.content {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+</style>
