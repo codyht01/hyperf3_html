@@ -13,7 +13,7 @@
           <el-icon>
             <ele-FolderAdd/>
           </el-icon>
-          新增用户
+          新增商品
         </el-button>
       </div>
       <el-table v-loading="tableData.loading" :data="tableData.data" style="width: 100%">
@@ -58,6 +58,7 @@ import {defineAsyncComponent, onMounted, reactive, ref} from 'vue'
 import {ElMessage, ElMessageBox} from 'element-plus'
 import usePagination from "/@/utils/usePagination"
 import {formatTime} from "/@/utils/formatTime"
+import {useRouter} from "vue-router"
 
 // 引入组件
 const UserDialog = defineAsyncComponent(() => import('/@/views/goods/list/dialog.vue'))
@@ -71,10 +72,13 @@ const tableData = usePagination({
   page: undefined,
   size: undefined
 }, whereData)
-
+const router = useRouter()
 // 打开新增用户弹窗
 const onOpenAddUser = (type: string) => {
-  userDialogRef.value.openDialog(type)
+  //userDialogRef.value.openDialog(type)
+  router.push({
+    name: 'goodsAdd'
+  })
 }
 // 打开修改用户弹窗
 const onOpenEditUser = (type: string, row: RowUserType) => {

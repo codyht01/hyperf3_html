@@ -1,6 +1,6 @@
 <template>
-  <el-dialog v-model="dialogVisible" :close-on-click-modal="false" :modal="false" title="Tips" width="900px">
-    <el-container class="dialog">
+  <el-dialog v-model="dialogVisible" :close-on-click-modal="false" title="Tips" width="900px">
+    <el-container v-loading="uploadLoading" class="dialog">
       <el-aside width="250px">
         <div class="aside">
           <el-card class="aside_card">
@@ -58,11 +58,12 @@
                 multiple
                 name="file"
             >
-              <el-button size="small">上传图片</el-button>
+              <el-button v-if="minType == 'image'" size="small">上传图片</el-button>
+              <el-button v-if="minType == 'video'" size="small">上传视频</el-button>
             </el-upload>
             <el-popconfirm title="您确定删除吗?" @confirm="deletePicture">
               <template #reference>
-                <el-button :disabled="selectIndex.checked.length <= 0" size="small">删除图片</el-button>
+                <el-button :disabled="selectIndex.checked.length <= 0" size="small">删除<span v-if="minType== 'image'">图片</span><span v-if="minType== 'video'">视频</span></el-button>
               </template>
             </el-popconfirm>
 
@@ -70,7 +71,8 @@
           <div v-loading="tableData.isLoading" class="content">
             <div v-if="tableData.data.length > 0" class="content_row">
               <div v-for="(item,index) in tableData.data" :key="index" class="content_li" @click="checkedCon(index,item)">
-                <el-image :src="item.url" class="li_img"/>
+                <el-image v-if="minType == 'image'" :src="item.url" class="li_img"/>
+                <video v-if="minType=='video'" :src="item.url" class="li_img"></video>
                 <div class="li_title">{{ item.fileName }}</div>
                 <div v-if="item.checked" class="checkout">
                   <SvgIcon :size="30" color="#fff" name="ele-Check"/>
@@ -165,6 +167,18 @@ const tableData = usePagination({
   size: undefined
 }, whereData)
 const openDialog = () => {
+  if (minType?.value == 'image') {
+    fileType.type = "image"
+    fileType.accept = "image/jpg,image/jpeg,image/png,image/gif"
+    whereData.type = "image"
+  } else if (minType?.value == 'video') {
+    fileType.type = "video"
+    fileType.accept = "video/mp4"
+    whereData.type = "video"
+  } else {
+    ElMessage.error("暂时不支持其他类型")
+    return
+  }
   cate_index.value = 0
   whereData.cate_id = 0
   selectIndex.checked = []
@@ -196,14 +210,14 @@ const checkedCon = (index: string | number, row: { id: any; }) => {
     selectIndex.checked.push(row)
   }
 }
-
+const uploadLoading = ref()
 const uploadFile = ref<UploadInstance>()
 /**
  * 主方法
  * @param File
  */
 const onUpload = async (File: UploadFile) => {
-  const chunkSize = 2 * 1024 * 1024 // 分片大小
+  const chunkSize = 1 * 1024 * 1024 // 分片大小
   const file = File.raw // 文件
   const fileSize = File.size || 0 // 文件大小
   let chunkCount = Math.ceil(fileSize / chunkSize) // 分片数量
@@ -236,10 +250,12 @@ const onUpload = async (File: UploadFile) => {
     formdata.append('fileSign', fileMd5)
     formdata.append('totalChunks', chunkCount.toString())
     formdata.append('totalChunkSize', fileSize)
+    formdata.append('fileType', minType?.value)
     //上传进度条
     //progress.value = Number(((i / chunkCount) * 100).toFixed(2)) * 1
     // 检查分片文件是否上传-没有上传则上传
     //const params = {chunkNumber: i, fileSign: fileMd5}
+    uploadLoading.value = true
     await uploadChunkFile(formdata) // 上传接口-自己定义
   }
   // 合并
@@ -277,6 +293,8 @@ const mergeFile = (mergeData: object | undefined) => {
   useUploadApi().mergeData(mergeData).then(res => {
     if (res.code == 1) {
       uploadFile.value!.clearFiles()
+      tableData.fetchData()
+      uploadLoading.value = false
     }
   }).catch(() => {
     uploadFile.value!.clearFiles()
@@ -365,13 +383,7 @@ onMounted(() => {
   if (Session.get('token')) {
     uploadHeader.Authorization = `Bearer ${Session.get('token')}`
   }
-  if (minType?.value == 'image') {
-    fileType.type = "image"
-    fileType.accept = "image/jpg,image/jpeg,image/png,image/gif"
-    whereData.type = "image"
-  } else {
-    ElMessage.error("暂时不支持其他类型")
-  }
+
 })
 
 defineExpose({
