@@ -3,7 +3,7 @@
     <Toolbar :editor="editorRef" :mode="mode"/>
     <Editor
         v-model="state.editorVal"
-        :defaultConfig="state.editorConfig"
+        :defaultConfig="editorConfig"
         :mode="mode"
         :style="{ height }"
         @onChange="handleChange"
@@ -60,13 +60,16 @@ const state = reactive({
   editorVal: props.getHtml,
 })
 
-const editorConfig = {MENU_CONF: {}}
+const editorConfig = {
+  MENU_CONF: {},
+  placeholder: props.placeholder,
+  editorVal: props.getHtml
+}
 
 editorConfig.MENU_CONF['uploadImage'] = {
-  server: '/api/upload-image',
-  fieldName: 'your-custom-name',
+  server: '/api/upload/image',
   // 单个文件的最大体积限制，默认为 2M
-  maxFileSize: 1 * 1024 * 1024, // 1M
+  maxFileSize: 2 * 1024 * 1024, // 1M
   // 最多可上传几个文件，默认为 100
   maxNumberOfFiles: 50,
   // 选择文件时的类型限制，默认为 ['image/*'] 。如不想限制，则设置为 []

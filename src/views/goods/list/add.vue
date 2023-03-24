@@ -161,6 +161,18 @@
                 </el-form-item>
               </el-col>
             </div>
+            <div v-else class="row_con">
+              <el-col :lg="16" :md="16" :sm="16" :xl="16" :xs="24" class="mb20">
+                <el-form-item label="" prop="status">
+                  <el-button type="primary" @click="btnDialogSpecs">添加规格</el-button>
+                </el-form-item>
+              </el-col>
+              <el-col :lg="24" :md="24" :sm="24" :xl="24" :xs="24" class="mb20">
+                <el-form-item label="" prop="status">
+                  <TableSku ref="getSpecsTableData" :specData="specData"></TableSku>
+                </el-form-item>
+              </el-col>
+            </div>
           </div>
           <div v-if="indexActive === 2" class="row_con">
             <el-col :lg="16" :md="16" :sm="16" :xl="16" :xs="24" class="mb20">
@@ -177,9 +189,9 @@
         </el-row>
       </el-form>
 
-
     </el-card>
     <PictureDialog ref="pictureRef" :maxLength="0" :minType="minType" @refresh="pictureRefresh"/>
+    <SpecsDialog ref="specsRef" @refresh="specsRefresh"/>
   </div>
 </template>
 
@@ -188,11 +200,20 @@ import {ArrowLeft} from "@element-plus/icons-vue"
 import {defineAsyncComponent, nextTick, onMounted, reactive, ref} from "vue"
 import {FormRules} from "element-plus"
 import {useGoodsCategoryApi} from "/@/api/goodsCategory"
+import SpecsDialog from '/@/views/goods/list/specs.vue'
 
 const PictureDialog = defineAsyncComponent(() => import('/@/components/picture/index.vue'))
 const Editor = defineAsyncComponent(() => import('/@/components/editor/index.vue'))
+const TableSku = defineAsyncComponent(() => import("/@/components/tableSku/index.vue"))
 
+const specsRef = ref()
+const btnDialogSpecs = () => {
+  specsRef.value.openDialog()
+}
+const specsRefresh = () => {
 
+}
+const specData = ref([])
 const indexActive = ref(0)
 const dialogForm = reactive({
   type: 1,
@@ -258,6 +279,7 @@ const btnClickVideo = () => {
   })
 }
 const pictureRefresh = (pic_list: any[]) => {
+
   if (!lImg.value) {
     if (minType.value == 'image') {
       pic_list.forEach(item => {
