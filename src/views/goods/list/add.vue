@@ -164,7 +164,7 @@
             <div v-else class="row_con">
               <el-col :lg="16" :md="16" :sm="16" :xl="16" :xs="24" class="mb20">
                 <el-form-item label="" prop="status">
-                  <el-button type="primary" @click="btnDialogSpecs">添加规格</el-button>
+                  <el-button type="primary" @click="btnDialogSpecs([])">添加规格</el-button>
                 </el-form-item>
               </el-col>
               <el-col :lg="24" :md="24" :sm="24" :xl="24" :xs="24" class="mb20">
@@ -191,7 +191,7 @@
 
     </el-card>
     <PictureDialog ref="pictureRef" :maxLength="0" :minType="minType" @refresh="pictureRefresh"/>
-    <SpecsDialog ref="specsRef" @refresh="specsRefresh"/>
+    <SpecsDialog ref="specsRef" @isSpecsRefresh="specsRefresh"/>
   </div>
 </template>
 
@@ -207,11 +207,11 @@ const Editor = defineAsyncComponent(() => import('/@/components/editor/index.vue
 const TableSku = defineAsyncComponent(() => import("/@/components/tableSku/index.vue"))
 
 const specsRef = ref()
-const btnDialogSpecs = () => {
-  specsRef.value.openDialog()
+const btnDialogSpecs = (row: any) => {
+  specsRef.value.openDialog(row)
 }
-const specsRefresh = () => {
-
+const specsRefresh = (specs_list: any, index: any) => {
+  specData.value.push(specs_list)
 }
 const specData = ref([])
 const indexActive = ref(0)

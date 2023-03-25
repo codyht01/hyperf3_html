@@ -1,6 +1,7 @@
 <template>
   <div class="sku">
     <el-form :model="formData" label-width="0">
+      {{ specData }}
       <el-form-item v-for="(item,index) in specData" :key="index" :label="item.title">
         <el-checkbox-group v-model="formData.checkboxGroup1" size="default">
           <el-checkbox v-for="(it,idx) in item.child" :key="idx" :checked="it.checked" :label="it.title" border @change="handleChange(index,idx)"/>
@@ -125,7 +126,6 @@ const asyncCheckbox = () => {
       arrayItem.forEach((item: any) => {
         data_list.push([item])
       })
-
     } else {
       const emptyArray: any[] = []
       data_list.forEach((item) => {
