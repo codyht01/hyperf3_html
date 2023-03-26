@@ -1,35 +1,50 @@
 <template>
   <div class="sku">
     <el-form :model="formData" label-width="0">
-      {{ specData }}
-      <el-form-item v-for="(item,index) in specData" :key="index" :label="item.title">
-        <el-checkbox-group v-model="formData.checkboxGroup1" size="default">
-          <el-checkbox v-for="(it,idx) in item.child" :key="idx" :checked="it.checked" :label="it.title" border @change="handleChange(index,idx)"/>
-        </el-checkbox-group>
-      </el-form-item>
+      <el-checkbox-group v-model="formData.checkboxGroup1" class="mb15" size="default">
+        <el-form-item v-for="(item,index) in specData" :key="index" :label="item.title" class="mb15">
+          <el-checkbox v-for="(it,idx) in item.child" :key="idx" :checked="it.checked" :label="it.id" border @change="handleChange($event,index,idx)">{{ it.title }}</el-checkbox>
+        </el-form-item>
+      </el-checkbox-group>
       <el-form-item v-if="tableData">
         <el-button-group>
           <el-button size="small" type="primary" @click="openDialog('price')">一键设置销售价格</el-button>
           <el-button size="small" type="primary" @click="openDialog('cost_price')">一键设置市场价格</el-button>
           <el-button size="small" type="primary" @click="openDialog('market_price')">一键设置成本</el-button>
           <el-button size="small" type="primary" @click="openDialog('stock')">一键设置库存</el-button>
+          <el-button size="small" type="primary" @click="openPicture([])">一键设置图片</el-button>
         </el-button-group>
       </el-form-item>
       <!-- 动态sku表 -->
       <el-form-item v-if="tableData">
+        {{ tableData }}
         <el-table :data="tableData" border style="width:100%">
           <el-table-column v-for="(item,index) in tableTitle" :key="index" :label="item" align="center" prop="id" width="80">
             <template #default="scope">
               {{ scope['row']['data_title'][index]['title'] }}
             </template>
           </el-table-column>
+          <el-table-column label="图片" prop="price">
+            <template #default="scope">
+              <el-image :src="scope.row.image" style="width:40px;height: 40px;" @click="openPicture(scope.row)">
+                <template #error>
+                  <div class="image-slot">
+                    <SvgIcon :size="30" name="ele-Picture"/>
+
+                  </div>
+                </template>
+              </el-image>
+            </template>
+          </el-table-column>
           <el-table-column label="销售价格" prop="price">
             <template #default="scope">
+              222
               <el-input v-model="scope.row.price" placeholder="价格"/>
             </template>
           </el-table-column>
           <el-table-column label="市场价格">
             <template #default="scope">
+              {{ scope.row.image || '111' }}
               <el-input v-model="scope.row.cost_price" placeholder="市场价"/>
             </template>
           </el-table-column>
@@ -55,21 +70,52 @@
       </span>
       </template>
     </el-dialog>
+    <PictureDialog ref="pictureRef" :maxLength="0" :minType="minType" @refresh="pictureRefresh"/>
   </div>
 </template>
 <script lang="ts" setup>
-import {onMounted, reactive, ref} from "vue"
+import {defineAsyncComponent, nextTick, onMounted, reactive, ref, toRefs} from "vue"
 
+const PictureDialog = defineAsyncComponent(() => import('/@/components/picture/index.vue'))
 const dialogVisible = ref(false)
 const visible_title = ref('')
 const visible_number = ref(1)
 const visible_type = ref('')
 const props = defineProps({
-  specData: null
+  specData: {
+    type: Array,
+    default: () => []
+  }
 })
+const {specData} = toRefs(props)
+const minType = ref('image')
 const formData = reactive({
   checkboxGroup1: [],
 })
+const pictureRef = ref()
+const tableIndex = ref([])
+const openPicture = (index) => {
+  console.log(index)
+  // tableIndex.value = index
+  minType.value = 'image'
+  nextTick(() => {
+    pictureRef.value.openDialog()
+  })
+}
+const pictureRefresh = (row: { url: any; }[]) => {
+
+  if (tableIndex.value == 0) {
+    tableData.value.forEach((item: { image: any; }) => {
+      item.image = row[0].url
+    })
+  } else {
+    tableData.value.forEach((item: { image: any; }, index: number) => {
+      if (index == tableIndex.value) {
+        tableData.value[index].image = row[0].url
+      }
+    })
+  }
+}
 //一键设置
 const openDialog = (type: any) => {
   if (type == 'price') {
@@ -92,9 +138,13 @@ const btnVisible = () => {
 }
 const tableTitle = ref()
 const tableData = ref()
-const handleChange = (index: number, idx: number) => {
+const handleChange = (e: any, index: string | number, idx: string | number) => {
+  props.specData[index]["child"][idx]['checked'] = e
   //修改状态
-  props.specData[index]["child"][idx]["checked"] = !props.specData[index]["child"][idx]["checked"]
+  // let checked = specData?.value[index]["child"][idx]["checked"]
+  // console.log(checked)
+  //specData?.value[index]["child"][idx]["checked"] = !checked
+  //specData?.value[index]["child"][idx]["checked"] = e
   //获取显示表
   asyncCheckbox()
 }
@@ -102,10 +152,10 @@ const handleChange = (index: number, idx: number) => {
 const asyncCheckbox = () => {
   let list_data: any[] = []
   let data_list_title: string[] = []
-  props.specData.forEach((item: { child: any[]; title: string; }) => {
+  props.specData.forEach((item) => {
     if (item.child.length !== 0) {
       let it_data: { id: any; title: any; }[] = []
-      item.child.forEach((it) => {
+      item.child.forEach((it: { checked: any; id: any; title: any; }) => {
         if (it.checked) {
           it_data.push({
             id: it.id,
@@ -130,7 +180,7 @@ const asyncCheckbox = () => {
       const emptyArray: any[] = []
       data_list.forEach((item) => {
         arrayItem.forEach((value: any) => {
-          console.log(item, value)
+          //console.log(item, value)
           emptyArray.push([...item, value])
         })
       })
