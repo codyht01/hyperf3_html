@@ -12,12 +12,11 @@
           <el-button size="small" type="primary" @click="openDialog('cost_price')">一键设置市场价格</el-button>
           <el-button size="small" type="primary" @click="openDialog('market_price')">一键设置成本</el-button>
           <el-button size="small" type="primary" @click="openDialog('stock')">一键设置库存</el-button>
-          <el-button size="small" type="primary" @click="openPicture([])">一键设置图片</el-button>
+          <el-button size="small" type="primary" @click="openPicture('')">一键设置图片</el-button>
         </el-button-group>
       </el-form-item>
       <!-- 动态sku表 -->
       <el-form-item v-if="tableData">
-        {{ tableData }}
         <el-table :data="tableData" border style="width:100%">
           <el-table-column v-for="(item,index) in tableTitle" :key="index" :label="item" align="center" prop="id" width="80">
             <template #default="scope">
@@ -26,11 +25,10 @@
           </el-table-column>
           <el-table-column label="图片" prop="price">
             <template #default="scope">
-              <el-image :src="scope.row.image" style="width:40px;height: 40px;" @click="openPicture(scope.row)">
+              <el-image :src="scope.row.image" style="width:40px;height: 40px;" @click="openPicture(scope.row.specs_id)">
                 <template #error>
                   <div class="image-slot">
                     <SvgIcon :size="30" name="ele-Picture"/>
-
                   </div>
                 </template>
               </el-image>
@@ -38,13 +36,11 @@
           </el-table-column>
           <el-table-column label="销售价格" prop="price">
             <template #default="scope">
-              222
               <el-input v-model="scope.row.price" placeholder="价格"/>
             </template>
           </el-table-column>
           <el-table-column label="市场价格">
             <template #default="scope">
-              {{ scope.row.image || '111' }}
               <el-input v-model="scope.row.cost_price" placeholder="市场价"/>
             </template>
           </el-table-column>
@@ -93,10 +89,9 @@ const formData = reactive({
   checkboxGroup1: [],
 })
 const pictureRef = ref()
-const tableIndex = ref([])
-const openPicture = (index) => {
-  console.log(index)
-  // tableIndex.value = index
+const tableIndex = ref('')
+const openPicture = (specs_id: string) => {
+  tableIndex.value = specs_id
   minType.value = 'image'
   nextTick(() => {
     pictureRef.value.openDialog()
@@ -104,13 +99,15 @@ const openPicture = (index) => {
 }
 const pictureRefresh = (row: { url: any; }[]) => {
 
-  if (tableIndex.value == 0) {
+  if (tableIndex.value == '') {
     tableData.value.forEach((item: { image: any; }) => {
       item.image = row[0].url
     })
   } else {
-    tableData.value.forEach((item: { image: any; }, index: number) => {
-      if (index == tableIndex.value) {
+    tableData.value.forEach((item: {
+      specs_id: string; id: number;
+    }, index: string | number) => {
+      if (item.specs_id == tableIndex.value) {
         tableData.value[index].image = row[0].url
       }
     })
@@ -131,7 +128,7 @@ const openDialog = (type: any) => {
   visible_type.value = type
 }
 const btnVisible = () => {
-  tableData.value.forEach((item?: any, index?: any) => {
+  tableData.value.forEach((item?: any) => {
     item[visible_type.value] = visible_number.value
   })
   dialogVisible.value = false

@@ -78,9 +78,9 @@
               </el-col>
               <el-col v-if="dialogForm.video_type == 1" :lg="16" :md="16" :sm="16" :xl="16" :xs="24" class="mb20">
                 <el-form-item label="选择视频" prop="title">
-                  <div v-if="videoList.url" class="banner_list">
-                    <video :src="videoList.url" controls style="width:300px">
-                      <source :src="videoList.url" type="video/mp4">
+                  <div v-if="videoList.video_url" class="banner_list">
+                    <video :src="videoList.video_url" controls style="width:300px">
+                      <source :src="videoList.video_url" type="video/mp4">
                     </video>
                     <el-button @click="btnClickVideo">重选</el-button>
                   </div>
@@ -90,6 +90,11 @@
                     </div>
                     <span class="banner_span">建议9：16比例图片 ,最多选择10张图片</span>
                   </div>
+                </el-form-item>
+              </el-col>
+              <el-col v-if="dialogForm.video_type == 2" :lg="16" :md="16" :sm="16" :xl="16" :xs="24" class="mb20">
+                <el-form-item label="视频地址" prop="title">
+                  <el-input v-model="dialogForm.video_url" placeholder="请输入视频地址"/>
                 </el-form-item>
               </el-col>
             </div>
@@ -175,9 +180,130 @@
             </div>
           </div>
           <div v-if="indexActive === 2" class="row_con">
-            <el-col :lg="16" :md="16" :sm="16" :xl="16" :xs="24" class="mb20">
+            <el-col :lg="24" :md="24" :sm="24" :xl="24" :xs="24" class="mb20">
               <el-form-item label="商品详情" prop="status">
                 <Editor v-model:get-html="dialogForm.description" v-model:get-text="dialogForm.description"/>
+              </el-form-item>
+            </el-col>
+          </div>
+          <div v-if="indexActive === 3" class="row_con">
+            <el-col :lg="16" :md="16" :sm="16" :xl="16" :xs="24" class="mb20">
+              <el-form-item label="物流方式" prop="logistics_type">
+                <el-checkbox-group v-model="dialogForm.logistics_type">
+                  <el-checkbox label="1">快递发货</el-checkbox>
+                  <el-checkbox :disabled="true" label="2">到店核销</el-checkbox>
+                </el-checkbox-group>
+              </el-form-item>
+            </el-col>
+            <el-col :lg="16" :md="16" :sm="16" :xl="16" :xs="24" class="mb20">
+              <el-form-item label="运费设置" prop="logistics_cate">
+                <el-radio-group v-model="dialogForm.logistics_cate">
+                  <el-radio :label="1">固定运费</el-radio>
+                  <el-radio :disabled="false" :label="2">运费模板</el-radio>
+                </el-radio-group>
+              </el-form-item>
+            </el-col>
+            <div v-if="dialogForm.logistics_cate === 1" class="row_con">
+              <el-col :lg="16" :md="16" :sm="16" :xl="16" :xs="24" class="mb20">
+                <el-form-item label="固定金额" prop="logistics_cate">
+                  <el-input v-model="dialogForm.logistics_price" placeholder="请输入固定金额"/>
+                </el-form-item>
+              </el-col>
+            </div>
+            <div v-if="dialogForm.logistics_cate === 2" class="row_con">
+              <el-col :lg="16" :md="16" :sm="16" :xl="16" :xs="24" class="mb20">
+                <el-form-item label="运费模板" prop="logistics_cate">
+                  <el-select v-model="dialogForm.logistics_formwork" clearable placeholder="Select">
+                    <!--                    <el-option-->
+                    <!--                        v-for="item in options"-->
+                    <!--                        :key="item.value"-->
+                    <!--                        :disabled="item.disabled"-->
+                    <!--                        :label="item.label"-->
+                    <!--                        :value="item.value"-->
+                    <!--                    />-->
+                  </el-select>
+                </el-form-item>
+              </el-col>
+            </div>
+          </div>
+          <div v-if="indexActive === 4" class="row_con">
+            <el-col :lg="16" :md="16" :sm="16" :xl="16" :xs="24" class="mb20">
+              <el-form-item label="已购数量" prop="logistics_cate">
+                <el-input-number v-model="dialogForm.number" :min="0" :precision="0" placeholder="请输入已购数量"/>
+              </el-form-item>
+            </el-col>
+            <el-col :lg="16" :md="16" :sm="16" :xl="16" :xs="24" class="mb20">
+              <el-form-item label="排序" prop="logistics_cate">
+                <el-input-number v-model="dialogForm.sort" :min="0" :precision="0" placeholder="请输入已购数量"/>
+              </el-form-item>
+            </el-col>
+            <el-col :lg="16" :md="16" :sm="16" :xl="16" :xs="24" class="mb20">
+              <el-form-item label="购买送积分" prop="logistics_cate">
+                <el-input-number v-model="dialogForm.integral" :min="0" :precision="0"/>
+              </el-form-item>
+            </el-col>
+            <el-col :lg="16" :md="16" :sm="16" :xl="16" :xs="24" class="mb20">
+              <el-form-item label="是否限购" prop="logistics_cate">
+                <el-switch v-model="dialogForm.is_purchase" :active-value="1" :inactive-value="0" active-text="开启" inactive-text="关闭" inline-prompt/>
+              </el-form-item>
+            </el-col>
+            <div v-if="dialogForm.is_purchase === 1" class="row_con">
+              <el-col :lg="16" :md="16" :sm="16" :xl="16" :xs="24" class="mb20">
+                <el-form-item label="限购类型" prop="logistics_cate">
+                  <el-radio-group v-model="dialogForm.purchase_type">
+                    <el-radio :label="1">单次限购</el-radio>
+                    <el-radio :label="2">永久限购</el-radio>
+                  </el-radio-group>
+                  <el-alert :closable="false" type="info">
+                    <p><span v-if="dialogForm.purchase_type === 1">单次限购是限制每次下单最多购买的数量</span><span v-else>永久限购是限制一个用户总共可以购买的数量</span></p>
+                  </el-alert>
+                </el-form-item>
+              </el-col>
+              <el-col :lg="16" :md="16" :sm="16" :xl="16" :xs="24" class="mb20">
+                <el-form-item label="限购数量" prop="logistics_cate">
+                  <el-input-number v-model="dialogForm.purchase_number" :min="0" :precision="0"/>
+                  <span style="margin-left: 10px">件</span>
+                </el-form-item>
+              </el-col>
+            </div>
+            <el-col :lg="16" :md="16" :sm="16" :xl="16" :xs="24" class="mb20">
+              <el-form-item label="预售商品" prop="logistics_cate">
+                <el-switch v-model="dialogForm.is_booking" :active-value="1" :inactive-value="0" active-text="开启" inactive-text="关闭" inline-prompt/>
+              </el-form-item>
+            </el-col>
+            <div v-if="dialogForm.is_booking === 1" class="row_con">
+              <el-col :lg="16" :md="16" :sm="16" :xl="16" :xs="24" class="mb20">
+                <el-form-item label="预售时间" prop="logistics_cate">
+                  <el-date-picker v-model="dialogForm.booking_time" end-placeholder="结束时间" range-separator="到" start-placeholder="开始时间" type="datetimerange"/>
+                </el-form-item>
+              </el-col>
+              <el-col :lg="16" :md="16" :sm="16" :xl="16" :xs="24" class="mb20">
+                <el-form-item label="发货时间" prop="logistics_cate">
+                  <span style="margin-right: 10px">预售活动结束后</span>
+                  <el-input-number v-model="dialogForm.booking_send_time" :min="0" :precision="0"/>
+                  <span style="margin-left: 10px">天之内</span>
+                </el-form-item>
+              </el-col>
+            </div>
+            <el-col :lg="16" :md="16" :sm="16" :xl="16" :xs="24" class="mb20">
+              <el-form-item label="商品推荐" prop="logistics_cate">
+                <el-checkbox-group v-model="dialogForm.recommend">
+                  <el-checkbox :label="1">热卖</el-checkbox>
+                  <el-checkbox :label="2">促销单品</el-checkbox>
+                  <el-checkbox :label="3">精品推荐</el-checkbox>
+                </el-checkbox-group>
+              </el-form-item>
+            </el-col>
+          </div>
+          <div v-if="indexActive === 5" class="row_con">
+            <el-col :lg="16" :md="16" :sm="16" :xl="16" :xs="24" class="mb20">
+              <el-form-item label="商品关键词" prop="logistics_cate">
+                <el-input v-model="dialogForm.title_keywords" placeholder="请输入关键词"/>
+              </el-form-item>
+            </el-col>
+            <el-col :lg="16" :md="16" :sm="16" :xl="16" :xs="24" class="mb20">
+              <el-form-item label="商品描述" prop="logistics_cate">
+                <el-input v-model="dialogForm.title_description" :rows="6" maxlength="500" placeholder="请输入描述" show-word-limit type="textarea"/>
               </el-form-item>
             </el-col>
           </div>
@@ -217,11 +343,13 @@ const specData = ref([])
 const indexActive = ref(0)
 const dialogForm = reactive({
   type: 1,
+  title: '',
   category_id: '',
   unit: '',
-  is_video: 0,
+  is_video: 0, //是否上传视频
+  video_type: 1, //1本地视频 2网络视频
+  video_url: '',//视频地址
   status: 1,
-  video_type: 1,
   specification: 1,
   price: 0,//售价
   market_price: 0,//成本
@@ -230,7 +358,23 @@ const dialogForm = reactive({
   product_id: 0,//编号
   weight: 0,//重量
   volume: 0,//体积
-  description: ''
+  description: '',
+  logistics_type: [],//物流方式
+  logistics_cate: 1,//运费设置
+  logistics_price: 0,//运费固定金额
+  logistics_formwork: '',//运费模板
+  number: 0,
+  sort: 0,
+  integral: 0,
+  is_purchase: 0,//是否限购 0不限购 1限购
+  purchase_type: 1,//1单次限购 2永久限购
+  purchase_number: 0, //限购数量
+  is_booking: 0, //是否预售 0 1
+  booking_time: 0,//预售时间
+  booking_send_time: 0,//预售发货时间
+  recommend: [],//商品推荐
+  title_keywords: '',
+  title_description: ''
 })
 const minKey = ref(0)
 const minType = ref('image')
