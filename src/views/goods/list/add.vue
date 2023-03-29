@@ -72,7 +72,7 @@
                                 <el-form-item label="添加视频" prop="title">
                                     <el-radio-group v-model="dialogForm.video_type">
                                         <el-radio :label="1">本地视频</el-radio>
-                                        <el-radio :label="0">链接视频</el-radio>
+                                        <el-radio :label="2">链接视频</el-radio>
                                     </el-radio-group>
                                 </el-form-item>
                             </el-col>
@@ -107,6 +107,7 @@
                             </el-form-item>
                         </el-col>
                     </div>
+
                     <div v-if="indexActive === 1" class="row_con">
                         <el-col :lg="16" :md="16" :sm="16" :xl="16" :xs="24" class="mb20">
                             <el-form-item label="规格类型" prop="status">
@@ -132,37 +133,37 @@
                             </el-col>
                             <el-col :lg="16" :md="16" :sm="16" :xl="16" :xs="24" class="mb20">
                                 <el-form-item label="售价" prop="status">
-                                    <el-input v-model="dialogForm.price" placeholder="请输入售价"/>
+                                    <el-input-number v-model="dialogForm.price" :min="0" :precision="2" placeholder="请输入售价"/>
                                 </el-form-item>
                             </el-col>
                             <el-col :lg="16" :md="16" :sm="16" :xl="16" :xs="24" class="mb20">
                                 <el-form-item label="成本价" prop="status">
-                                    <el-input v-model="dialogForm.market_price" placeholder="请输入成本价"/>
+                                    <el-input-number v-model="dialogForm.market_price" :min="0" :precision="2" placeholder="请输入成本价"/>
                                 </el-form-item>
                             </el-col>
                             <el-col :lg="16" :md="16" :sm="16" :xl="16" :xs="24" class="mb20">
                                 <el-form-item label="原价" prop="status">
-                                    <el-input v-model="dialogForm.cost_price" placeholder="请输入原价"/>
+                                    <el-input-number v-model="dialogForm.cost_price" :min="0" :precision="2" placeholder="请输入原价"/>
                                 </el-form-item>
                             </el-col>
                             <el-col :lg="16" :md="16" :sm="16" :xl="16" :xs="24" class="mb20">
                                 <el-form-item label="库存" prop="status">
-                                    <el-input v-model="dialogForm.stock" placeholder="请输入库存"/>
+                                    <el-input-number v-model="dialogForm.stock" :min="0" :precision="0" placeholder="请输入库存"/>
                                 </el-form-item>
                             </el-col>
-                            <el-col :lg="16" :md="16" :sm="16" :xl="16" :xs="24" class="mb20">
-                                <el-form-item label="商品编号" prop="status">
-                                    <el-input v-model="dialogForm.product_id" placeholder="请输入商品编号"/>
-                                </el-form-item>
-                            </el-col>
-                            <el-col :lg="16" :md="16" :sm="16" :xl="16" :xs="24" class="mb20">
+                            <!--                            <el-col :lg="16" :md="16" :sm="16" :xl="16" :xs="24" class="mb20">-->
+                            <!--                                <el-form-item label="商品编号" prop="status">-->
+                            <!--                                    <el-input  v-model="dialogForm.product_id" placeholder="请输入商品编号"/>-->
+                            <!--                                </el-form-item>-->
+                            <!--                            </el-col>-->
+                            <el-col v-if="false" :lg="16" :md="16" :sm="16" :xl="16" :xs="24" class="mb20">
                                 <el-form-item label="重量(KG)" prop="status">
-                                    <el-input v-model="dialogForm.weight" placeholder="请输入重量"/>
+                                    <el-input-number v-model="dialogForm.weight" :min="0" :precision="2" placeholder="请输入重量"/>
                                 </el-form-item>
                             </el-col>
-                            <el-col :lg="16" :md="16" :sm="16" :xl="16" :xs="24" class="mb20">
+                            <el-col v-if="false" :lg="16" :md="16" :sm="16" :xl="16" :xs="24" class="mb20">
                                 <el-form-item label="体积(m³)" prop="status">
-                                    <el-input v-model="dialogForm.volume" placeholder="请输入体积"/>
+                                    <el-input-number v-model="dialogForm.volume" :min="0" :precision="2" placeholder="请输入体积"/>
                                 </el-form-item>
                             </el-col>
                         </div>
@@ -182,7 +183,7 @@
                     <div v-if="indexActive === 2" class="row_con">
                         <el-col :lg="24" :md="24" :sm="24" :xl="24" :xs="24" class="mb20">
                             <el-form-item label="商品详情" prop="status">
-                                <Editor v-model:get-html="dialogForm.description" v-model:get-text="dialogForm.description"/>
+                                <Editor v-model:get-html="dialogForm.description"/>
                             </el-form-item>
                         </el-col>
                     </div>
@@ -326,6 +327,7 @@ import {defineAsyncComponent, nextTick, onMounted, reactive, ref} from "vue"
 import {FormRules} from "element-plus"
 import {useGoodsCategoryApi} from "/@/api/goodsCategory"
 import SpecsDialog from '/@/views/goods/list/specs.vue'
+import {useBaseApi} from "/@/api/base"
 
 const PictureDialog = defineAsyncComponent(() => import('/@/components/picture/index.vue'))
 const Editor = defineAsyncComponent(() => import('/@/components/editor/index.vue'))
@@ -361,7 +363,7 @@ const dialogForm = reactive({
     logistics_type: [],//物流方式
     logistics_cate: 1,//运费设置
     logistics_price: 0,//运费固定金额
-    logistics_formwork: '',//运费模板
+    logistics_formwork: 0,//运费模板
     number: 0,
     sort: 0,
     integral: 0,
@@ -373,20 +375,37 @@ const dialogForm = reactive({
     booking_send_time: 0,//预售发货时间
     recommend: [],//商品推荐
     title_keywords: '',
-    title_description: ''
+    title_description: '',
+    sku_data: []
 })
 const submitData = () => {
-
+    useBaseApi().add('goods', {
+        ...dialogForm,
+        banner: pictureList.value,
+        url: goodsImgs.value
+    })
 }
+const getSpecsTableData = ref()
 const minKey = ref(0)
 const minType = ref('image')
 const lImg = ref(true)
 const dialogRules = reactive<FormRules>({})
 const seleCategory = ref([])
 const onNext = () => {
+    if (indexActive.value == 1) {
+        if (dialogForm.specification === 2) {
+            dialogForm.sku_data = getSpecsTableData.value.tableData
+        }
+    }
+
     indexActive.value++
 }
 const onLeft = () => {
+    if (indexActive.value == 1) {
+        if (dialogForm.specification === 2) {
+            dialogForm.sku_data = getSpecsTableData.value.tableData
+        }
+    }
     indexActive.value--
 }
 const getGoodsCategory = () => {
@@ -407,7 +426,9 @@ const btnClickGoodsImg = () => {
 // 选择图片开始
 const pictureList = ref([])
 const pictureRef = ref()
-const goodsImgs = ref([])
+const goodsImgs = ref({
+    url: ''
+})
 const btnClickPicture = () => {
     minKey.value = Math.random()
     minType.value = 'image'
@@ -425,7 +446,6 @@ const btnClickVideo = () => {
     })
 }
 const pictureRefresh = (pic_list: any[]) => {
-
     if (!lImg.value) {
         if (minType.value == 'image') {
             pic_list.forEach(item => {
@@ -440,9 +460,9 @@ const pictureRefresh = (pic_list: any[]) => {
         goodsImgs.value = pic_list[0]
     }
 }
-
-//选择图片结束
-const videoList = ref([])
+const videoList = ref({
+    url: ''
+})
 onMounted(() => {
     getGoodsCategory()
 })
