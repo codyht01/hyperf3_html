@@ -1,7 +1,7 @@
 <template>
     <div class="system-user-container layout-padding">
         <el-card :body-style="{'display':'flex'}" class="mb10" shadow="hover">
-            <el-button :icon="ArrowLeft" size="small" type="text">返回</el-button>
+            <el-button :icon="ArrowLeft" size="small" type="text" @click="onClickBack">返回</el-button>
             <div class="title">添加商品</div>
         </el-card>
         <el-card :body-style="{'overflow':'auto'}" class="layout-padding-auto mb15" shadow="hover">
@@ -78,9 +78,9 @@
                             </el-col>
                             <el-col v-if="dialogForm.video_type == 1" :lg="16" :md="16" :sm="16" :xl="16" :xs="24" class="mb20">
                                 <el-form-item label="选择视频" prop="title">
-                                    <div v-if="videoList.video_url" class="banner_list">
-                                        <video :src="videoList.video_url" controls style="width:300px">
-                                            <source :src="videoList.video_url" type="video/mp4">
+                                    <div v-if="videoList.url" class="banner_list">
+                                        <video :src="videoList.url" controls style="width:300px">
+                                            <source :src="videoList.url" type="video/mp4">
                                         </video>
                                         <el-button @click="btnClickVideo">重选</el-button>
                                     </div>
@@ -127,7 +127,6 @@
                                         <div class="picture_img" @click="btnClickGoodsImg">
                                             <SvgIcon :size="30" name="ele-Plus"/>
                                         </div>
-                                        <span class="banner_span">建议9：16比例图片 ,最多选择10张图片</span>
                                     </div>
                                 </el-form-item>
                             </el-col>
@@ -175,7 +174,7 @@
                             </el-col>
                             <el-col :lg="24" :md="24" :sm="24" :xl="24" :xs="24" class="mb20">
                                 <el-form-item label="" prop="status">
-                                    <TableSku ref="getSpecsTableData" :specData="specData"></TableSku>
+                                    <TableSku ref="getSpecsTableData" :data="dialogForm.sku_data" :specData="specData"></TableSku>
                                 </el-form-item>
                             </el-col>
                         </div>
@@ -328,21 +327,27 @@ import {FormRules} from "element-plus"
 import {useGoodsCategoryApi} from "/@/api/goodsCategory"
 import SpecsDialog from '/@/views/goods/list/specs.vue'
 import {useBaseApi} from "/@/api/base"
+import mittBus from "/@/utils/mitt"
+import {useRoute, useRouter} from "vue-router"
 
 const PictureDialog = defineAsyncComponent(() => import('/@/components/picture/index.vue'))
 const Editor = defineAsyncComponent(() => import('/@/components/editor/index.vue'))
 const TableSku = defineAsyncComponent(() => import("/@/components/tableSku/index.vue"))
 
 const specsRef = ref()
+
+const skuFormData = ref([])
 const btnDialogSpecs = (row: any) => {
     specsRef.value.openDialog(row)
 }
 const specsRefresh = (specs_list: any, index: any) => {
     specData.value.push(specs_list)
 }
+
 const specData = ref([])
 const indexActive = ref(0)
 const dialogForm = reactive({
+    id: 0,
     type: 1,
     title: '',
     category_id: '',
@@ -378,11 +383,31 @@ const dialogForm = reactive({
     title_description: '',
     sku_data: []
 })
+const route = useRoute()
+const router = useRouter()
 const submitData = () => {
+    if (indexActive.value == 1) {
+        if (dialogForm.specification === 2) {
+            dialogForm.sku_data = getSpecsTableData.value.tableData
+        }
+    }
     useBaseApi().add('goods', {
         ...dialogForm,
         banner: pictureList.value,
-        url: goodsImgs.value
+        goods_img: goodsImgs.value.url,
+        video_url: videoList.value.url
+    }).then(res => {
+        if (res.code) {
+            onClickBack()
+        }
+    }).catch(() => {
+
+    })
+}
+const onClickBack = () => {
+    mittBus.emit('onCurrentContextmenuClick', Object.assign({}, {contextMenuClickId: 1, ...route}))
+    router.push({
+        name: 'goodsList'
     })
 }
 const getSpecsTableData = ref()
@@ -397,15 +422,9 @@ const onNext = () => {
             dialogForm.sku_data = getSpecsTableData.value.tableData
         }
     }
-
     indexActive.value++
 }
 const onLeft = () => {
-    if (indexActive.value == 1) {
-        if (dialogForm.specification === 2) {
-            dialogForm.sku_data = getSpecsTableData.value.tableData
-        }
-    }
     indexActive.value--
 }
 const getGoodsCategory = () => {
@@ -463,7 +482,15 @@ const pictureRefresh = (pic_list: any[]) => {
 const videoList = ref({
     url: ''
 })
+const getInfo = () => {
+    
+}
 onMounted(() => {
+    let id = route.query.id
+    if (id) {
+        dialogForm.id = id
+        getInfo()
+    }
     getGoodsCategory()
 })
 </script>
