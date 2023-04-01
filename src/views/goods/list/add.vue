@@ -329,6 +329,7 @@ import SpecsDialog from '/@/views/goods/list/specs.vue'
 import {useBaseApi} from "/@/api/base"
 import mittBus from "/@/utils/mitt"
 import {useRoute, useRouter} from "vue-router"
+import {useGoodsApi} from "/@/api/goods"
 
 const PictureDialog = defineAsyncComponent(() => import('/@/components/picture/index.vue'))
 const Editor = defineAsyncComponent(() => import('/@/components/editor/index.vue'))
@@ -336,11 +337,10 @@ const TableSku = defineAsyncComponent(() => import("/@/components/tableSku/index
 
 const specsRef = ref()
 
-const skuFormData = ref([])
 const btnDialogSpecs = (row: any) => {
     specsRef.value.openDialog(row)
 }
-const specsRefresh = (specs_list: any, index: any) => {
+const specsRefresh = (specs_list: never) => {
     specData.value.push(specs_list)
 }
 
@@ -391,11 +391,19 @@ const submitData = () => {
             dialogForm.sku_data = getSpecsTableData.value.tableData
         }
     }
+    let video_url = ''
+    if (dialogForm.is_video === 1) {
+        if (dialogForm.video_type === 1) {
+            video_url = videoList.value.url
+        } else {
+            video_url = dialogForm.video_url
+        }
+    }
     useBaseApi().add('goods', {
         ...dialogForm,
         banner: pictureList.value,
         goods_img: goodsImgs.value.url,
-        video_url: videoList.value.url
+        video_url
     }).then(res => {
         if (res.code) {
             onClickBack()
@@ -483,7 +491,13 @@ const videoList = ref({
     url: ''
 })
 const getInfo = () => {
-    
+    useGoodsApi().getGoodsEditInfo({
+        id: dialogForm.id
+    }).then(res => {
+        if (res.code) {
+
+        }
+    })
 }
 onMounted(() => {
     let id = route.query.id

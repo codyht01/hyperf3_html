@@ -16,11 +16,11 @@
                     新增商品
                 </el-button>
             </div>
-            <el-tabs v-model="whereData.order_type" class="demo-tabs" @tab-click="tableData.fetchData()">
+            <el-tabs v-model="whereData.tabType" class="demo-tabs" @tab-change="tableData.fetchData()">
                 <el-tab-pane label="出售中的商品" name="all"/>
                 <el-tab-pane label="已售罄的商品" name="second"/>
-                <el-tab-pane label="禁戒库存商品" name="third"/>
-                <el-tab-pane label="回收站的商品" name="fourth"/>
+                <el-tab-pane disabled label="禁戒库存商品" name="third"/>
+                <el-tab-pane label="回收站的商品" name="del"/>
             </el-tabs>
             <el-table v-loading="tableData.isLoading" :data="tableData.data" style="width: 100%">
                 <!--                <el-table-column type="expand">-->
@@ -43,7 +43,7 @@
                 <el-table-column label="商品名称" prop="title" show-overflow-tooltip></el-table-column>
                 <el-table-column label="商品类型" prop="type" show-overflow-tooltip>
                     <template #default="scope">
-                        <el-tag v-if="scope.row.type === 1">普通商品</el-tag>
+                        <el-tag v-if="scope.row.type === 1" size="small">普通商品</el-tag>
                     </template>
                 </el-table-column>
                 <el-table-column label="商品售价" prop="price" show-overflow-tooltip></el-table-column>
@@ -53,7 +53,8 @@
                 <el-table-column :formatter="formatTime" label="创建时间" prop="create_time" show-overflow-tooltip></el-table-column>
                 <el-table-column label="状态" prop="sort" show-overflow-tooltip>
                     <template #default="scope">
-                        <el-switch v-model="scope.row.status" :active-value="1" :inactive-value="0" active-text="上架" inactive-text="下架" inline-prompt size="small"/>
+                        <el-switch v-if="scope.row.status == 0 || scope.row.status == 1" v-model="scope.row.status" :active-value="1" :inactive-value="0" active-text="上架" inactive-text="下架" inline-prompt size="small"/>
+                        <el-tag v-else-if="scope.row.status == 2" size="small" type="danger">下架</el-tag>
                     </template>
                 </el-table-column>
                 <el-table-column label="操作" width="100">
@@ -87,6 +88,7 @@ import {ElMessage, ElMessageBox} from 'element-plus'
 import usePagination from "/@/utils/usePagination"
 import {formatTime} from "/@/utils/formatTime"
 import {useRouter} from "vue-router"
+import {useBaseApi} from "/@/api/base"
 
 // 引入组件
 const UserDialog = defineAsyncComponent(() => import('/@/views/goods/list/dialog.vue'))
@@ -94,7 +96,7 @@ const UserDialog = defineAsyncComponent(() => import('/@/views/goods/list/dialog
 // 定义变量内容
 const userDialogRef = ref()
 const whereData = reactive({
-    order_type: 'all'
+    tabType: 'all'
 })
 const tableData = usePagination({
     path: 'goods',
@@ -102,8 +104,9 @@ const tableData = usePagination({
     size: undefined
 }, whereData)
 const router = useRouter()
-// 打开新增用户弹窗
-
+const tabType = (e) => {
+    tableData.fetchData()
+}
 // 打开修改用户弹窗
 const onOpenAdd = (type: string, id = 0) => {
     let tagsViewName = ''
@@ -121,14 +124,18 @@ const onOpenAdd = (type: string, id = 0) => {
     })
 }
 // 删除用户
-const onRowDel = (row: RowUserType) => {
-    ElMessageBox.confirm(`此操作将永久删除账户名称：“${row.userName}”，是否继续?`, '提示', {
+const onRowDel = (row: { title: any; id: string | number; }) => {
+    ElMessageBox.confirm(`此操作将商品：“${row.title}放入回收站”，是否继续?`, '提示', {
         confirmButtonText: '确认',
         cancelButtonText: '取消',
         type: 'warning',
     }).then(() => {
-        tableData.fetchData()
-        ElMessage.success('删除成功')
+        useBaseApi().del('goods', row.id).then(res => {
+            if (res.code) {
+                tableData.fetchData()
+                ElMessage.success('删除成功')
+            }
+        })
     }).catch(() => {
     })
 }
