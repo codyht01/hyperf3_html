@@ -495,12 +495,11 @@ const getInfo = () => {
         id: dialogForm.id
     }).then(res => {
         if (res.code) {
-
         }
     })
 }
 onMounted(() => {
-    let id = route.query.id
+    let id = Number(route.query.id)
     if (id) {
         dialogForm.id = id
         getInfo()
