@@ -2,7 +2,7 @@
     <div class="sku">
         <el-form :model="formData" label-width="0">
             <el-checkbox-group v-model="formData.checkboxGroup1" class="mb15" size="default">
-                <el-form-item v-for="(item,index) in specData" :key="index" :label="item.title" class="mb15">
+                <el-form-item v-for="(item,index) in specData" :key="index" :label="item.title" class="mb15" label-width="80">
                     <el-checkbox v-for="(it,idx) in item.child" :key="idx" :checked="it.checked" :label="it.id" border @change="handleChange($event,index,idx)">{{ it.title }}</el-checkbox>
                 </el-form-item>
             </el-checkbox-group>

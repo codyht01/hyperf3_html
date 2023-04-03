@@ -9,7 +9,7 @@
                     </el-icon>
                     查询
                 </el-button>
-                <el-button class="ml10" size="default" type="success" @click="onOpenAdd('add')">
+                <el-button class="ml10" size="default" type="success" @click="onOpenAdd('add',{id: undefined ,title: ''})">
                     <el-icon>
                         <ele-FolderAdd/>
                     </el-icon>
@@ -59,7 +59,7 @@
                 </el-table-column>
                 <el-table-column label="操作" width="100">
                     <template #default="scope">
-                        <el-button size="small" text type="primary" @click="onOpenAdd('edit', scope.row.id)">修改</el-button>
+                        <el-button size="small" text type="primary" @click="onOpenAdd('edit', scope.row)">修改</el-button>
                         <el-button size="small" text type="primary" @click="onRowDel(scope.row)">删除</el-button>
                     </template>
                 </el-table-column>
@@ -108,17 +108,17 @@ const tabType = (e) => {
     tableData.fetchData()
 }
 // 打开修改用户弹窗
-const onOpenAdd = (type: string, id = 0) => {
+const onOpenAdd = (type: string, row: { title: string; id: any; }) => {
     let tagsViewName = ''
     if (type == 'add') {
         tagsViewName = '添加商品'
     } else {
-        tagsViewName = '编辑商品'
+        tagsViewName = '编辑:' + row.title
     }
     router.push({
         name: 'goodsAdd',
         query: {
-            id,
+            id: row.id,
             tagsViewName: tagsViewName
         },
     })

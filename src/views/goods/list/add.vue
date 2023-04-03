@@ -2,16 +2,16 @@
     <div class="system-user-container layout-padding">
         <el-card :body-style="{'display':'flex'}" class="mb10" shadow="hover">
             <el-button :icon="ArrowLeft" size="small" type="text" @click="onClickBack">返回</el-button>
-            <div class="title">添加商品</div>
+            <div class="title">{{ route.query.tagsViewName }}</div>
         </el-card>
         <el-card :body-style="{'overflow':'auto'}" class="layout-padding-auto mb15" shadow="hover">
             <el-steps :active="indexActive" align-center class="mb15">
-                <el-step title="商品信息"/>
-                <el-step title="规格库存"/>
-                <el-step title="商品详情"/>
-                <el-step title="物流设置"/>
-                <el-step title="营销设置"/>
-                <el-step title="其他设置"/>
+                <el-step title="商品信息" @click="indexActive = 0"/>
+                <el-step title="规格库存" @click="indexActive = 1"/>
+                <el-step title="商品详情" @click="indexActive = 2"/>
+                <el-step title="物流设置" @click="indexActive = 3"/>
+                <el-step title="营销设置" @click="indexActive = 4"/>
+                <el-step title="其他设置" @click="indexActive = 5"/>
             </el-steps>
             <el-form ref="userDialogFormRef" :model="dialogForm" :rules="dialogRules" autocomplete="off" label-width="90px" size="default">
                 <el-row :gutter="35">
@@ -309,7 +309,7 @@
                     </div>
                     <el-form-item>
                         <el-button v-if="indexActive > 0" type="primary" @click="onLeft">上一步</el-button>
-                        <el-button type="primary" @click="onNext">下一步</el-button>
+                        <el-button v-if="indexActive != 5" type="primary" @click="onNext">下一步</el-button>
                         <el-button type="primary" @click="submitData">保 存</el-button>
                     </el-form-item>
                 </el-row>
@@ -330,6 +330,7 @@ import {useBaseApi} from "/@/api/base"
 import mittBus from "/@/utils/mitt"
 import {useRoute, useRouter} from "vue-router"
 import {useGoodsApi} from "/@/api/goods"
+import {formatDate} from "/@/utils/formatTime"
 
 const PictureDialog = defineAsyncComponent(() => import('/@/components/picture/index.vue'))
 const Editor = defineAsyncComponent(() => import('/@/components/editor/index.vue'))
@@ -341,7 +342,37 @@ const btnDialogSpecs = (row: any) => {
     specsRef.value.openDialog(row)
 }
 const specsRefresh = (specs_list: never) => {
-    specData.value.push(specs_list)
+    if (specData.value.length > 0) {
+        const res = specData.value.some(item => {
+            if (item['title'] == specs_list['title']) {
+                return true
+            }
+        })
+        if (res) {
+            //已经存在 todo 需要查找id是否存在
+            let specDataId = 0
+            specData.value.forEach((item, index) => {
+                if (item['title'] == specs_list['title']) {
+                    specDataId = index
+                }
+            })
+            specs_list.child.forEach((item: { id: any; child: { [x: string]: any; }; }, index: string | number) => {
+                const sp_data: any = specData.value[specDataId]['child']
+                const rr = sp_data.some((it: { id: any; }) => {
+                    if (item.id == it.id) {
+                        return true
+                    }
+                })
+                if (!rr) {
+                    specData.value[specDataId]['child'].push(item)
+                }
+            })
+        } else {
+            specData.value.push(specs_list)
+        }
+    } else {
+        specData.value.push(specs_list)
+    }
 }
 
 const specData = ref([])
@@ -376,7 +407,7 @@ const dialogForm = reactive({
     purchase_type: 1,//1单次限购 2永久限购
     purchase_number: 0, //限购数量
     is_booking: 0, //是否预售 0 1
-    booking_time: 0,//预售时间
+    booking_time: [],//预售时间
     booking_send_time: 0,//预售发货时间
     recommend: [],//商品推荐
     title_keywords: '',
@@ -490,11 +521,60 @@ const pictureRefresh = (pic_list: any[]) => {
 const videoList = ref({
     url: ''
 })
+
 const getInfo = () => {
     useGoodsApi().getGoodsEditInfo({
         id: dialogForm.id
     }).then(res => {
         if (res.code) {
+            dialogForm.id = res.data.id
+            dialogForm.type = res.data.type
+            dialogForm.category_id = res.data.category_id
+            dialogForm.title = res.data.title
+            dialogForm.unit = res.data.unit
+            pictureList.value = res.data.banner
+            dialogForm.is_video = res.data.is_video
+            dialogForm.video_type = res.data.video_type
+            if (res.data.video_type == 1) {
+                videoList.value.url = res.data.video_url
+            } else {
+                dialogForm.video_url = res.data.video_url
+            }
+            if (res.data.status == 1) {
+                dialogForm.status = 1
+            } else {
+                dialogForm.status = 0
+            }
+            dialogForm.specification = res.data.specification
+            if (res.data.specification === 2) {
+                specData.value = res.data.sku_data
+                dialogForm.sku_data = res.data.sku
+            } else {
+                dialogForm.price = res.data.price
+                dialogForm.cost_price = res.data.cost_price
+                dialogForm.market_price = res.data.market_price
+                dialogForm.stock = res.data.stock
+            }
+            dialogForm.description = res.data.description
+            dialogForm.logistics_type = res.data.logistics_type
+            dialogForm.logistics_cate = res.data.logistics_cate
+            dialogForm.logistics_formwork = res.data.logistics_formwork
+            dialogForm.logistics_price = res.data.logistics_price
+            dialogForm.number = res.data.number
+            dialogForm.integral = res.data.integral
+            dialogForm.is_purchase = res.data.is_purchase
+            dialogForm.sort = res.data.sort
+            dialogForm.purchase_type = res.data.purchase_type
+            dialogForm.purchase_number = res.data.purchase_number
+            dialogForm.is_booking = res.data.is_booking
+            const start = formatDate(new Date(res.data.booking_time_start * 1000), 'YYYY-mm-dd HH:MM:SS')
+            const end = formatDate(new Date(res.data.booking_time_end * 1000), 'YYYY-mm-dd HH:MM:SS')
+            dialogForm.booking_time = [start, end]
+            dialogForm.booking_send_time = res.data.booking_send_time
+            dialogForm.recommend = res.data.recommend
+            dialogForm.title_keywords = res.data.title_keywords
+            dialogForm.title_description = res.data.title_description
+            goodsImgs.value.url = res.data.url
         }
     })
 }
