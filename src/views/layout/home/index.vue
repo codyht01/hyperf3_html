@@ -35,7 +35,7 @@
         <!-- 装修操作 -->
         <section class="operation">
             <!-- 组件 -->
-            <Sliderassembly :pointer="pointer"/>
+            <sliderassembly :pointer="pointer"/>
 
             <!-- 手机 -->
             <div class="phone">
