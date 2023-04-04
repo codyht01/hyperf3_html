@@ -1,12 +1,12 @@
 <template>
-  <div class="custommodulestyle">
-    <!-- 标题 -->
-    <h2>{{ datas.text }}</h2>
-    <el-input v-model="datas.demo" placeholder="请输入公告" />
-    <el-input v-model="datas.img" placeholder="图片地址" />
-        {{ 'aaa'+ datas.type}}
+    <div class="custommodulestyle">
+        <!-- 标题 -->
+        <h2>{{ datas.text }}</h2>
+        <el-input v-model="datas.demo" placeholder="请输入公告"/>
+        <el-input v-model="datas.img" placeholder="图片地址"/>
+        {{ 'aaa' + datas.type }}
 
-  </div>
+    </div>
 </template>
 
 <script>
@@ -14,12 +14,12 @@ export default {
   name: 'custommodulestyle',
   props: {
     datas: Object,
-    'data-type':String,
-  },
+    'data-type': String
+  }
 }
 </script>
 
-<style scoped lang="less">
+<style lang="scss" scoped>
 .custommodulestyle {
   width: 100%;
   position: absolute;

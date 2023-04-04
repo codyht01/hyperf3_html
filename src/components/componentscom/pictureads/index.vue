@@ -1,112 +1,112 @@
 <template>
-  <div class="pictureads">
-    <!-- 无图片 -->
-    <div class="upload" v-if="!imageList[0]">
-      <i class="iconfont icon-lunbotu"></i>
-    </div>
+    <div class="pictureads">
+        <!-- 无图片 -->
+        <div v-if="!imageList[0]" class="upload">
+            <i class="iconfont icon-lunbotu"></i>
+        </div>
 
-    <!-- 一行一个 -->
-    <div
-      v-if="imageList[0] && swiperType === 0"
-      class="type0"
-      :style="{
+        <!-- 一行一个 -->
+        <div
+                v-if="imageList[0] && swiperType === 0"
+                :style="{
         'padding-left': datas.pageMargin + 'px',
         'padding-right': datas.pageMargin + 'px',
       }"
-    >
-      <div
-        v-for="(item, index) in imageList"
-        :key="index"
-        class="imgLis"
-        :style="{ 'margin-bottom': datas.imageMargin + 'px' }"
-      >
-        <!-- 图片 -->
-        <img
-          :src="item.src"
-          draggable="false"
-          :style="{ 'border-radius': datas.borderRadius + 'px' }"
-        />
-        <!-- 图片标题 -->
-        <p class="title" v-show="item.text ? true : false">{{ item.text }}</p>
-      </div>
-    </div>
+                class="type0"
+        >
+            <div
+                    v-for="(item, index) in imageList"
+                    :key="index"
+                    :style="{ 'margin-bottom': datas.imageMargin + 'px' }"
+                    class="imgLis"
+            >
+                <!-- 图片 -->
+                <img
+                        :src="item.src"
+                        :style="{ 'border-radius': datas.borderRadius + 'px' }"
+                        draggable="false"
+                />
+                <!-- 图片标题 -->
+                <p v-show="item.text ? true : false" class="title">{{ item.text }}</p>
+            </div>
+        </div>
 
-    <!-- 轮播组件 -->
-    <div
-      class="swiper-container"
-      v-if="
+        <!-- 轮播组件 -->
+        <div
+                v-if="
         (imageList[0] && swiperType === 1) ||
         swiperType === 2 ||
         swiperType === 3
       "
-    >
-      <div
-        :class="
+                class="swiper-container pointer-events"
+        >
+            <div
+                    :class="
           swiperType === 3 && imageList[0]
             ? 'type3 type1 swiper-wrapper type3H'
             : 'swiper-wrapper type1'
         "
-      >
-        <div
-          class="swiper-slide"
-          v-for="(item, index) in imageList"
-          :key="index"
-        >
-          <!-- 图片 -->
-          <img
-            :src="item.src"
-            alt=""
-            draggable="false"
-            :style="{ 'border-radius': datas.borderRadius + 'px' }"
-          />
-          <!-- 图片标题 -->
-          <p class="title" v-show="item.text ? true : false">{{ item.text }}</p>
+            >
+                <div
+                        v-for="(item, index) in imageList"
+                        :key="index"
+                        class="swiper-slide"
+                >
+                    <!-- 图片 -->
+                    <img
+                            :src="item.src"
+                            :style="{ 'border-radius': datas.borderRadius + 'px' }"
+                            alt=""
+                            draggable="false"
+                    />
+                    <!-- 图片标题 -->
+                    <p v-show="item.text ? true : false" class="title">{{ item.text }}</p>
+                </div>
+            </div>
+
+            <!-- 分页器 -->
+            <div class="swiper-pagination" style="color: #007aff"></div>
         </div>
-      </div>
 
-      <!-- 分页器 -->
-      <div class="swiper-pagination" style="color: #007aff"></div>
+        <!-- 删除组件 -->
+        <slot name="deles"/>
     </div>
-
-    <!-- 删除组件 -->
-    <slot name="deles" />
-  </div>
 </template>
 
 <script>
-import Swiper from 'swiper'
-import 'swiper/css/swiper.min.css'
+import { Swiper } from 'swiper/vue'
+import 'swiper/css'
 
 export default {
   name: 'pictureads',
   props: {
-    datas: Object,
+    datas: Object
   },
-  data() {
+  data () {
     return {
-      mySwiper: null,
+      mySwiper: null
     }
   },
   computed: {
     /* 类型切换 */
-    swiperType() {
+    swiperType () {
       console.log(this.datas.swiperType, '----------------轮播类型')
       this.addSwiper()
       return this.datas.swiperType
     },
     /* 图片删除或者增加 */
-    imageList() {
+    imageList () {
       this.addSwiper()
       console.log(this.datas.imageList.length, '-------轮播数量')
       return this.datas.imageList
     },
     /* 分页器类型切换 */
-    pagingType() {
+    pagingType () {
       this.addSwiper()
       return this.datas.pagingType
     },
     /* 一行个数 */
-    rowindividual() {
+    rowindividual () {
       this.addSwiper()
       if (this.datas.swiperType === 1) {
         return 1
@@ -115,23 +115,26 @@ export default {
       }
     },
     /* 图片间距 */
-    imageMargin() {
+    imageMargin () {
       this.addSwiper()
       if (this.datas.swiperType === 1) {
         return 0
       } else {
         return this.datas.imageMargin
       }
-    },
+    }
   },
   watch: {
-    pagingType() {},
-    rowindividual() {},
-    imageMargin() {},
+    pagingType () {
+    },
+    rowindividual () {
+    },
+    imageMargin () {
+    }
   },
   methods: {
     /* 创建轮播对象 */
-    addSwiper() {
+    addSwiper () {
       this.$nextTick(() => {
         if (this.datas.swiperType !== 0 && this.datas.imageList[0]) {
           if (this.mySwiper instanceof Array) {
@@ -148,8 +151,8 @@ export default {
             autoplay: true,
             pagination: {
               el: '.swiper-pagination',
-              type: this.pagingType,
-            },
+              type: this.pagingType
+            }
           }
 
           if (this.datas.swiperType === 1 || this.datas.swiperType === 2) {
@@ -173,12 +176,12 @@ export default {
           }
         }
       })
-    },
-  },
+    }
+  }
 }
 </script>
 
-<style scoped lang="less">
+<style lang="scss" scoped>
 .pictureads {
   position: relative;
 
@@ -190,6 +193,7 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
+
     i {
       font-size: 120px;
     }
@@ -203,15 +207,18 @@ export default {
       width: 100%;
       position: relative;
       overflow: hidden;
+
       &:last-child {
         margin: 0 !important;
       }
+
       /* 图片 */
       img {
         width: 100%;
         height: 100%;
         display: block;
       }
+
       .title {
         height: 36px;
         width: 100%;
@@ -230,15 +237,18 @@ export default {
   .type1 {
     width: 100%;
     position: relative;
+
     .swiper-slide {
       width: 100%;
       height: 250px;
     }
+
     img {
       width: 100%;
       height: 100%;
       display: block;
     }
+
     .title {
       height: 36px;
       width: 100%;
@@ -259,6 +269,7 @@ export default {
     width: 100%;
     height: 250px;
     align-items: center;
+
     .swiper-slide {
       height: 210px !important;
       text-align: center;
@@ -283,18 +294,22 @@ export default {
       align-items: center;
       transition: 300ms;
       transform: scale(0.8);
+
       img {
         width: 100%;
         height: 100%;
       }
     }
+
     .swiper-slide-active,
     .swiper-slide-duplicate-active {
       transform: scale(1);
     }
+
     .swiper-pagination {
       bottom: 0 !important;
     }
+
     .title {
       height: 36px;
       width: 100%;
@@ -310,9 +325,11 @@ export default {
       padding: 0 5px;
     }
   }
+
   .type3H {
     height: 250px;
   }
+
   .swiper-container-horizontal > .swiper-pagination-progressbar {
     height: 2px;
   }

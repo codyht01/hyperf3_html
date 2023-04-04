@@ -28,9 +28,9 @@ componentProperties.set('captiontext', {
       type: 1, // 样式选择
       text: '查看更多', //自定义文字
       httpType: 10,//链接类型
-      http: '',//链接
-    },
-  },
+      http: ''//链接
+    }
+  }
 })
 
 componentProperties.set('listswitching', {
@@ -61,18 +61,18 @@ componentProperties.set('listswitching', {
     commoditylisttypetab: [
       {
         text: '分组',
-        imageList: [],
+        imageList: []
       },
       {
         text: '分组',
-        imageList: [],
-      },
+        imageList: []
+      }
     ],
     tabColor: '#f39800',
     showMore: false,
     moreUrl: null,
-    bgImg: '',
-  },
+    bgImg: ''
+  }
 })
 
 componentProperties.set('pictureads', {
@@ -89,8 +89,8 @@ componentProperties.set('pictureads', {
     imageMargin: 0, // 图片边距
     pagingType: 0,  // 分页类型: 0/"bullets"/"fraction"/"progressbar"
     rowindividual: 2,// 一行个数
-    imageList: [],  // 添加图片
-  },
+    imageList: []  // 添加图片
+  }
 })
 
 componentProperties.set('graphicnavigation', {
@@ -110,8 +110,8 @@ componentProperties.set('graphicnavigation', {
     showSize: 5, //一屏显示个数
     textHeight: 24, // 字体高度
     textSize: 12, // 字体大小
-    bgImg: '',
-  },
+    bgImg: ''
+  }
 })
 
 componentProperties.set('richtext', {
@@ -123,8 +123,8 @@ componentProperties.set('richtext', {
   setStyle: {
     text: '富文本',
     myValue: '', //富文本内容
-    backColor: 'rgb(249, 249, 249)', //背景颜色
-  },
+    backColor: 'rgb(249, 249, 249)' //背景颜色
+  }
 })
 componentProperties.set('magiccube', {
   component: 'magiccube',
@@ -141,30 +141,30 @@ componentProperties.set('magiccube', {
       {
         src: '',
         linktype: '10',
-        http: {},
+        http: {}
       },
       {
         src: '',
         linktype: '10',
-        http: {},
+        http: {}
       },
       {
         src: '',
         linktype: '10',
-        http: {},
+        http: {}
       },
       {
         src: '',
         linktype: '10',
-        http: {},
+        http: {}
       },
       {
         src: '',
         linktype: '10',
-        http: {},
-      },
-    ], //图片列表
-  },
+        http: {}
+      }
+    ] //图片列表
+  }
 })
 componentProperties.set('auxiliarysegmentation', {
   component: 'auxiliarysegmentation',
@@ -178,8 +178,8 @@ componentProperties.set('auxiliarysegmentation', {
     segmentationtype: 0, //分割类型
     paddType: 0, //边距
     auxliarColor: 'rgb(229, 229, 229)', //辅助线颜色
-    bordertp: 'solid', //线的类型
-  },
+    bordertp: 'solid' //线的类型
+  }
 })
 componentProperties.set('commoditysearch', {
   component: 'commoditysearch',
@@ -197,8 +197,8 @@ componentProperties.set('commoditysearch', {
     backgroundColor: 'rgb(249, 249, 249)', //背景颜色
     borderColor: 'rgb(255, 255, 255)', //框体颜色
     textColor: 'rgb(150, 151, 153)', //字体颜色
-    hotords: [], //热词
-  },
+    hotords: [] //热词
+  }
 })
 componentProperties.set('storeinformation', {
   component: 'storeinformation',
@@ -212,8 +212,8 @@ componentProperties.set('storeinformation', {
     headPortrait: '', //店铺头像
     rubiksCubeType: 0, //类型
     name: '店铺名称', //店铺名称
-    Discount: '在线支付满150减30，满100减20', //优惠信息
-  },
+    Discount: '在线支付满150减30，满100减20' //优惠信息
+  }
 })
 componentProperties.set('entertheshop', {
   component: 'entertheshop',
@@ -227,8 +227,8 @@ componentProperties.set('entertheshop', {
     shopName: '左侧标题',
     copywriting: '右侧内容',
     type: '10',
-    http: {},
-  },
+    http: {}
+  }
 })
 componentProperties.set('notice', {
   component: 'notice',
@@ -240,8 +240,8 @@ componentProperties.set('notice', {
     text: '公告',
     noticeText: '请填写内容，如果过长，将会在手机上滚动显示', //内容
     backColor: 'rgb(255, 248, 233)', //背景颜色
-    textColor: 'rgba(100, 101, 102)', //文字颜色
-  },
+    textColor: 'rgba(100, 101, 102)' //文字颜色
+  }
 })
 componentProperties.set('videoss', {
   component: 'videoss',
@@ -252,9 +252,9 @@ componentProperties.set('videoss', {
   setStyle: {
     text: '视频',
     src: 'http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4', // 视频地址
-    coverUrl:null, // 封面地址
-    autoplay: false, // 是否自动播放
-  },
+    coverUrl: null, // 封面地址
+    autoplay: false // 是否自动播放
+  }
 })
 
 componentProperties.set('custommodule', {
@@ -265,9 +265,9 @@ componentProperties.set('custommodule', {
   style: 'custommodulestyle',
   setStyle: {
     text: '自定义模块',
-    demo:'自定义内容',
-    img:'https://img2.baidu.com/it/u=1905875968,4289754134&fm=26&fmt=auto&gp=0.jpg'
-  },
+    demo: '自定义内容',
+    img: 'https://img2.baidu.com/it/u=1905875968,4289754134&fm=26&fmt=auto&gp=0.jpg'
+  }
 })
 componentProperties.set('communitypowder', {
   component: 'communitypowder',
@@ -282,8 +282,8 @@ componentProperties.set('communitypowder', {
     title: '标题', //标题
     describe: '辅助描述', //描述
     buttonName: '立即添加', //按钮名称
-    backColor: 'rgb(255, 255, 255)', //背景颜色
-  },
+    backColor: 'rgb(255, 255, 255)' //背景颜色
+  }
 })
 componentProperties.set('storenotecard', {
   component: 'storenotecard',
@@ -306,8 +306,8 @@ componentProperties.set('storenotecard', {
     imageList: [],
     positions: 'bottom', //标题位置
     linktype: '10',
-    http: {},
-  },
+    http: {}
+  }
 })
 componentProperties.set('crowdoperation', {
   component: 'crowdoperation',
@@ -316,8 +316,8 @@ componentProperties.set('crowdoperation', {
   active: true,
   style: 'crowdoperationstyle',
   setStyle: {
-    text: '人群运营',
-  },
+    text: '人群运营'
+  }
 })
 componentProperties.set('personalizedrecommendation', {
   component: 'personalizedrecommendation',
@@ -326,8 +326,8 @@ componentProperties.set('personalizedrecommendation', {
   active: true,
   style: 'personalizedrecommendationstyle',
   setStyle: {
-    text: '个性化推荐',
-  },
+    text: '个性化推荐'
+  }
 })
 componentProperties.set('onlineservice', {
   component: 'onlineservice',
@@ -336,8 +336,8 @@ componentProperties.set('onlineservice', {
   active: true,
   style: 'onlineservicestyle',
   setStyle: {
-    text: '在线客服',
-  },
+    text: '在线客服'
+  }
 })
 componentProperties.set('investigate', {
   component: 'investigate',
@@ -348,8 +348,8 @@ componentProperties.set('investigate', {
   setStyle: {
     text: '表单模块',
     title: '表单模块',
-    jsonData: [], //value1为sass显示内容，value2为前端显示内容
-  },
+    jsonData: [] //value1为sass显示内容，value2为前端显示内容
+  }
 })
 componentProperties.set('tabBar', {
   component: 'tabBar',
@@ -366,8 +366,8 @@ componentProperties.set('tabBar', {
     iconHeight: '25',
     fontSize: '14',
     Highlight: 0,
-    iconList: [],
-  },
+    iconList: []
+  }
 })
 componentProperties.set('follow', {
   component: 'follow',
@@ -379,8 +379,8 @@ componentProperties.set('follow', {
     text: '关注公众号',
     heade: 'https://imgs.starfirelink.com/miniShop//logo_1618466110849.png',
     followName: '公众号名称',
-    followAppId: '',
-  },
+    followAppId: ''
+  }
 })
 componentProperties.set('suspension', {
   component: 'suspension',
@@ -391,8 +391,8 @@ componentProperties.set('suspension', {
   setStyle: {
     text: '悬浮按钮',
     linktype: '10',
-    http: {},
-  },
+    http: {}
+  }
 })
 
 export default componentProperties

@@ -1,41 +1,45 @@
 <template>
-  <div class="richtext" :style="{ background: datas.backColor }">
-    <img
-      draggable="false"
-      src="../../../assets/images/fwb.png"
-      alt=""
-      v-if="!datas.myValue.length"
-    />
-    <section v-else v-html="datas.myValue" />
+    <div :style="{ background: datas.backColor }" class="richtext">
+        <img
+                v-if="!datas.myValue.length"
+                alt=""
+                draggable="false"
+                src="../../../assets/images/fwb.png"
+        />
+        <section v-else v-html="datas.myValue"/>
 
-    <!-- 删除组件 -->
-    <slot name="deles" />
-  </div>
+        <!-- 删除组件 -->
+        <slot name="deles"/>
+    </div>
 </template>
 
 <script>
 export default {
   name: 'richtext',
   props: {
-    datas: Object,
-  },
+    datas: Object
+  }
 }
 </script>
 
-<style scoped lang="less">
+<style lang="scss" scoped>
 .richtext {
   position: relative;
 }
-/deep/img {
+
+:deep(img) {
   max-width: 100% !important;
   display: block;
 }
+
 .richtext {
   position: relative;
-  /deep/pre {
+
+  :deep(pre) {
     white-space: break-spaces;
   }
-  /deep/p {
+
+  :deep(p) {
     word-break: break-all;
   }
 }

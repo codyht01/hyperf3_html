@@ -1,143 +1,144 @@
 <template>
-  <div class="storeinformationstyle">
-    <!-- 标题 -->
-    <h2>{{ datas.text }}</h2>
+    <div class="storeinformationstyle">
+        <!-- 标题 -->
+        <h2>{{ datas.text }}</h2>
 
-    <p style="color: #323233; font-size: 14px">背景图片</p>
-    <div style="height: 10px"></div>
-    <p style="color: #969799; font-size: 12px">
-      建议尺寸：750x370 像素，尺寸不匹配时，图片将被压缩或拉伸以铺满画面
-    </p>
+        <p style="color: #323233; font-size: 14px">背景图片</p>
+        <div style="height: 10px"></div>
+        <p style="color: #969799; font-size: 12px">
+            建议尺寸：750x370 像素，尺寸不匹配时，图片将被压缩或拉伸以铺满画面
+        </p>
 
-    <div style="height: 10px"></div>
-    <!-- 背景图 -->
-    <div class="backgroundImg" @click="uploadI('bakcgroundImg')">
-      <img
-        draggable="false"
-        v-if="!datas.bakcgroundImg"
-        src="../../../assets/images/backimg.png"
-        alt=""
-      />
-      <img draggable="false" v-else :src="datas.bakcgroundImg" alt="" />
-      <p>更换图片</p>
+        <div style="height: 10px"></div>
+        <!-- 背景图 -->
+        <div class="backgroundImg" @click="uploadI('bakcgroundImg')">
+            <img
+                    v-if="!datas.bakcgroundImg"
+                    alt=""
+                    draggable="false"
+                    src="../../../assets/images/backimg.png"
+            />
+            <img v-else :src="datas.bakcgroundImg" alt="" draggable="false"/>
+            <p>更换图片</p>
+        </div>
+
+        <div style="height: 20px"></div>
+        <p style="color: #323233; font-size: 14px">店铺头像</p>
+
+        <div style="height: 10px"></div>
+        <!-- 店铺头像 -->
+        <div class="backgroundImg" @click="uploadI('headPortrait')">
+            <img
+                    v-if="!datas.headPortrait"
+                    alt=""
+                    draggable="false"
+                    src="../../../assets/images/headerimg.png"
+            />
+            <img v-else :src="datas.headPortrait" alt="" draggable="false"/>
+            <p>更换图片</p>
+        </div>
+
+        <div
+                style="margin: 20px 0; height: 1px; background: rgb(235, 237, 240)"
+        ></div>
+
+        <!-- 表单 -->
+        <el-form :model="datas" :rules="rules" label-width="80px" size="small">
+            <!-- 标题内容 -->
+            <el-form-item class="lef" label="选择模板"></el-form-item>
+
+            <!-- 商品样式选择 -->
+            <el-radio-group v-model="datas.rubiksCubeType" class="select-sp">
+                <el-radio
+                        v-for="(item, index) in rubiksCubeTypes"
+                        :key="index"
+                        :label="item.type"
+                        style="margin-top: 10px; margin-right: 10px"
+                >{{ item.content }}
+                </el-radio
+                >
+            </el-radio-group>
+
+            <div style="height: 30px"></div>
+
+            <!-- 店铺名称 -->
+            <el-form-item class="lef" label="店铺名称" prop="name">
+                <el-input
+                        v-model="datas.name"
+                        maxlength="20"
+                        placeholder="请填写店铺名称"
+                ></el-input>
+            </el-form-item>
+
+            <!-- 店铺名称 -->
+            <el-form-item class="lef" label="优惠信息">
+                <el-input
+                        v-model="datas.Discount"
+                        maxlength="45"
+                        placeholder="请填写优惠信息也可不填"
+                ></el-input>
+            </el-form-item>
+        </el-form>
+
+        <!-- 上传图片 -->
+        <uploadimg ref="upload" @uploadInformation="uploadInformation"/>
     </div>
-
-    <div style="height: 20px"></div>
-    <p style="color: #323233; font-size: 14px">店铺头像</p>
-
-    <div style="height: 10px"></div>
-    <!-- 店铺头像 -->
-    <div class="backgroundImg" @click="uploadI('headPortrait')">
-      <img
-        draggable="false"
-        v-if="!datas.headPortrait"
-        src="../../../assets/images/headerimg.png"
-        alt=""
-      />
-      <img draggable="false" v-else :src="datas.headPortrait" alt="" />
-      <p>更换图片</p>
-    </div>
-
-    <div
-      style="margin: 20px 0; height: 1px; background: rgb(235, 237, 240)"
-    ></div>
-
-    <!-- 表单 -->
-    <el-form label-width="80px" :model="datas" size="small" :rules="rules">
-      <!-- 标题内容 -->
-      <el-form-item label="选择模板" class="lef"> </el-form-item>
-
-      <!-- 商品样式选择 -->
-      <el-radio-group v-model="datas.rubiksCubeType" class="select-sp">
-        <el-radio
-          style="margin-top: 10px; margin-right: 10px"
-          :label="item.type"
-          v-for="(item, index) in rubiksCubeTypes"
-          :key="index"
-          >{{ item.content }}</el-radio
-        >
-      </el-radio-group>
-
-      <div style="height: 30px"></div>
-
-      <!-- 店铺名称 -->
-      <el-form-item label="店铺名称" class="lef" prop="name">
-        <el-input
-          v-model="datas.name"
-          placeholder="请填写店铺名称"
-          maxlength="20"
-        ></el-input>
-      </el-form-item>
-
-      <!-- 店铺名称 -->
-      <el-form-item label="优惠信息" class="lef">
-        <el-input
-          v-model="datas.Discount"
-          placeholder="请填写优惠信息也可不填"
-          maxlength="45"
-        ></el-input>
-      </el-form-item>
-    </el-form>
-
-    <!-- 上传图片 -->
-    <uploadimg ref="upload" @uploadInformation="uploadInformation" />
-  </div>
 </template>
 
 <script>
-import uploadimg from '../../uploadImg' //图片上传
+import uploadimg from '../../uploadImg/index.vue' //图片上传
 
 export default {
   name: 'storeinformationstyle',
   props: {
-    datas: Object,
+    datas: Object
   },
-  data() {
+  data () {
     return {
       danqian: '', //当前选中的是背景还是头像
       rules: {
-        name: [{ required: true, message: '请输入店铺名称', trigger: 'blur' }],
+        name: [{required: true, message: '请输入店铺名称', trigger: 'blur'}]
       },
       rubiksCubeTypes: [
         {
           type: 0,
-          content: '样式一',
+          content: '样式一'
         },
         {
           type: 1,
-          content: '样式二',
+          content: '样式二'
         },
         {
           type: 2,
-          content: '样式三',
+          content: '样式三'
         },
         {
           type: 3,
-          content: '样式四',
+          content: '样式四'
         },
         {
           type: 4,
-          content: '样式五',
-        },
-      ],
+          content: '样式五'
+        }
+      ]
     }
   },
   methods: {
     /* 上传图片 */
-    uploadI(res) {
+    uploadI (res) {
       this.danqian = res
       this.$refs.upload.showUpload()
     },
     // 提交
-    uploadInformation(res) {
+    uploadInformation (res) {
       this.datas[this.danqian] = res
-    },
+    }
   },
-  components: { uploadimg },
+  components: {uploadimg}
 }
 </script>
 
-<style scoped lang="less">
+<style lang="scss" scoped>
 .storeinformationstyle {
   width: 100%;
   position: absolute;
@@ -154,6 +155,7 @@ export default {
     font-weight: 600;
     color: #323233;
   }
+
   /* 背景图 */
   .backgroundImg {
     display: inline-flex;
@@ -184,10 +186,11 @@ export default {
   }
 
   .lef {
-    /deep/.el-form-item__label {
+    :deep(.el-form-item__label) {
       text-align: left;
     }
   }
+
   .select-sp {
     display: flex;
     flex-wrap: wrap;

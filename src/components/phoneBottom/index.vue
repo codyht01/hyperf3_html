@@ -1,14 +1,14 @@
 <template>
-  <div class="phoneBottom"></div>
+    <div class="phoneBottom"></div>
 </template>
 
 <script>
 export default {
-  name: 'phoneBottom',
+  name: 'phoneBottom'
 }
 </script>
 
-<style lang="less" scoped>
+<style lang="scss" scoped>
 .phoneBottom {
   width: 100%;
   background-color: #fff;

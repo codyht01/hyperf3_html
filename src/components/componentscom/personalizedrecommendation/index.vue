@@ -1,22 +1,22 @@
 <template>
-  <div class="personalizedrecommendation">
-    {{ datas.text }}
+    <div class="personalizedrecommendation">
+        {{ datas.text }}
 
-    <!-- 删除组件 -->
-    <slot name="deles" />
-  </div>
+        <!-- 删除组件 -->
+        <slot name="deles"/>
+    </div>
 </template>
 
 <script>
 export default {
   name: 'personalizedrecommendation',
   props: {
-    datas: Object,
-  },
+    datas: Object
+  }
 }
 </script>
 
-<style scoped lang="less">
+<style lang="scss" scoped>
 .personalizedrecommendation {
   position: relative;
 }

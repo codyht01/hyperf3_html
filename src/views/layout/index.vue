@@ -13,30 +13,32 @@
             </div>
 
             <!-- 子路由 -->
-            <transition name="layoutFade">
-                <router-view/>
-            </transition>
+            <router-view v-slot="{ Component }">
+                <transition name="layoutFade">
+                    <component :is="Component"/>
+                </transition>
+            </router-view>
         </section>
     </div>
 </template>
 
-<script lang="ts" setup>
-
+<script>
+export default {
+  name: 'layout'
+}
 </script>
 
-<style lang="less" scoped>
+<style lang="scss" scoped>
 .layout {
   width: 100%;
   height: 100%;
   /* 主体 */
-
   .subject {
     width: 100%;
     height: 100%;
     display: flex;
     flex-direction: row;
     /* 侧边栏 */
-
     .side-bar {
       width: 75px;
       border-right: 1px solid #ebedf0;
@@ -46,12 +48,10 @@
       display: flex;
       justify-content: center;
       /* 选择项 */
-
       .slider {
         display: flex;
         flex-direction: column;
         /* 图标 */
-
         .iconfont {
           font-size: 30px;
           color: #155bd4;

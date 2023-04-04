@@ -1,22 +1,8 @@
 <template>
     <div class="sliderassembly">
-        
         <el-collapse v-model="activeNames">
-            <el-collapse-item
-                    v-for="(items, index) in datas"
-                    :key="index"
-                    :name="index + 1"
-                    :title="items.title"
-            >
-                <div
-                        v-for="(item, ind) in items.comList"
-                        :key="ind"
-                        :data-name="item.name"
-                        class="componList"
-                        draggable="true"
-                        @dragend="dragends($event)"
-                        @dragstart="drag($event)"
-                >
+            <el-collapse-item v-for="(items, index) in datas" :key="index" :name="index + 1" :title="items.title">
+                <div v-for="(item, ind) in items.comList" :key="ind" :data-name="item.name" class="componList" draggable="true" @dragend="dragends($event)" @dragstart="drag($event)">
                     <i v-if="item.icon" :class="item.icon" class="iconfont"/>
                     <van-icon v-else :name="item.vanIcon"/>
                     <p>{{ item.text }}</p>
@@ -26,192 +12,171 @@
     </div>
 </template>
 
-<script>
-export default {
-  name: 'sliderassembly',
-  props: {
+<script lang="ts" setup>
+import {reactive} from 'vue'
+import '/@/assets/iconfont/iconfont.css'
+
+const props = defineProps({
     pointer: Object
-  },
-  data () {
-    return {
-      activeNames: [1, 2, 3] /* 侧边栏组件显示 */,
-      datas: [
-        {
-          title: '基础组件',
-          comList: [
+})
+// 侧边栏组件显示
+const activeNames = reactive([1, 2, 3])
+// 组件信息配置 commoditysearch
+const datas = reactive([
+    {
+        title: '基础组件',
+        comList: [
             {
-              text: '商品搜索',
-              type: '1-1',
-              icon: 'icon-shangpinsousuo',
-              name: 'commoditysearch'
+                text: '商品搜索',
+                type: '1-1',
+                icon: 'icon-shangpinsousuo',
+                name: 'commoditysearch'
             },
             {
-              text: '标题文本',
-              type: '1-3',
-              icon: 'icon-Component-biaotiwenzi',
-              name: 'captiontext'
-            },
-
-            {
-              text: '图片广告',
-              type: '1-3',
-              icon: 'icon-tupianguanggao',
-              name: 'pictureads'
-            },
-            {
-              text: '图文导航',
-              type: '1-4',
-              icon: 'icon-icon_tupiandaohang',
-              name: 'graphicnavigation'
-            },
-            {
-              text: '底部导航',
-              type: '1-5',
-              icon: 'icon-daohang',
-              name: 'tabBar'
-            },
-            {
-              text: '魔方',
-              type: '1-6',
-              icon: 'icon-mofang',
-              name: 'magiccube'
-            },
-            {
-              text: '公告',
-              type: '1-7',
-              icon: 'icon-gonggao',
-              name: 'notice'
+                text: '标题文本',
+                type: '1-3',
+                icon: 'icon-Component-biaotiwenzi',
+                name: 'captiontext'
             },
 
             {
-              text: '视频',
-              type: '1-8',
-              icon: 'icon-shipin',
-              name: 'videoss'
+                text: '图片广告',
+                type: '1-3',
+                icon: 'icon-tupianguanggao',
+                name: 'pictureads'
             },
             {
-              text: '富文本',
-              type: '1-10',
-              icon: 'icon-fuwenben',
-              name: 'richtext'
+                text: '图文导航',
+                type: '1-4',
+                icon: 'icon-icon_tupiandaohang',
+                name: 'graphicnavigation'
             },
             {
-              text: '辅助分割',
-              type: '1-11',
-              icon: 'icon-Component-fuzhufenge',
-              name: 'auxiliarysegmentation'
+                text: '底部导航',
+                type: '1-5',
+                icon: 'icon-daohang',
+                name: 'tabBar'
+            },
+            {
+                text: '魔方',
+                type: '1-6',
+                icon: 'icon-mofang',
+                name: 'magiccube'
+            },
+            {
+                text: '公告',
+                type: '1-7',
+                icon: 'icon-gonggao',
+                name: 'notice'
             },
 
             {
-              text: '店铺信息',
-              type: '1-12',
-              icon: 'icon-dianpuxinxi',
-              name: 'storeinformation'
+                text: '视频',
+                type: '1-8',
+                icon: 'icon-shipin',
+                name: 'videoss'
             },
             {
-              text: '单元格',
-              type: '1-13',
-              icon: 'icon-jinrudianpu',
-              name: 'entertheshop'
+                text: '富文本',
+                type: '1-10',
+                icon: 'icon-fuwenben',
+                name: 'richtext'
             },
             {
-              text: '社群涨粉',
-              type: '1-14',
-              icon: 'icon-kuaisuzhangfen',
-              name: 'communitypowder'
+                text: '辅助分割',
+                type: '1-11',
+                icon: 'icon-Component-fuzhufenge',
+                name: 'auxiliarysegmentation'
             },
-            /* {
-             text: 'xxx',
-             type: '1-17',
-             icon: 'icon-yunying',
-             name: ''
-             }, */
-            /* {
-             text: 'xxx',
-             type: '1-19',
-             icon: 'icon-weibiaoti-_huaban',
-             name: ''
-             }, */
-            /* {
-             text: 'xxxx',
-             type: '1-18',
-             icon: 'icon-gexinghuatuijian',
-             name: ''
-             }, */
+
             {
-              text: '关注公众号',
-              type: '1-15',
-              icon: 'icon-gongzhonghao',
-              name: 'follow'
+                text: '店铺信息',
+                type: '1-12',
+                icon: 'icon-dianpuxinxi',
+                name: 'storeinformation'
             },
             {
-              text: '悬浮',
-              type: '1-16',
-              icon: 'icon-wangye',
-              name: 'suspension'
+                text: '单元格',
+                type: '1-13',
+                icon: 'icon-jinrudianpu',
+                name: 'entertheshop'
             },
             {
-              text: '自定义模块',
-              type: 'demo',
-              icon: 'icon-zidingyimokuai',
-              name: 'custommodule'
+                text: '社群涨粉',
+                type: '1-14',
+                icon: 'icon-kuaisuzhangfen',
+                name: 'communitypowder'
+            },
+            {
+                text: '关注公众号',
+                type: '1-15',
+                icon: 'icon-gongzhonghao',
+                name: 'follow'
+            },
+            {
+                text: '悬浮',
+                type: '1-16',
+                icon: 'icon-wangye',
+                name: 'suspension'
+            },
+            {
+                text: '自定义模块',
+                type: 'demo',
+                icon: 'icon-zidingyimokuai',
+                name: 'custommodule'
             }
-          ]
-        },
-        {
-          title: '业务组件',
-          comList: [
-            {
-              text: '商品',
-              type: '2-1',
-              icon: 'icon-goods',
-              name: 'listswitching'
-            },
-            {
-              text: '文章模块',
-              type: '2-2',
-              icon: 'icon-dianpubijikapian',
-              name: 'storenotecard'
-            },
-            {
-              text: '表单模块',
-              type: '2-3',
-              vanIcon: 'orders-o',
-              name: 'investigate'
-            }
-          ]
-        }
-
-      ]
-    }
-  },
-  methods: {
-    /**
-     * 当用户开始拖动元素或选择文本时触发此事件
-     *
-     * @param {Object} event event对象
-     */
-    drag (event) {
-      /* 开启穿透 */
-      this.pointer.show = true
-      /* 传递参数 */
-      event.dataTransfer.setData('componentName', event.target.dataset.name)
+        ]
     },
-
-    /**
-     * 当拖动操作结束时（释放鼠标按钮或按下退出键），会触发此事件
-     *
-     * @param {Object} event event对象
-     */
-    dragends () {
-      /* 关闭穿透 */
-      this.pointer.show = false
+    {
+        title: '业务组件',
+        comList: [
+            {
+                text: '商品',
+                type: '2-1',
+                icon: 'icon-goods',
+                name: 'listswitching'
+            },
+            {
+                text: '文章模块',
+                type: '2-2',
+                icon: 'icon-dianpubijikapian',
+                name: 'storenotecard'
+            },
+            {
+                text: '表单模块',
+                type: '2-3',
+                vanIcon: 'orders-o',
+                name: 'investigate'
+            }
+        ]
     }
-  }
+])
+/**
+ * 当用户开始拖动元素或选择文本时触发此事件
+ *
+ * @param {Object} event event对象
+ */
+const drag = (event: { dataTransfer: { setData: (arg0: string, arg1: any) => void; }; target: { dataset: { name: any; }; }; }) => {
+    /* 开启穿透 */
+    props.pointer.show = true
+    /* 传递参数 */
+    event.dataTransfer.setData('componentName', event.target.dataset.name)
 }
+
+
+/**
+ * 当拖动操作结束时（释放鼠标按钮或按下退出键），会触发此事件
+ *
+ */
+const dragends = ($event: any) => {
+    console.log($event)
+    /* 关闭穿透 */
+    props.pointer.show = false
+}
+
 </script>
 
-<style lang="less" scoped>
+<style lang="scss" scoped>
 /* 组件 */
 .sliderassembly {
   width: 275px;
@@ -231,8 +196,8 @@ export default {
     background-color: #155bd4;
   }
 
-  /deep/ .el-collapse-item__header,
-  /deep/ .el-collapse-item__wrap {
+  :deep(.el-collapse-item__header),
+  :deep(.el-collapse-item__wrap) {
     border-bottom: 0 !important;
   }
 

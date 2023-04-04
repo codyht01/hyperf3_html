@@ -1,69 +1,69 @@
 <template>
-  <div class="noticestyle">
-    <!-- 标题 -->
-    <h2>{{ datas.text }}</h2>
+    <div class="noticestyle">
+        <!-- 标题 -->
+        <h2>{{ datas.text }}</h2>
 
-    <!-- 公告 -->
-    <el-form
-      label-width="90px"
-      :model="datas"
-      :rules="rules"
-      size="small"
-      class="lef"
-    >
-      <el-form-item
-        label="公告"
-        :hide-required-asterisk="true"
-        prop="noticeText"
-      >
-        <el-input v-model="datas.noticeText" placeholder="请输入公告" />
-      </el-form-item>
-
-      <div style="height: 10px" />
-
-      <!-- 背景颜色 -->
-      <el-form-item label="背景颜色" class="lef">
-        <!-- 颜色选择器 -->
-        <el-color-picker
-          v-model="datas.backColor"
-          show-alpha
-          class="picke"
-          :predefine="predefineColors"
+        <!-- 公告 -->
+        <el-form
+                :model="datas"
+                :rules="rules"
+                class="lef"
+                label-width="90px"
+                size="small"
         >
-        </el-color-picker>
-      </el-form-item>
+            <el-form-item
+                    :hide-required-asterisk="true"
+                    label="公告"
+                    prop="noticeText"
+            >
+                <el-input v-model="datas.noticeText" placeholder="请输入公告"/>
+            </el-form-item>
 
-      <div style="height: 10px" />
+            <div style="height: 10px"/>
 
-      <!-- 文字颜色 -->
-      <el-form-item label="文字颜色" class="lef">
-        <!-- 颜色选择器 -->
-        <el-color-picker
-          v-model="datas.textColor"
-          show-alpha
-          class="picke"
-          :predefine="predefineColors"
-        >
-        </el-color-picker>
-      </el-form-item>
-    </el-form>
-  </div>
+            <!-- 背景颜色 -->
+            <el-form-item class="lef" label="背景颜色">
+                <!-- 颜色选择器 -->
+                <el-color-picker
+                        v-model="datas.backColor"
+                        :predefine="predefineColors"
+                        class="picke"
+                        show-alpha
+                >
+                </el-color-picker>
+            </el-form-item>
+
+            <div style="height: 10px"/>
+
+            <!-- 文字颜色 -->
+            <el-form-item class="lef" label="文字颜色">
+                <!-- 颜色选择器 -->
+                <el-color-picker
+                        v-model="datas.textColor"
+                        :predefine="predefineColors"
+                        class="picke"
+                        show-alpha
+                >
+                </el-color-picker>
+            </el-form-item>
+        </el-form>
+    </div>
 </template>
 
 <script>
 export default {
   name: 'noticestyle',
   props: {
-    datas: Object,
+    datas: Object
   },
-  data() {
+  data () {
     return {
       rules: {
         //校验表单输入
         noticeText: [
           //页面名称
-          { required: true, message: '请输入公告', trigger: 'blur' },
-        ],
+          {required: true, message: '请输入公告', trigger: 'blur'}
+        ]
       },
       predefineColors: [
         // 颜色选择器预设
@@ -83,14 +83,14 @@ export default {
         'hsva(120, 40, 94, 0.5)',
         'hsl(181, 100%, 37%)',
         'hsla(209, 100%, 56%, 0.73)',
-        '#c7158577',
-      ],
+        '#c7158577'
+      ]
     }
-  },
+  }
 }
 </script>
 
-<style scoped lang="less">
+<style lang="scss" scoped>
 .noticestyle {
   width: 100%;
   position: absolute;
@@ -109,7 +109,7 @@ export default {
   }
 
   .lef {
-    /deep/.el-form-item__label {
+    :deep(.el-form-item__label) {
       text-align: left;
     }
   }

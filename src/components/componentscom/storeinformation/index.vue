@@ -1,226 +1,226 @@
 <template>
-  <div class="storeinformation">
-    <!-- 样式一 -->
-    <section
-      class="type0"
-      v-show="datas.rubiksCubeType === 0 || datas.rubiksCubeType === 2"
-    >
-      <div
-        v-if="datas.rubiksCubeType === 0"
-        class="menban"
-        style="background-color: rgba(0, 0, 0, 0.3)"
-      />
-      <div
-        v-else
-        class="menban"
-        style="background-image: linear-gradient(to top, #000, transparent)"
-      />
+    <div class="storeinformation">
+        <!-- 样式一 -->
+        <section
+                v-show="datas.rubiksCubeType === 0 || datas.rubiksCubeType === 2"
+                class="type0"
+        >
+            <div
+                    v-if="datas.rubiksCubeType === 0"
+                    class="menban"
+                    style="background-color: rgba(0, 0, 0, 0.3)"
+            />
+            <div
+                    v-else
+                    class="menban"
+                    style="background-image: linear-gradient(to top, #000, transparent)"
+            />
 
-      <!-- 蒙版 -->
-      <div class="men">
-        <img
-          draggable="false"
-          v-if="datas.bakcgroundImg"
-          :src="datas.bakcgroundImg"
-          alt=""
-        />
-        <img
-          draggable="false"
-          v-else
-          src="../../../assets/images/backimg.png"
-          alt=""
-        />
-      </div>
+            <!-- 蒙版 -->
+            <div class="men">
+                <img
+                        v-if="datas.bakcgroundImg"
+                        :src="datas.bakcgroundImg"
+                        alt=""
+                        draggable="false"
+                />
+                <img
+                        v-else
+                        alt=""
+                        draggable="false"
+                        src="../../../assets/images/backimg.png"
+                />
+            </div>
 
-      <!-- 店铺信息 -->
-      <div class="storIinformation">
-        <div>
-          <img
-            draggable="false"
-            v-if="datas.headPortrait"
-            :src="datas.headPortrait"
-            alt=""
-          />
-          <img
-            draggable="false"
-            v-else
-            src="../../../assets/images/headerimg.png"
-            alt=""
-          />
-        </div>
-        <div>
-          <p style="margin-top: 5px; font-weight: 700; font-size: 18px">
-            {{ datas.name }}
-          </p>
-          <p style="font-size: 12px; margin-top: 10px">{{ datas.Discount }}</p>
-        </div>
-      </div>
-    </section>
+            <!-- 店铺信息 -->
+            <div class="storIinformation">
+                <div>
+                    <img
+                            v-if="datas.headPortrait"
+                            :src="datas.headPortrait"
+                            alt=""
+                            draggable="false"
+                    />
+                    <img
+                            v-else
+                            alt=""
+                            draggable="false"
+                            src="../../../assets/images/headerimg.png"
+                    />
+                </div>
+                <div>
+                    <p style="margin-top: 5px; font-weight: 700; font-size: 18px">
+                        {{ datas.name }}
+                    </p>
+                    <p style="font-size: 12px; margin-top: 10px">{{ datas.Discount }}</p>
+                </div>
+            </div>
+        </section>
 
-    <!-- 样式二 -->
-    <section class="type1" v-show="datas.rubiksCubeType === 1">
-      <div
-        class="menban"
-        style="background-image: linear-gradient(to top, #000, transparent)"
-      />
-      <!-- 蒙版 -->
-      <div class="men">
-        <img
-          draggable="false"
-          v-if="datas.bakcgroundImg"
-          :src="datas.bakcgroundImg"
-          alt=""
-        />
-        <img
-          draggable="false"
-          v-else
-          src="../../../assets/images/backimg.png"
-          alt=""
-        />
-      </div>
+        <!-- 样式二 -->
+        <section v-show="datas.rubiksCubeType === 1" class="type1">
+            <div
+                    class="menban"
+                    style="background-image: linear-gradient(to top, #000, transparent)"
+            />
+            <!-- 蒙版 -->
+            <div class="men">
+                <img
+                        v-if="datas.bakcgroundImg"
+                        :src="datas.bakcgroundImg"
+                        alt=""
+                        draggable="false"
+                />
+                <img
+                        v-else
+                        alt=""
+                        draggable="false"
+                        src="../../../assets/images/backimg.png"
+                />
+            </div>
 
-      <!-- 店铺信息 -->
-      <div class="storIinformation">
-        <div>
-          <img
-            draggable="false"
-            v-if="datas.headPortrait"
-            :src="datas.headPortrait"
-            alt=""
-          />
-          <img
-            draggable="false"
-            v-else
-            src="../../../assets/images/headerimg.png"
-            alt=""
-          />
-        </div>
-        <div>
-          <p style="margin-top: 5px; font-weight: 700; font-size: 18px">
-            {{ datas.name }}
-          </p>
-          <p style="font-size: 12px; margin-top: 10px">{{ datas.Discount }}</p>
-        </div>
-      </div>
-    </section>
+            <!-- 店铺信息 -->
+            <div class="storIinformation">
+                <div>
+                    <img
+                            v-if="datas.headPortrait"
+                            :src="datas.headPortrait"
+                            alt=""
+                            draggable="false"
+                    />
+                    <img
+                            v-else
+                            alt=""
+                            draggable="false"
+                            src="../../../assets/images/headerimg.png"
+                    />
+                </div>
+                <div>
+                    <p style="margin-top: 5px; font-weight: 700; font-size: 18px">
+                        {{ datas.name }}
+                    </p>
+                    <p style="font-size: 12px; margin-top: 10px">{{ datas.Discount }}</p>
+                </div>
+            </div>
+        </section>
 
-    <!-- 样式四 -->
-    <section class="type3" v-show="datas.rubiksCubeType === 3">
-      <div
-        class="menban"
-        style="background-image: linear-gradient(to top, #000, transparent)"
-      />
-      <!-- 蒙版 -->
-      <div class="men">
-        <img
-          draggable="false"
-          v-if="datas.bakcgroundImg"
-          :src="datas.bakcgroundImg"
-          alt=""
-        />
-        <img
-          draggable="false"
-          v-else
-          src="../../../assets/images/backimg.png"
-          alt=""
-        />
-      </div>
+        <!-- 样式四 -->
+        <section v-show="datas.rubiksCubeType === 3" class="type3">
+            <div
+                    class="menban"
+                    style="background-image: linear-gradient(to top, #000, transparent)"
+            />
+            <!-- 蒙版 -->
+            <div class="men">
+                <img
+                        v-if="datas.bakcgroundImg"
+                        :src="datas.bakcgroundImg"
+                        alt=""
+                        draggable="false"
+                />
+                <img
+                        v-else
+                        alt=""
+                        draggable="false"
+                        src="../../../assets/images/backimg.png"
+                />
+            </div>
 
-      <!-- 店铺信息 -->
-      <div class="storIinformation">
-        <div>
-          <img
-            draggable="false"
-            v-if="datas.headPortrait"
-            :src="datas.headPortrait"
-            alt=""
-          />
-          <img
-            draggable="false"
-            v-else
-            src="../../../assets/images/headerimg.png"
-            alt=""
-          />
-        </div>
-        <div>
-          <p style="margin-top: 5px; font-weight: 700; font-size: 18px">
-            {{ datas.name }}
-          </p>
-          <p style="font-size: 12px; margin-top: 10px">{{ datas.Discount }}</p>
-        </div>
-      </div>
-    </section>
+            <!-- 店铺信息 -->
+            <div class="storIinformation">
+                <div>
+                    <img
+                            v-if="datas.headPortrait"
+                            :src="datas.headPortrait"
+                            alt=""
+                            draggable="false"
+                    />
+                    <img
+                            v-else
+                            alt=""
+                            draggable="false"
+                            src="../../../assets/images/headerimg.png"
+                    />
+                </div>
+                <div>
+                    <p style="margin-top: 5px; font-weight: 700; font-size: 18px">
+                        {{ datas.name }}
+                    </p>
+                    <p style="font-size: 12px; margin-top: 10px">{{ datas.Discount }}</p>
+                </div>
+            </div>
+        </section>
 
-    <!-- 样式五 -->
-    <section class="type4" v-show="datas.rubiksCubeType === 4">
-      <div
-        class="menban"
-        style="background-image: linear-gradient(to top, #000, transparent)"
-      />
-      <!-- 蒙版 -->
-      <div class="men">
-        <img
-          draggable="false"
-          v-if="datas.bakcgroundImg"
-          :src="datas.bakcgroundImg"
-          alt=""
-        />
-        <img
-          draggable="false"
-          v-else
-          src="../../../assets/images/backimg.png"
-          alt=""
-        />
-      </div>
+        <!-- 样式五 -->
+        <section v-show="datas.rubiksCubeType === 4" class="type4">
+            <div
+                    class="menban"
+                    style="background-image: linear-gradient(to top, #000, transparent)"
+            />
+            <!-- 蒙版 -->
+            <div class="men">
+                <img
+                        v-if="datas.bakcgroundImg"
+                        :src="datas.bakcgroundImg"
+                        alt=""
+                        draggable="false"
+                />
+                <img
+                        v-else
+                        alt=""
+                        draggable="false"
+                        src="../../../assets/images/backimg.png"
+                />
+            </div>
 
-      <!-- 店铺信息 -->
-      <div class="storIinformation">
-        <div>
-          <img
-            draggable="false"
-            v-if="datas.headPortrait"
-            :src="datas.headPortrait"
-            alt=""
-          />
-          <img
-            draggable="false"
-            v-else
-            src="../../../assets/images/headerimg.png"
-            alt=""
-          />
-        </div>
-        <div>
-          <p
-            style="
+            <!-- 店铺信息 -->
+            <div class="storIinformation">
+                <div>
+                    <img
+                            v-if="datas.headPortrait"
+                            :src="datas.headPortrait"
+                            alt=""
+                            draggable="false"
+                    />
+                    <img
+                            v-else
+                            alt=""
+                            draggable="false"
+                            src="../../../assets/images/headerimg.png"
+                    />
+                </div>
+                <div>
+                    <p
+                            style="
               margin-top: 5px;
               font-weight: 700;
               font-size: 18px;
               line-height: 40px;
               border-bottom: 1px solid #fff;
             "
-          >
-            {{ datas.name }}
-          </p>
-          <p style="font-size: 12px; margin-top: 10px">{{ datas.Discount }}</p>
-        </div>
-      </div>
-    </section>
+                    >
+                        {{ datas.name }}
+                    </p>
+                    <p style="font-size: 12px; margin-top: 10px">{{ datas.Discount }}</p>
+                </div>
+            </div>
+        </section>
 
-    <!-- 删除组件 -->
-    <slot name="deles" />
-  </div>
+        <!-- 删除组件 -->
+        <slot name="deles"/>
+    </div>
 </template>
 
 <script>
 export default {
   name: 'storeinformation',
   props: {
-    datas: Object,
-  },
+    datas: Object
+  }
 }
 </script>
 
-<style scoped lang="less">
+<style lang="scss" scoped>
 .storeinformation {
   position: relative;
 
@@ -237,6 +237,7 @@ export default {
       position: absolute;
       left: 0;
       top: 0;
+
       img {
         display: block;
         width: 100%;
@@ -273,7 +274,7 @@ export default {
 
   .menban {
     position: absolute;
-    left: 0p;
+    left: 0 p;
     top: 0px;
     width: 100%;
     z-index: 2;
@@ -293,6 +294,7 @@ export default {
       position: absolute;
       left: 0;
       top: 0;
+
       img {
         display: block;
         width: 100%;
@@ -340,6 +342,7 @@ export default {
       position: absolute;
       left: 0;
       top: 0;
+
       img {
         display: block;
         width: 100%;
@@ -389,6 +392,7 @@ export default {
       position: absolute;
       left: 0;
       top: 0;
+
       img {
         display: block;
         width: 100%;

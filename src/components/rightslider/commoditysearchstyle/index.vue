@@ -1,184 +1,186 @@
 <template>
-  <div class="commoditysearchstyle">
-    <!-- 标题 -->
-    <h2>{{ datas.text }}</h2>
+    <div class="commoditysearchstyle">
+        <!-- 标题 -->
+        <h2>{{ datas.text }}</h2>
 
-    <p style="color: #323233; font-size: 14px">搜索热词</p>
-    <p style="font-size: 12px; color: #969799; margin-top: 10px">
-      鼠标拖拽调整热词顺序，搜索框默认展示第一个热词，其他搜索词将以标签形式显示在搜索页中
-    </p>
+        <p style="color: #323233; font-size: 14px">搜索热词</p>
+        <p style="font-size: 12px; color: #969799; margin-top: 10px">
+            鼠标拖拽调整热词顺序，搜索框默认展示第一个热词，其他搜索词将以标签形式显示在搜索页中
+        </p>
 
-    <!-- 表单 -->
-    <el-form label-width="80px" :model="datas" size="small">
-      <div v-if="datas.hotords[0]">
-        <vuedraggable v-model="datas.hotords" v-bind="dragOptions">
-          <transition-group>
-            <section
-              class="imgList"
-              v-for="(item, index) in datas.hotords"
-              :key="item + index"
+        <!-- 表单 -->
+        <el-form :model="datas" label-width="80px" size="small">
+            <div v-if="datas.hotords[0]">
+                <vuedraggable
+                        :animation="200"
+                        :forceFallback="true"
+                        :list="datas.hotords"
+                        item-key="index"
+                >
+                    <template #item="{ element }">
+                        <section class="imgList">
+                            <van-icon class="el-icon-circle-close" name="close" @click="deleteHotords(index)"/>
+                            <!-- 标题和链接 -->
+                            <div class="imgText">
+                                <el-input v-model="element.text" placeholder="请输入热词"/>
+                            </div>
+                        </section>
+                    </template>
+                </vuedraggable>
+            </div>
+
+            <!-- 添加热词 -->
+            <el-button class="uploadImg" plain type="primary" @click="addHotords"
+            >点击添加热词
+            </el-button
             >
-              <i class="el-icon-circle-close" @click="deleteHotords(index)" />
-              <!-- 标题和链接 -->
-              <div class="imgText">
-                <el-input v-model="item.text" placeholder="请输入热词" />
-              </div>
-            </section>
-          </transition-group>
-        </vuedraggable>
-      </div>
 
-      <!-- 添加热词 -->
-      <el-button @click="addHotords" class="uploadImg" type="primary" plain
-        ><i class="el-icon-plus" />点击添加热词</el-button
-      >
+            <div style="height: 20px"/>
 
-      <div style="height: 20px" />
-
-      <!-- 显示位置 -->
-      <el-form-item class="lef" label="显示位置">
-        <div class="weiz">
+            <!-- 显示位置 -->
+            <el-form-item class="lef" label="显示位置">
+                <div class="weiz">
           <span>{{
-            datas.position === 0 ? '正常模式' : '滚动至顶部固定'
-          }}</span>
-          <div>
-            <el-tooltip
-              effect="dark"
-              :content="index - 1 === 0 ? '正常模式' : '滚动至顶部固定'"
-              placement="bottom"
-              v-for="index in 2"
-              :key="index"
-            >
-              <i
-                class="iconfont"
-                :class="[
+              datas.position === 0 ? '正常模式' : '滚动至顶部固定'
+              }}</span>
+                    <div>
+                        <el-tooltip
+                                v-for="index in 2"
+                                :key="index"
+                                :content="index - 1 === 0 ? '正常模式' : '滚动至顶部固定'"
+                                effect="dark"
+                                placement="bottom"
+                        >
+                            <i
+                                    :class="[
                   index - 1 === 0 ? 'icon-wangye1' : 'icon-zhiding',
                   datas.position === index - 1 ? 'active' : '',
                 ]"
-                @click="datas.position = index - 1"
-              />
-            </el-tooltip>
-          </div>
-        </div>
-      </el-form-item>
+                                    class="iconfont"
+                                    @click="datas.position = index - 1"
+                            />
+                        </el-tooltip>
+                    </div>
+                </div>
+            </el-form-item>
 
-      <div style="height: 10px" />
+            <div style="height: 10px"/>
 
-      <!-- 框体样式 -->
-      <el-form-item class="lef" label="框体样式">
-        <div class="weiz">
-          <span>{{ datas.borderRadius === 0 ? '方形' : '圆形' }}</span>
-          <div>
-            <el-tooltip
-              effect="dark"
-              :content="index - 1 === 0 ? '方形' : '圆形'"
-              placement="bottom"
-              v-for="index in 2"
-              :key="index"
-            >
-              <i
-                class="iconfont"
-                :class="[
+            <!-- 框体样式 -->
+            <el-form-item class="lef" label="框体样式">
+                <div class="weiz">
+                    <span>{{ datas.borderRadius === 0 ? '方形' : '圆形' }}</span>
+                    <div>
+                        <el-tooltip
+                                v-for="index in 2"
+                                :key="index"
+                                :content="index - 1 === 0 ? '方形' : '圆形'"
+                                effect="dark"
+                                placement="bottom"
+                        >
+                            <i
+                                    :class="[
                   index - 1 === 0 ? 'icon-sousuokuang1' : 'icon-sousuokuang',
                   datas.borderRadius === index - 1 ? 'active' : '',
                 ]"
-                @click="datas.borderRadius = index - 1"
-              />
-            </el-tooltip>
-          </div>
-        </div>
-      </el-form-item>
+                                    class="iconfont"
+                                    @click="datas.borderRadius = index - 1"
+                            />
+                        </el-tooltip>
+                    </div>
+                </div>
+            </el-form-item>
 
-      <div style="height: 10px" />
+            <div style="height: 10px"/>
 
-      <!-- 文本位置 -->
-      <el-form-item class="lef" label="文本位置">
-        <div class="weiz">
-          <span>{{ datas.textPosition === 0 ? '居左' : '居中' }}</span>
-          <div>
-            <el-tooltip
-              effect="dark"
-              :content="index - 1 === 0 ? '居左' : '居中'"
-              placement="bottom"
-              v-for="index in 2"
-              :key="index"
-            >
-              <i
-                class="iconfont"
-                :class="[
+            <!-- 文本位置 -->
+            <el-form-item class="lef" label="文本位置">
+                <div class="weiz">
+                    <span>{{ datas.textPosition === 0 ? '居左' : '居中' }}</span>
+                    <div>
+                        <el-tooltip
+                                v-for="index in 2"
+                                :key="index"
+                                :content="index - 1 === 0 ? '居左' : '居中'"
+                                effect="dark"
+                                placement="bottom"
+                        >
+                            <i
+                                    :class="[
                   index - 1 === 0 ? 'icon-horizontal-left' : 'icon-juzhong',
                   datas.textPosition === index - 1 ? 'active' : '',
                 ]"
-                @click="datas.textPosition = index - 1"
-              />
-            </el-tooltip>
-          </div>
-        </div>
-      </el-form-item>
+                                    class="iconfont"
+                                    @click="datas.textPosition = index - 1"
+                            />
+                        </el-tooltip>
+                    </div>
+                </div>
+            </el-form-item>
 
-      <!-- 扫一扫 -->
-      <el-form-item class="lef" label="扫一扫">
-        {{ datas.sweep ? '显示' : '隐藏' }}
-        <el-checkbox style="margin-left: 196px" v-model="datas.sweep" />
-      </el-form-item>
+            <!-- 扫一扫 -->
+            <el-form-item class="lef" label="扫一扫">
+                {{ datas.sweep ? '显示' : '隐藏' }}
+                <el-checkbox v-model="datas.sweep" style="margin-left: 196px"/>
+            </el-form-item>
 
-      <div style="height: 10px" />
+            <div style="height: 10px"/>
 
-      <!-- 框体高度 -->
-      <el-form-item label="框体高度" class="lef borrediu">
-        <el-slider
-          v-model="datas.heights"
-          :max="50"
-          :min="28"
-          input-size="mini"
-          show-input
-        >
-        </el-slider>
-      </el-form-item>
+            <!-- 框体高度 -->
+            <el-form-item class="lef borrediu" label="框体高度">
+                <el-slider
+                        v-model="datas.heights"
+                        :max="50"
+                        :min="28"
+                        input-size="small"
+                        show-input
+                >
+                </el-slider>
+            </el-form-item>
 
-      <div style="height: 10px" />
+            <div style="height: 10px"/>
 
-      <!-- 背景颜色 -->
-      <el-form-item class="lef" label="背景颜色">
-        <!-- 颜色选择器 -->
-        <el-color-picker
-          v-model="datas.backgroundColor"
-          show-alpha
-          class="picke"
-          :predefine="predefineColors"
-        >
-        </el-color-picker>
-      </el-form-item>
+            <!-- 背景颜色 -->
+            <el-form-item class="lef" label="背景颜色">
+                <!-- 颜色选择器 -->
+                <el-color-picker
+                        v-model="datas.backgroundColor"
+                        :predefine="predefineColors"
+                        class="picke"
+                        show-alpha
+                >
+                </el-color-picker>
+            </el-form-item>
 
-      <div style="height: 10px" />
+            <div style="height: 10px"/>
 
-      <!-- 框体颜色 -->
-      <el-form-item class="lef" label="框体颜色">
-        <!-- 颜色选择器 -->
-        <el-color-picker
-          v-model="datas.borderColor"
-          show-alpha
-          class="picke"
-          :predefine="predefineColors"
-        >
-        </el-color-picker>
-      </el-form-item>
+            <!-- 框体颜色 -->
+            <el-form-item class="lef" label="框体颜色">
+                <!-- 颜色选择器 -->
+                <el-color-picker
+                        v-model="datas.borderColor"
+                        :predefine="predefineColors"
+                        class="picke"
+                        show-alpha
+                >
+                </el-color-picker>
+            </el-form-item>
 
-      <div style="height: 10px" />
+            <div style="height: 10px"/>
 
-      <!-- 文本颜色 -->
-      <el-form-item class="lef" label="文本颜色">
-        <!-- 颜色选择器 -->
-        <el-color-picker
-          v-model="datas.textColor"
-          show-alpha
-          class="picke"
-          :predefine="predefineColors"
-        >
-        </el-color-picker>
-      </el-form-item>
-    </el-form>
-  </div>
+            <!-- 文本颜色 -->
+            <el-form-item class="lef" label="文本颜色">
+                <!-- 颜色选择器 -->
+                <el-color-picker
+                        v-model="datas.textColor"
+                        :predefine="predefineColors"
+                        class="picke"
+                        show-alpha
+                >
+                </el-color-picker>
+            </el-form-item>
+        </el-form>
+    </div>
 </template>
 
 <script>
@@ -187,10 +189,10 @@ import vuedraggable from 'vuedraggable' //拖拽组件
 export default {
   name: 'commoditysearchstyle',
   props: {
-    datas: Object,
+    datas: Object
   },
-  components: { vuedraggable },
-  data() {
+  components: {vuedraggable},
+  data () {
     return {
       predefineColors: [
         // 颜色选择器预设
@@ -210,30 +212,26 @@ export default {
         'hsva(120, 40, 94, 0.5)',
         'hsl(181, 100%, 37%)',
         'hsla(209, 100%, 56%, 0.73)',
-        '#c7158577',
-      ],
-      dragOptions: {
-        //拖拽配置
-        animation: 200,
-      },
+        '#c7158577'
+      ]
     }
   },
   methods: {
     /* 添加热词 */
-    addHotords() {
+    addHotords () {
       this.datas.hotords.push({
-        text: '',
+        text: ''
       })
     },
     /* 删除热词 */
-    deleteHotords(index) {
+    deleteHotords (index) {
       this.datas.hotords.splice(index, 1)
-    },
-  },
+    }
+  }
 }
 </script>
 
-<style scoped lang="less">
+<style lang="scss" scoped>
 .commoditysearchstyle {
   width: 100%;
   position: absolute;
@@ -291,6 +289,7 @@ export default {
   .weiz {
     display: flex;
     justify-content: space-between;
+
     i {
       padding: 5px 14px;
       margin-left: 10px;
@@ -313,7 +312,7 @@ export default {
   }
 
   .lef {
-    /deep/.el-form-item__label {
+    :deep(.el-form-item__label) {
       text-align: left;
     }
   }

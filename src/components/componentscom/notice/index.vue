@@ -1,28 +1,28 @@
 <template>
-  <div class="notice">
-    <!-- 公告 -->
-    <van-notice-bar
-      :text="datas.noticeText"
-      left-icon="volume-o"
-      :background="datas.backColor"
-      :color="datas.textColor"
-    />
+    <div class="notice">
+        <!-- 公告 -->
+        <van-notice-bar
+                :background="datas.backColor"
+                :color="datas.textColor"
+                :text="datas.noticeText"
+                left-icon="volume-o"
+        />
 
-    <!-- 删除组件 -->
-    <slot name="deles" />
-  </div>
+        <!-- 删除组件 -->
+        <slot name="deles"/>
+    </div>
 </template>
 
 <script>
 export default {
   name: 'notice',
   props: {
-    datas: Object,
-  },
+    datas: Object
+  }
 }
 </script>
 
-<style scoped lang="less">
+<style lang="scss" scoped>
 .notice {
   position: relative;
 }

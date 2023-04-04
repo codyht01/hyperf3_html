@@ -1,22 +1,22 @@
 <template>
-  <div class="crowdoperation">
-    {{ datas.text }}
+    <div class="crowdoperation">
+        {{ datas.text }}
 
-    <!-- 删除组件 -->
-    <slot name="deles" />
-  </div>
+        <!-- 删除组件 -->
+        <slot name="deles"/>
+    </div>
 </template>
 
 <script>
 export default {
   name: 'crowdoperation',
   props: {
-    datas: Object,
-  },
+    datas: Object
+  }
 }
 </script>
 
-<style scoped lang="less">
+<style lang="scss" scoped>
 .crowdoperation {
   position: relative;
 }

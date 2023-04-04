@@ -1,43 +1,44 @@
 <template>
-  <div class="communitypowder">
-    <!-- 社区粉丝 -->
-    <section class="powder" :style="{ background: datas.backColor }">
-      <!-- 内容 -->
-      <div class="container">
-        <div class="lef">
-          <img
-            draggable="false"
-            src="../../../assets/images/powder.png"
-            alt=""
-            v-if="!datas.mainImg"
-          />
-          <img draggable="false" :src="datas.mainImg" alt="" v-else />
-          <div class="text">
-            <p class="first">{{ datas.title }}</p>
-            <p class="last">{{ datas.describe }}</p>
-          </div>
-        </div>
-        <van-button class="rig" type="danger" size="small" color="#f44">{{
-          datas.buttonName
-        }}</van-button>
-      </div>
-    </section>
+    <div class="communitypowder">
+        <!-- 社区粉丝 -->
+        <section :style="{ background: datas.backColor }" class="powder">
+            <!-- 内容 -->
+            <div class="container">
+                <div class="lef">
+                    <img
+                            v-if="!datas.mainImg"
+                            alt=""
+                            draggable="false"
+                            src="../../../assets/images/powder.png"
+                    />
+                    <img v-else :src="datas.mainImg" alt="" draggable="false"/>
+                    <div class="text">
+                        <p class="first">{{ datas.title }}</p>
+                        <p class="last">{{ datas.describe }}</p>
+                    </div>
+                </div>
+                <van-button class="rig" color="#f44" size="small" type="danger">{{
+                    datas.buttonName
+                    }}
+                </van-button>
+            </div>
+        </section>
 
-    <!-- 删除组件 -->
-    <slot name="deles" />
-  </div>
+        <!-- 删除组件 -->
+        <slot name="deles"/>
+    </div>
 </template>
 
 <script>
 export default {
   name: 'communitypowder',
   props: {
-    datas: Object,
-  },
+    datas: Object
+  }
 }
 </script>
 
-<style scoped lang="less">
+<style lang="scss" scoped>
 .communitypowder {
   position: relative;
   /* 社区涨粉 */
@@ -46,6 +47,7 @@ export default {
     height: 90px;
     display: flex;
     align-items: center;
+
     .container {
       height: 60px;
       width: 100%;
@@ -57,11 +59,13 @@ export default {
       /* 左半部分 */
       .lef {
         display: flex;
+
         img {
           width: 60px;
           height: 60px;
           border-radius: 50%;
         }
+
         .text {
           display: flex;
           flex-direction: column;
@@ -69,6 +73,7 @@ export default {
           margin-left: 10px;
           width: 146px;
           padding: 8px 0;
+
           .first {
             width: 100%;
             color: #333;
@@ -79,6 +84,7 @@ export default {
             white-space: nowrap;
             text-overflow: ellipsis;
           }
+
           .last {
             width: 100%;
             color: #a9a9a9;

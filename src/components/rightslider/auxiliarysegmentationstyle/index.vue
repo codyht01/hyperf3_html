@@ -1,130 +1,130 @@
 <template>
-  <div class="auxiliarysegmentationstyle">
-    <!-- 标题 -->
-    <h2>{{ datas.text }}</h2>
+    <div class="auxiliarysegmentationstyle">
+        <!-- 标题 -->
+        <h2>{{ datas.text }}</h2>
 
-    <!-- 表单 -->
-    <el-form label-width="80px" :model="datas" size="small">
-      <!-- 空白高度 -->
-      <el-form-item label="空白高度" class="lef">
-        <el-slider
-          v-model="datas.blankHeight"
-          :max="100"
-          input-size="mini"
-          show-input
-        >
-        </el-slider>
-      </el-form-item>
+        <!-- 表单 -->
+        <el-form :model="datas" label-width="80px" size="small">
+            <!-- 空白高度 -->
+            <el-form-item class="lef" label="空白高度">
+                <el-slider
+                        v-model="datas.blankHeight"
+                        :max="100"
+                        input-size="small"
+                        show-input
+                >
+                </el-slider>
+            </el-form-item>
 
-      <div style="height: 20px" />
+            <div style="height: 20px"/>
 
-      <!-- 分割类型 -->
-      <el-form-item class="lef" label="分割类型">
-        <div class="weiz">
-          <el-tooltip
-            effect="dark"
-            :content="index - 1 === 0 ? '辅助空白' : '辅助线'"
-            placement="bottom"
-            v-for="index in 2"
-            :key="index"
-          >
-            <i
-              class="iconfont"
-              :class="[
+            <!-- 分割类型 -->
+            <el-form-item class="lef" label="分割类型">
+                <div class="weiz">
+                    <el-tooltip
+                            v-for="index in 2"
+                            :key="index"
+                            :content="index - 1 === 0 ? '辅助空白' : '辅助线'"
+                            effect="dark"
+                            placement="bottom"
+                    >
+                        <i
+                                :class="[
                 index - 1 === 0
                   ? 'icon-fuzhukongbai_weixuanzhong'
                   : 'icon-fuzhuxiantiao',
                 datas.segmentationtype === index - 1 ? 'active' : '',
               ]"
-              @click="datas.segmentationtype = index - 1"
-            />
-          </el-tooltip>
-        </div>
-      </el-form-item>
+                                class="iconfont"
+                                @click="datas.segmentationtype = index - 1"
+                        />
+                    </el-tooltip>
+                </div>
+            </el-form-item>
 
-      <div style="height: 20px" />
+            <div style="height: 20px"/>
 
-      <!-- 选择样式 -->
-      <el-form-item
-        v-show="datas.segmentationtype === 1"
-        class="lef"
-        label="选择样式"
-      >
-        <div class="weiz">
-          <el-tooltip
-            effect="dark"
-            :content="item.text"
-            placement="bottom"
-            v-for="(item, index) in borderType"
-            :key="index"
-          >
-            <i
-              class="iconfont"
-              :class="[item.icon, datas.bordertp === item.type ? 'active' : '']"
-              @click="datas.bordertp = item.type"
-            />
-          </el-tooltip>
-        </div>
-      </el-form-item>
+            <!-- 选择样式 -->
+            <el-form-item
+                    v-show="datas.segmentationtype === 1"
+                    class="lef"
+                    label="选择样式"
+            >
+                <div class="weiz">
+                    <el-tooltip
+                            v-for="(item, index) in borderType"
+                            :key="index"
+                            :content="item.text"
+                            effect="dark"
+                            placement="bottom"
+                    >
+                        <i
+                                :class="[item.icon, datas.bordertp === item.type ? 'active' : '']"
+                                class="iconfont"
+                                @click="datas.bordertp = item.type"
+                        />
+                    </el-tooltip>
+                </div>
+            </el-form-item>
 
-      <div v-show="datas.segmentationtype === 1" style="height: 20px" />
+            <div v-show="datas.segmentationtype === 1" style="height: 20px"/>
 
-      <!-- 左右边距 -->
-      <el-form-item
-        v-show="datas.segmentationtype === 1"
-        class="lef"
-        label="左右边距"
-      >
-        <div class="weiz">
-          <el-tooltip
-            effect="dark"
-            :content="index - 1 === 0 ? '无边距' : '左右留边'"
-            placement="bottom"
-            v-for="index in 2"
-            :key="index"
-          >
-            <i
-              class="iconfont"
-              :class="[
+            <!-- 左右边距 -->
+            <el-form-item
+                    v-show="datas.segmentationtype === 1"
+                    class="lef"
+                    label="左右边距"
+            >
+                <div class="weiz">
+                    <el-tooltip
+                            v-for="index in 2"
+                            :key="index"
+                            :content="index - 1 === 0 ? '无边距' : '左右留边'"
+                            effect="dark"
+                            placement="bottom"
+                    >
+                        <i
+                                :class="[
                 index - 1 === 0
                   ? 'icon-icon_wubianju'
                   : 'icon-icon_zuoyoubianju',
                 datas.paddType === index - 1 ? 'active' : '',
               ]"
-              @click="datas.paddType = index - 1"
-            />
-          </el-tooltip>
-        </div>
-      </el-form-item>
+                                class="iconfont"
+                                @click="datas.paddType = index - 1"
+                        />
+                    </el-tooltip>
+                </div>
+            </el-form-item>
 
-      <div v-show="datas.segmentationtype === 1" style="height: 20px" />
+            <div v-show="datas.segmentationtype === 1" style="height: 20px"/>
 
-      <!-- 辅助线颜色 -->
-      <el-form-item
-        v-show="datas.segmentationtype === 1"
-        label="辅助线颜色"
-        class="lef aa"
-      >
-        <!-- 辅助线颜色 -->
-        <el-color-picker
-          v-model="datas.auxliarColor"
-          show-alpha
-          class="picke"
-          :predefine="predefineColors"
-        >
-        </el-color-picker>
-      </el-form-item>
-    </el-form>
-  </div>
+            <!-- 辅助线颜色 -->
+            <el-form-item
+                    v-show="datas.segmentationtype === 1"
+                    class="lef aa"
+                    label="辅助线颜色"
+            >
+                <!-- 辅助线颜色 -->
+                <el-color-picker
+                        v-model="datas.auxliarColor"
+                        :predefine="predefineColors"
+                        class="picke"
+                        show-alpha
+                >
+                </el-color-picker>
+            </el-form-item>
+        </el-form>
+    </div>
 </template>
 
 <script>
 export default {
   name: 'auxiliarysegmentationstyle',
   props: {
-    datas: Object,
+    datas: Object
   },
-  data() {
+  data () {
     return {
       predefineColors: [
         // 颜色选择器预设
@@ -144,32 +144,32 @@ export default {
         'hsva(120, 40, 94, 0.5)',
         'hsl(181, 100%, 37%)',
         'hsla(209, 100%, 56%, 0.73)',
-        '#c7158577',
+        '#c7158577'
       ],
       borderType: [
         //线类型
         {
           icon: 'icon-icon_fengexian_shixian',
           text: '实线',
-          type: 'solid',
+          type: 'solid'
         },
         {
           icon: 'icon-xuxian',
           text: '虚线',
-          type: 'dashed',
+          type: 'dashed'
         },
         {
           icon: 'icon-dianxian--',
           text: '点线',
-          type: 'dotted',
-        },
-      ],
+          type: 'dotted'
+        }
+      ]
     }
-  },
+  }
 }
 </script>
 
-<style scoped lang="less">
+<style lang="scss" scoped>
 .auxiliarysegmentationstyle {
   width: 100%;
   position: absolute;
@@ -186,13 +186,15 @@ export default {
     font-weight: 600;
     color: #323233;
   }
+
   .lef {
-    /deep/.el-form-item__label {
+    :deep(.el-form-item__label) {
       text-align: left;
     }
   }
+
   .aa {
-    /deep/.el-form-item__label {
+    :deep(.el-form-item__label) {
       width: 100px !important;
     }
   }
@@ -205,6 +207,7 @@ export default {
   /* 图片样式 */
   .weiz {
     text-align: right;
+
     i {
       padding: 5px 14px;
       margin-left: 10px;

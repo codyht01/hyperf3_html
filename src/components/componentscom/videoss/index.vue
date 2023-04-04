@@ -1,42 +1,40 @@
 <template>
-  <div class="videoss">
-    <!-- 默认视频 -->
-    <section class="default" v-if="!datas.src">
-      <van-icon name="tv-o" size="150px" />
-    </section>
+    <div class="videoss">
+        <!-- 默认视频 -->
+        <section v-if="!datas.src" class="default">
+            <van-icon name="tv-o" size="150px"/>
+        </section>
 
-    <!-- 选择视频后 -->
-    <section v-else style="position: relative">
-      <video
-        :src="datas.src"
-        controls
-        :autoplay="datas.autoplay"
-        :poster="datas.coverUrl"
-        width="100%"
-      ></video>
-    </section>
+        <!-- 选择视频后 -->
+        <section v-else style="position: relative">
+            <video
+                    :autoplay="datas.autoplay"
+                    :poster="datas.coverUrl"
+                    :src="datas.src"
+                    controls
+            ></video>
+        </section>
 
-    <!-- 删除组件 -->
-    <slot name="deles" />
-  </div>
+        <!-- 删除组件 -->
+        <slot name="deles"/>
+    </div>
 </template>
 
 <script>
 export default {
   name: 'videoss',
   props: {
-    datas: Object,
+    datas: Object
   },
 
-  created() {
+  created () {
   },
 
-  methods: {
-  },
+  methods: {}
 }
 </script>
 
-<style scoped lang="less">
+<style lang="scss" scoped>
 .videoss {
   position: relative;
 
@@ -59,6 +57,10 @@ export default {
     font-size: 100px;
     opacity: 0.5;
     color: #999;
+  }
+
+  video {
+    width: 100%;
   }
 }
 </style>

@@ -1,16 +1,16 @@
 <template>
-  <div class="placementarea">
-    <span>组件放置区域</span>
-  </div>
+    <div class="placementarea">
+        <span>组件放置区域</span>
+    </div>
 </template>
 
 <script>
 export default {
-  name: 'placementarea',
+  name: 'placementarea'
 }
 </script>
 
-<style scoped lang="less">
+<style lang="scss" scoped>
 .placementarea {
   width: 100%;
   height: 40px;
@@ -21,6 +21,7 @@ export default {
   background-image: url('../../../assets/images/obliqueLine.png');
   background-size: 50%, 100%;
   transition: all 0.5s;
+
   span {
     color: #fff;
     display: inline-block;

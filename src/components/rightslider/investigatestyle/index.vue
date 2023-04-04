@@ -1,83 +1,84 @@
 <template>
-  <div class="investigatestyle">
-    <!-- 标题 -->
-    <h2>{{ datas.text }}</h2>
+    <div class="investigatestyle">
+        <!-- 标题 -->
+        <h2>{{ datas.text }}</h2>
 
-    <!-- 内容 -->
-    <div>
-      <p class="info" style="color: #ff0000">
-        下拉框，单选，多选等文本用，符号隔开#如：(男#女)
-      </p>
+        <!-- 内容 -->
+        <div>
+            <p class="info" style="color: #ff0000">
+                下拉框，单选，多选等文本用，符号隔开#如：(男#女)
+            </p>
+        </div>
+        <!-- <el-from ref="form" :model="datas" label-width="80px">
+
+        </el-from>-->
+        <el-form ref="form" :model="datas" label-width="80px">
+            <el-form-item label="名称" label-width="40px">
+                <el-input v-model="datas.title" style="width: 87%"></el-input>
+            </el-form-item>
+            <el-form-item
+                    v-for="(item, index) in datas.jsonData"
+                    :key="index"
+                    class="lef"
+            >
+                <span class="delete" @click="deletetext(index)">x</span>
+                <el-input
+                        v-model="item.name"
+                        class="title"
+                        placeholder="表单模块名称"
+                ></el-input>
+                <el-select
+                        v-model="item.type"
+                        placeholder="请选择显示格式"
+                        @change="conChange(index)"
+                >
+                    <el-option
+                            v-for="(item, index) in selecttext"
+                            :key="index"
+                            :label="item"
+                            :value="index"
+                    ></el-option>
+                </el-select>
+                <el-input
+                        v-if="item.type == 0"
+                        v-model="item.value"
+                        placeholder="提示语句如:(请输入姓名)"
+                        type="textarea"
+                ></el-input>
+                <el-input
+                        v-else
+                        v-model="item.value"
+                        placeholder="多项之间用‘#’逗号隔开"
+                        type="textarea"
+                        @input="item.value1 = item.value.split('#')"
+                ></el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-button class="uploadImg" plain type="primary" @click="addText">
+                    点击添加内容
+                </el-button>
+            </el-form-item>
+        </el-form>
     </div>
-    <!-- <el-from ref="form" :model="datas" label-width="80px">
-      
-    </el-from>-->
-    <el-form ref="form" :model="datas" label-width="80px">
-      <el-form-item label="名称" label-width="40px">
-        <el-input v-model="datas.title" style="width: 87%"></el-input>
-      </el-form-item>
-      <el-form-item
-        v-for="(item, index) in datas.jsonData"
-        :key="index"
-        class="lef"
-      >
-        <span class="delete" @click="deletetext(index)">x</span>
-        <el-input
-          v-model="item.name"
-          class="title"
-          placeholder="表单模块名称"
-        ></el-input>
-        <el-select
-          v-model="item.type"
-          placeholder="请选择显示格式"
-          @change="conChange(index)"
-        >
-          <el-option
-            :label="item"
-            :value="index"
-            v-for="(item, index) in selecttext"
-            :key="index"
-          ></el-option>
-        </el-select>
-        <el-input
-          type="textarea"
-          v-model="item.value"
-          placeholder="提示语句如:(请输入姓名)"
-          v-if="item.type == 0"
-        ></el-input>
-        <el-input
-          type="textarea"
-          v-model="item.value"
-          @input="item.value1 = item.value.split('#')"
-          placeholder="多项之间用‘#’逗号隔开"
-          v-else
-        ></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-button @click="addText" class="uploadImg" type="primary" plain>
-          <i class="el-icon-plus" />点击添加内容
-        </el-button>
-      </el-form-item>
-    </el-form>
-  </div>
 </template>
 
 <script>
 export default {
   name: 'investigatestyle',
   props: {
-    datas: Object,
+    datas: Object
   },
-  data() {
+  data () {
     return {
       selecttext: ['文本', '下拉框', '单选', '多选'],
-      index1: 0,
+      index1: 0
     }
   },
-  mounted() {},
+  mounted () {
+  },
   methods: {
     //添加文本
-    addText() {
+    addText () {
       console.log(this.datas.jsonData)
       var text = {
         name: '',
@@ -85,24 +86,24 @@ export default {
         value: '',
         value1: [],
         value2: '',
-        showPicker: false,
+        showPicker: false
       }
       this.datas.jsonData.push(text)
     },
     //删除文本
-    deletetext(index) {
+    deletetext (index) {
       this.datas.jsonData.splice(index, 1)
     },
     //下拉内容改变发生发生事件
-    conChange(index) {
+    conChange (index) {
       this.datas.jsonData[index].value = ''
       this.datas.jsonData[index].value1 = []
-    },
-  },
+    }
+  }
 }
 </script>
 
-<style scoped lang="less">
+<style lang="scss" scoped>
 .investigatestyle {
   width: 100%;
   position: absolute;
@@ -119,11 +120,14 @@ export default {
     font-weight: 600;
     color: #323233;
   }
+
   .lef {
     position: relative;
-    /deep/.el-form-item__label {
+
+    :deep(.el-form-item__label) {
       text-align: left;
     }
+
     .delete {
       background: #ff0000;
       color: #ffffff;
@@ -141,7 +145,7 @@ export default {
     }
   }
 
-  /deep/.el-form-item__content {
+  :deep(.el-form-item__content) {
     margin-left: 0 !important;
     // display: flex;
     div {
@@ -151,10 +155,12 @@ export default {
         margin-right: 2%;
         margin-bottom: 10px;
       }
+
       &:nth-child(3) {
         width: 90%;
         // flex: 1;
       }
+
       &:nth-child(4) {
         width: 100%;
         margin-top: 5px;
@@ -162,6 +168,7 @@ export default {
       }
     }
   }
+
   /* 上传图片按钮 */
   .uploadImg {
     width: 345px;
@@ -169,7 +176,8 @@ export default {
     margin-top: 20px;
   }
 }
-// /deep/.el-input__inner{
+
+// :deep(.el-input__inner){
 //   padding: 0 5px;
 // }
 </style>

@@ -1,20 +1,20 @@
 <template>
-  <div class="crowdoperationstyle">
-    <!-- 标题 -->
-    <h2>{{ datas.text }}</h2>
-  </div>
+    <div class="crowdoperationstyle">
+        <!-- 标题 -->
+        <h2>{{ datas.text }}</h2>
+    </div>
 </template>
 
 <script>
 export default {
   name: 'crowdoperationstyle',
   props: {
-    datas: Object,
-  },
+    datas: Object
+  }
 }
 </script>
 
-<style scoped lang="less">
+<style lang="scss" scoped>
 .crowdoperationstyle {
   width: 100%;
   position: absolute;
