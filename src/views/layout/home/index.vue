@@ -37,7 +37,6 @@
                                     <template #deles>
                                         <div v-show="deleShow" class="deles" @click.stop="deleteObj(index)">
                                             <!-- 删除组件 -->
-
                                             <span class="iconfont icon-sanjiaoxingzuo"></span>
                                             {{ element.text }}
                                             <van-icon name="delete"/>
@@ -66,6 +65,7 @@
             <!-- 右侧工具栏 -->
             <div class="decorateAll">
                 <!-- 页面设置 -->
+                {{ rightcom }}
                 <transition name="decorateAnima">
                     <!-- 动态组件 -->
                     <component :is="rightcom" :datas="currentproperties" @componenmanagement="componenmanagement"/>

@@ -48,12 +48,14 @@
         </el-form>
 
         <!-- 上传图片 -->
-        <uploadimg ref="upload" @uploadInformation="uploadInformation"/>
+        <!--        <uploadimg ref="upload" @uploadInformation="uploadInformation"/>-->
+        <PictureDialog ref="pictureRef" :maxLength="0" :minType="minType" @refresh="pictureRefresh"/>
     </div>
 </template>
 
 <script>
 import uploadimg from '../../uploadImg/index.vue' //图片上传
+import PictureDialog from '/@/components/picture/index.vue'
 
 export default {
   name: 'decorate',
@@ -100,7 +102,8 @@ export default {
         'hsla(209, 100%, 56%, 0.73)',
         '#c7158577'
       ],
-      uploadImgDataType: null // 获取到的图片地址属于哪一类别   0 修改底部logo   1 修改店铺图标 2 页面背景图
+      uploadImgDataType: null, // 获取到的图片地址属于哪一类别   0 修改底部logo   1 修改店铺图标 2 页面背景图
+      minType: 'image'
     }
   },
   setup () {
@@ -110,7 +113,7 @@ export default {
     // 显示上传图片组件   type :  2 页面背景图
     showUpload (type) {
       this.uploadImgDataType = type
-      this.$refs.upload.showUpload()
+      this.$refs.pictureRef.openDialog()
     },
 
     // 上传图片
@@ -123,9 +126,12 @@ export default {
     // 清空背景图片
     clear () {
       this.datas.bgImg = ''
+    },
+    pictureRefresh (item) {
+      this.datas.bgImg = item[0].url
     }
   },
-  components: {uploadimg}
+  components: {uploadimg, PictureDialog}
 }
 </script>
 
