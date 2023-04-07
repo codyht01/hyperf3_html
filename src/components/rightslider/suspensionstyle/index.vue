@@ -4,39 +4,17 @@
         <h2>{{ datas.text }}</h2>
 
         <!-- 表单 -->
-        <el-form
-                :model="datas"
-                label-position="top"
-                label-width="80px"
-                size="small"
-        >
+        <el-form :model="datas" label-position="top" label-width="80px" size="small">
             <!-- 跳转页面 -->
             <el-form-item label="跳转页面">
                 <div class="imgText">
                     <!-- 选择类型 -->
-                    <el-select
-                            v-model="datas.type"
-                            placeholder="请选择跳转类型"
-                            size="small"
-                            style="width: 60%"
-                    >
-                        <el-option
-                                v-for="item in optionsType"
-                                :key="item.name"
-                                :label="item.name"
-                                :value="item.type"
-                        >
-                        </el-option>
+                    <el-select v-model="datas.type" placeholder="请选择跳转类型" size="small" style="width: 60%">
+                        <el-option v-for="item in optionsType" :key="item.name" :label="item.name" :value="item.type"/>
                     </el-select>
 
                     <!-- 输入链接 -->
-                    <el-input
-                            v-model="datas.http.externalLink"
-                            placeholder="请输入链接，输入前确保可以访问"
-                            size="small"
-                            style="width: 100%"
-                    >
-                    </el-input>
+                    <el-input v-model="datas.http.externalLink" placeholder="请输入链接，输入前确保可以访问" size="small" style="width: 100%"/>
                 </div>
             </el-form-item>
         </el-form>

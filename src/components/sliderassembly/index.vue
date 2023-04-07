@@ -3,7 +3,7 @@
         <el-collapse v-model="activeNames">
             <el-collapse-item v-for="(items, index) in datas" :key="index" :name="index + 1" :title="items.title">
                 <div v-for="(item, ind) in items.comList" :key="ind" :data-name="item.name" class="componList" draggable="true" @dragend="dragends($event)" @dragstart="drag($event)">
-                    <i v-if="item.icon" :class="item.icon" class="iconfont"/>
+                    <i v-if="item.icon" :class="item.icon" class="iconfonts"/>
                     <van-icon v-else :name="item.vanIcon"/>
                     <p>{{ item.text }}</p>
                 </div>
@@ -54,7 +54,7 @@ const datas = reactive([
             {
                 text: '底部导航',
                 type: '1-5',
-                icon: 'icon-daohang',
+                icon: 'icon-daohanghengxianghuadong',
                 name: 'tabBar'
             },
             {
@@ -79,7 +79,7 @@ const datas = reactive([
             {
                 text: '富文本',
                 type: '1-10',
-                icon: 'icon-fuwenben',
+                icon: 'icon-yidaliangxiao',
                 name: 'richtext'
             },
             {

@@ -12,12 +12,7 @@
         <div style="height: 10px"></div>
         <!-- 背景图 -->
         <div class="backgroundImg" @click="uploadI('bakcgroundImg')">
-            <img
-                    v-if="!datas.bakcgroundImg"
-                    alt=""
-                    draggable="false"
-                    src="../../../assets/images/backimg.png"
-            />
+            <img v-if="!datas.bakcgroundImg" alt="" draggable="false" src="../../../assets/images/backimg.png"/>
             <img v-else :src="datas.bakcgroundImg" alt="" draggable="false"/>
             <p>更换图片</p>
         </div>
@@ -28,19 +23,12 @@
         <div style="height: 10px"></div>
         <!-- 店铺头像 -->
         <div class="backgroundImg" @click="uploadI('headPortrait')">
-            <img
-                    v-if="!datas.headPortrait"
-                    alt=""
-                    draggable="false"
-                    src="../../../assets/images/headerimg.png"
-            />
+            <img v-if="!datas.headPortrait" alt="" draggable="false" src="../../../assets/images/headerimg.png"/>
             <img v-else :src="datas.headPortrait" alt="" draggable="false"/>
             <p>更换图片</p>
         </div>
 
-        <div
-                style="margin: 20px 0; height: 1px; background: rgb(235, 237, 240)"
-        ></div>
+        <div style="margin: 20px 0; height: 1px; background: rgb(235, 237, 240)"></div>
 
         <!-- 表单 -->
         <el-form :model="datas" :rules="rules" label-width="80px" size="small">
@@ -49,44 +37,31 @@
 
             <!-- 商品样式选择 -->
             <el-radio-group v-model="datas.rubiksCubeType" class="select-sp">
-                <el-radio
-                        v-for="(item, index) in rubiksCubeTypes"
-                        :key="index"
-                        :label="item.type"
-                        style="margin-top: 10px; margin-right: 10px"
-                >{{ item.content }}
-                </el-radio
-                >
+                <el-radio v-for="(item, index) in rubiksCubeTypes" :key="index" :label="item.type" style="margin-top: 10px; margin-right: 10px">{{ item.content }}</el-radio>
             </el-radio-group>
 
             <div style="height: 30px"></div>
 
             <!-- 店铺名称 -->
             <el-form-item class="lef" label="店铺名称" prop="name">
-                <el-input
-                        v-model="datas.name"
-                        maxlength="20"
-                        placeholder="请填写店铺名称"
-                ></el-input>
+                <el-input v-model="datas.name" maxlength="20" placeholder="请填写店铺名称"></el-input>
             </el-form-item>
 
             <!-- 店铺名称 -->
             <el-form-item class="lef" label="优惠信息">
-                <el-input
-                        v-model="datas.Discount"
-                        maxlength="45"
-                        placeholder="请填写优惠信息也可不填"
-                ></el-input>
+                <el-input v-model="datas.Discount" maxlength="45" placeholder="请填写优惠信息也可不填"></el-input>
             </el-form-item>
         </el-form>
 
         <!-- 上传图片 -->
-        <uploadimg ref="upload" @uploadInformation="uploadInformation"/>
+        <!--        <uploadimg ref="upload" @uploadInformation="uploadInformation"/>-->
+        <PictureDialog ref="pictureRef" :maxLength="0" :minType="'image'" @refresh="pictureRefresh"/>
     </div>
 </template>
 
 <script>
-import uploadimg from '../../uploadImg/index.vue' //图片上传
+import uploadimg from '../../uploadImg/index.vue'
+import PictureDialog from '/@/components/picture/index.vue' //图片上传
 
 export default {
   name: 'storeinformationstyle',
@@ -127,14 +102,14 @@ export default {
     /* 上传图片 */
     uploadI (res) {
       this.danqian = res
-      this.$refs.upload.showUpload()
+      this.$refs.pictureRef.openDialog()
     },
     // 提交
-    uploadInformation (res) {
-      this.datas[this.danqian] = res
+    pictureRefresh (res) {
+      this.datas[this.danqian] = res[0].url
     }
   },
-  components: {uploadimg}
+  components: {PictureDialog, uploadimg}
 }
 </script>
 

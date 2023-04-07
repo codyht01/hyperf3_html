@@ -11,6 +11,9 @@ import 'element-plus/dist/index.css'
 import '/@/theme/index.scss'
 import VueGridLayout from 'vue-grid-layout'
 
+import 'vant/lib/index.css'
+import Vant from 'vant'
+
 const app = createApp(App)
 
 const modules = import.meta.globEager('./components/**/*.vue')
@@ -25,4 +28,4 @@ Object.keys(modules).forEach((path) => {
 directive(app)
 other.elSvg(app)
 
-app.use(pinia).use(router).use(ElementPlus, {i18n: i18n.global.t}).use(i18n).use(VueGridLayout).mount('#app')
+app.use(pinia).use(router).use(ElementPlus, {i18n: i18n.global.t}).use(i18n).use(VueGridLayout).use(Vant).mount('#app')

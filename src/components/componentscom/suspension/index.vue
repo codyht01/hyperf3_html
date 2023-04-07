@@ -1,10 +1,7 @@
 <template>
     <div id="suspension">
         <div class="suspension-wrap">
-            <img
-                    class="suspension-logo"
-                    src="https://imgs.starfirelink.com/vue-fire-start-h5/shop-peison/icon_back_36.png"
-            />
+            <img class="suspension-logo" src="https://imgs.starfirelink.com/vue-fire-start-h5/shop-peison/icon_back_36.png"/>
         </div>
         <!-- 删除组件 -->
         <slot name="deles"/>

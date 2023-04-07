@@ -12,9 +12,7 @@
         <div v-if="datas.imageList[0]">
             <vuedraggable :animation="200" :forceFallback="true" :list="datas.imageList" item-key="index">
                 <template #item="{ element }">
-                    <section
-                            class="imgList"
-                    >
+                    <section class="imgList">
                         <van-icon class="el-icon-circle-close" name="close" @click="deleteimg(index)"/>
                         <!-- 图片 -->
                         <div class="imag">
@@ -22,36 +20,15 @@
                         </div>
                         <!-- 标题和链接 -->
                         <div class="imgText">
-                            <el-input
-                                    v-model="element.text"
-                                    placeholder="请输入标题，也可不填"
-                                    size="small"
-                            ></el-input>
+                            <el-input v-model="element.text" placeholder="请输入标题，也可不填" size="small"></el-input>
                             <!-- 选择类型 -->
                             <div class="select-type">
-                                <el-select
-                                        v-model="element.linktype"
-                                        placeholder="请选择跳转类型"
-                                        size="small"
-                                        style="width: 60%"
-                                >
-                                    <el-option
-                                            v-for="element in optionsType"
-                                            :key="element.name"
-                                            :label="element.name"
-                                            :value="element.type"
-                                    >
-                                    </el-option>
+                                <el-select v-model="element.linktype" placeholder="请选择跳转类型" size="small" style="width: 60%">
+                                    <el-option v-for="element in optionsType" :key="element.name" :label="element.name" :value="element.type"></el-option>
                                 </el-select>
 
                                 <!-- 输入链接 -->
-                                <el-input
-                                        v-model="element.http.externalLink"
-                                        placeholder="请输入链接，输入前确保可以访问"
-                                        size="small"
-                                        style="width: 100%"
-                                >
-                                </el-input>
+                                <el-input v-model="element.http.externalLink" placeholder="请输入链接，输入前确保可以访问" size="small" style="width: 100%"></el-input>
                             </div>
                         </div>
                     </section>
@@ -61,10 +38,7 @@
         </div>
 
         <!-- 上传图片 -->
-        <el-button class="uploadImg" plain type="primary" @click="showUpload('0')"
-        >点击添加导航
-        </el-button
-        >
+        <el-button class="uploadImg" plain type="primary" @click="showUpload('0')">点击添加导航</el-button>
 
         <div class="bor"></div>
 
@@ -73,14 +47,7 @@
             <!-- 商品类型选择 -->
             <el-form-item class="lef" label="商品类型">
                 <el-radio-group v-model="datas.navigationType">
-                    <el-radio
-                            v-for="index in 2"
-                            :key="index"
-                            :label="index - 1"
-                            style="margin-left: 35px"
-                    >{{ index === 1 ? '图片导航' : '文字导航' }}
-                    </el-radio
-                    >
+                    <el-radio v-for="index in 2" :key="index" :label="index - 1" style="margin-left: 35px">{{ index === 1 ? '图片导航' : '文字导航' }}</el-radio>
                 </el-radio-group>
             </el-form-item>
 
@@ -89,21 +56,8 @@
             <!-- 图片样式 -->
             <el-form-item class="lef" label="图片样式">
                 <div class="weiz">
-                    <el-tooltip
-                            v-for="index in 2"
-                            :key="index"
-                            :content="index - 1 === 0 ? '固定' : '滑动'"
-                            effect="dark"
-                            placement="bottom"
-                    >
-                        <i
-                                :class="[
-                index - 1 === 0 ? 'icon-guding' : 'icon-hengxianghuadong',
-                datas.imgStyle === index - 1 ? 'active' : '',
-              ]"
-                                class="iconfont"
-                                @click="datas.imgStyle = index - 1"
-                        />
+                    <el-tooltip v-for="index in 2" :key="index" :content="index - 1 === 0 ? '固定' : '滑动'" effect="dark" placement="bottom">
+                        <i :class="[index - 1 === 0 ? 'icon-guding' : 'icon-hengxianghuadong',datas.imgStyle === index - 1 ? 'active' : '',]" class="iconfonts" @click="datas.imgStyle = index - 1"/>
                     </el-tooltip>
                 </div>
             </el-form-item>
@@ -112,17 +66,8 @@
 
             <!-- 一屏显示 -->
             <el-form-item v-show="datas.imgStyle === 1" class="lef" label="一屏显示">
-                <el-select
-                        v-model="datas.showSize"
-                        placeholder="请选择活动区域"
-                        style="margin-left: 90px"
-                >
-                    <el-option
-                            v-for="index in 7"
-                            :key="index"
-                            :label="index + 4 + '个导航'"
-                            :value="index + 4"
-                    ></el-option>
+                <el-select v-model="datas.showSize" placeholder="请选择活动区域" style="margin-left: 90px">
+                    <el-option v-for="index in 7" :key="index" :label="index + 4 + '个导航'" :value="index + 4"></el-option>
                 </el-select>
             </el-form-item>
 
@@ -130,64 +75,32 @@
 
             <!-- 文字高度 -->
             <el-form-item class="lef" label="文字高度">
-                <el-slider
-                        v-model="datas.textHeight"
-                        :max="50"
-                        :min="24"
-                        input-size="small"
-                        show-input
-                >
-                </el-slider>
+                <el-slider v-model="datas.textHeight" :max="50" :min="24" input-size="small" show-input></el-slider>
             </el-form-item>
 
             <div style="height: 10px"/>
 
             <!-- 文字大小 -->
-            <el-form-item
-                    :hide-required-asterisk="true"
-                    class="lef"
-                    label="文字大小"
-                    prop="textSize"
-            >
-                <el-input
-                        v-model.number="datas.textSize"
-                        :maxlength="2"
-                        placeholder="请输入文字大小"
-                        type="number"
-                />
+            <el-form-item :hide-required-asterisk="true" class="lef" label="文字大小" prop="textSize">
+                <el-input v-model.number="datas.textSize" :maxlength="2" placeholder="请输入文字大小" type="number"/>
             </el-form-item>
 
             <div style="height: 10px"/>
 
             <!-- 图片倒角 -->
             <el-form-item class="lef borrediu" label="图片倒角">
-                <el-slider
-                        v-model="datas.borderRadius"
-                        :max="50"
-                        input-size="small"
-                        show-input
-                >
-                </el-slider>
+                <el-slider v-model="datas.borderRadius" :max="50" input-size="small" show-input></el-slider>
             </el-form-item>
 
             <div style="height: 10px"/>
 
             <el-form-item class="lef" label="背景图片">
                 <div class="shop-head-pic" style="text-align: center">
-                    <img v-if="datas.bgImg" :src="datas.bgImg" alt="" class="home-bg"/>
+                    {{ datas.bgImg }}
+                    <img v-if="datas.bgImg" :key="datas.bgImg" :src="datas.bgImg" alt="" class="home-bg"/>
                     <div class="shop-head-pic-btn" style="text-align: center">
-                        <el-button
-                                class="uploadImg"
-                                plain
-                                type="primary"
-                                @click="showUpload('1')"
-                        >更换图片
-                        </el-button
-                        >
-                        <el-button class="uploadImg" type="primary" @click="clear()"
-                        >清空图片
-                        </el-button
-                        >
+                        <el-button class="uploadImg" plain type="primary" @click="showUpload('1')">更换图片</el-button>
+                        <el-button class="uploadImg" type="primary" @click="clear()">清空图片</el-button>
                     </div>
                 </div>
             </el-form-item>
@@ -196,13 +109,7 @@
             <!-- 背景颜色 -->
             <el-form-item class="lef" label="背景颜色">
                 <!-- 颜色选择器 -->
-                <el-color-picker
-                        v-model="datas.backgroundColor"
-                        :predefine="predefineColors"
-                        class="picke"
-                        show-alpha
-                >
-                </el-color-picker>
+                <el-color-picker v-model="datas.backgroundColor" :predefine="predefineColors" class="picke" show-alpha></el-color-picker>
             </el-form-item>
 
             <div style="height: 10px"/>
@@ -210,24 +117,19 @@
             <!-- 文字颜色 -->
             <el-form-item class="lef" label="文字颜色">
                 <!-- 颜色选择器 -->
-                <el-color-picker
-                        v-model="datas.textColor"
-                        :predefine="predefineColors"
-                        class="picke"
-                        show-alpha
-                >
-                </el-color-picker>
+                <el-color-picker v-model="datas.textColor" :predefine="predefineColors" class="picke" show-alpha></el-color-picker>
             </el-form-item>
         </el-form>
 
         <!-- 上传图片 -->
-        <uploadimg ref="upload" @uploadInformation="uploadInformation"/>
+        <PictureDialog ref="pictureRef" :maxLength="0" :minType="'image'" @refresh="pictureRefresh"/>
     </div>
 </template>
 
 <script>
 import uploadimg from '../../uploadImg/index.vue' //图片上传
-import vuedraggable from 'vuedraggable' //拖拽组件
+import vuedraggable from 'vuedraggable'
+import PictureDialog from '/@/components/picture/index.vue' //拖拽组件
 
 export default {
   name: 'graphicnavigationstyle',
@@ -275,20 +177,21 @@ export default {
   methods: {
     showUpload (type) {
       this.uploadImgDataType = type
-      this.$refs.upload.showUpload()
+      this.$refs.pictureRef.openDialog()
     },
-    // 提交
-    uploadInformation (res) {
-
+    pictureRefresh (row) {
       if (this.uploadImgDataType === '0') {
-        this.datas.imageList.push({
-          src: res,
-          text: '',
-          http: {}
+        row.forEach(item => {
+          this.datas.imageList.push({
+            src: item.url,
+            text: '',
+            http: {}
+          })
         })
         console.log(this.datas.imageList, 33333333333333)
       } else if (this.uploadImgDataType === '1') {
-        this.datas.bgImg = res
+        this.datas.bgImg = row[0].url
+        console.log(row[0].url)
       }
     },
 
@@ -301,7 +204,7 @@ export default {
       this.datas.imageList.splice(index, 1)
     }
   },
-  components: {uploadimg, vuedraggable}
+  components: {PictureDialog, uploadimg, vuedraggable}
 }
 </script>
 
@@ -443,7 +346,7 @@ export default {
     .home-bg {
       width: 100px;
       height: 100px;
-      margin: 10px auto;
+      //margin: 10px auto;
     }
 
     .shop-head-pic-btn {

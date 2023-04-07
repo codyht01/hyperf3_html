@@ -11,70 +11,34 @@
 
             <el-form-item class="lef" label="选中的颜色">
                 <!-- 颜色选择器 -->
-                <el-color-picker
-                        v-model="datas.activeColor"
-                        :predefine="predefineColors"
-                        class="picke"
-                        show-alpha
-                >
-                </el-color-picker>
+                <el-color-picker v-model="datas.activeColor" :predefine="predefineColors" class="picke" show-alpha></el-color-picker>
             </el-form-item>
 
             <el-form-item class="lef" label="未选中的颜色">
                 <!-- 颜色选择器 -->
-                <el-color-picker
-                        v-model="datas.inactiveColor"
-                        :predefine="predefineColors"
-                        class="picke"
-                        show-alpha
-                >
-                </el-color-picker>
+                <el-color-picker v-model="datas.inactiveColor" :predefine="predefineColors" class="picke" show-alpha></el-color-picker>
             </el-form-item>
 
             <el-form-item class="lef" label="高亮位置">
-                <el-slider
-                        v-model="datas.Highlight"
-                        :max="4"
-                        :min="0"
-                        input-size="small"
-                        show-input
-                >
-                </el-slider>
+                <el-slider v-model="datas.Highlight" :max="4" :min="0" input-size="small" show-input></el-slider>
             </el-form-item>
 
             <el-form-item class="lef" label="导航"></el-form-item>
             <vuedraggable :animation="200" :forceFallback="true" :list="datas.iconList" item-key="index">
                 <template #item="{ element, index }">
-                    <section
-                            class="imgBanner"
-                    >
+                    <section class="imgBanner">
                         <van-icon class="el-icon-circle-close" name="close" @click="deleteimg(index)"/>
                         <!-- 图片 -->
                         <div>
-                            <div
-                                    v-for="replaceIconIndex in 2"
-                                    :key="replaceIconIndex"
-                                    class="imagBox"
-                                    @click="replaceIcon(replaceIconIndex, index)"
-                            >
-                                <img
-                                        :src="replaceIconIndex == 1 ? element.iconPic : element.inactive"
-                                        class="imag"
-                                        draggable="false"
-                                />
-                                <div>
-                                    {{ replaceIconIndex == 1 ? '选中时' : '未选中时' }}
-                                </div>
+                            <div v-for="replaceIconIndex in 2" :key="replaceIconIndex" class="imagBox" @click="replaceIcon(replaceIconIndex, index)">
+                                <img :src="replaceIconIndex == 1 ? element.iconPic : element.inactive" class="imag" draggable="false"/>
+                                <div> {{ replaceIconIndex == 1 ? '选中时' : '未选中时' }}</div>
                             </div>
                         </div>
                         <!-- 标题和链接 -->
                         <div class="imgText">
                             <div class="imgText-top">
-                                <el-input
-                                        v-model="element.iconText"
-                                        placeholder="导航名称"
-                                        size="small"
-                                />
+                                <el-input v-model="element.iconText" placeholder="导航名称" size="small"/>
                                 <div class="imgText-top-r">
                                     <span>小圆点</span>
                                     <el-checkbox v-model="element.isDot"></el-checkbox>
@@ -83,27 +47,13 @@
                             <!-- 标题和链接 -->
                             <div class="imgTextChild">
                                 <!-- 选择类型 -->
-                                <el-select
-                                        v-model="element.linktype"
-                                        placeholder="请选择跳转类型"
-                                        size="small"
-                                >
-                                    <el-option
-                                            v-for="element in optionsType"
-                                            :key="element.name"
-                                            :label="element.name"
-                                            :value="element.type"
-                                    >
+                                <el-select v-model="element.linktype" placeholder="请选择跳转类型" size="small">
+                                    <el-option v-for="element in optionsType" :key="element.name" :label="element.name" :value="element.type">
                                     </el-option>
                                 </el-select>
 
                                 <!-- 输入链接 -->
-                                <el-input
-                                        v-model="element.http.externalLink"
-                                        placeholder="请输入链接，输入前确保可以访问"
-                                        size="small"
-                                >
-                                </el-input>
+                                <el-input v-model="element.http.externalLink" placeholder="请输入链接，输入前确保可以访问" size="small"></el-input>
                             </div>
                         </div>
                     </section>
@@ -111,30 +61,21 @@
             </vuedraggable>
 
             <!-- 添加导航按钮 -->
-            <el-button
-                    v-if="datas.iconList.length < 5"
-                    class="uploadImg"
-                    plain
-                    type="primary"
-                    @click="$refs.upload.showUpload()"
-            >
+            <el-button v-if="datas.iconList.length < 5" class="uploadImg" plain type="primary" @click="$refs.pictureRef.openDialog()">
                 点击添加导航
             </el-button>
             <i class="icon-tip">*最多添加5个</i>
         </el-form>
 
         <!-- 上传图片 -->
-        <uploadimg
-                ref="upload"
-                @handleClose="handleClose"
-                @uploadInformation="uploadInformation"
-        />
+        <PictureDialog ref="pictureRef" :maxLength="0" :minType="'image'" @refresh="pictureRefresh"/>
     </div>
 </template>
 
 <script>
 import uploadimg from '../../uploadImg/index.vue' //图片上传
-import vuedraggable from 'vuedraggable' //拖拽组件
+import vuedraggable from 'vuedraggable'
+import PictureDialog from '/@/components/picture/index.vue' //拖拽组件
 
 export default {
   name: 'tabBarStyle',
@@ -187,29 +128,34 @@ export default {
 
   methods: {
     // 提交
-    uploadInformation (res) {
+    pictureRefresh (row) {
       if (this.replaceIconIndex == 1) {
-        this.datas.iconList[this.replaceIndex].iconPic = res
+
+        this.datas.iconList[this.replaceIndex].iconPic = item[0].url
         this.replaceIconIndex = null
+
+
         return
       }
       if (this.replaceIconIndex == 2) {
-        this.datas.iconList[this.replaceIndex].inactive = res
+        this.datas.iconList[this.replaceIndex].inactive = row[0].url
         this.replaceIconIndex = null
         return
       }
-      this.datas.iconList.push({
-        /** 图标名称文字 */
-        iconText: '',
-        /** 图标图片 */
-        iconPic: res,
-        inactive: res,
-        /** 是否显示小圆点 */
-        isDot: false,
-        /** 跳转类型 */
-        linktype: '10',
-        /** 跳转参数 */
-        http: {}
+      row.forEach(item => {
+        this.datas.iconList.push({
+          /** 图标名称文字 */
+          iconText: '',
+          /** 图标图片 */
+          iconPic: item.url,
+          inactive: item.url,
+          /** 是否显示小圆点 */
+          isDot: false,
+          /** 跳转类型 */
+          linktype: '10',
+          /** 跳转参数 */
+          http: {}
+        })
       })
     },
     /* 取消上传 */
@@ -225,7 +171,7 @@ export default {
       this.replaceIconIndex = replaceIconIndex
       this.replaceIndex = replaceIndex
       console.log(replaceIconIndex, replaceIndex)
-      this.$refs.upload.showUpload()
+      this.$refs.pictureRef.openDialog()
     }
   },
 
@@ -234,6 +180,7 @@ export default {
   watch: {},
 
   components: {
+    PictureDialog,
     uploadimg,
     vuedraggable
   }

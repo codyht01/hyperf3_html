@@ -7,12 +7,7 @@
             <el-form-item class="lef" label="公众号图片">
                 <div class="follow-pic">
                     <img :src="datas.heade" alt=""/>
-                    <el-button
-                            class="uploadImg"
-                            plain
-                            type="primary"
-                            @click="$refs.upload.showUpload()"
-                    >
+                    <el-button class="uploadImg" plain type="primary" @click="$refs.pictureRef.openDialog()">
                         上传公众号图片
                     </el-button>
                 </div>
@@ -28,12 +23,12 @@
         </el-form>
 
         <!-- 上传图片 -->
-        <uploadimg ref="upload" @uploadInformation="uploadInformation"/>
+        <PictureDialog ref="pictureRef" :maxLength="0" :minType="'image'" @refresh="pictureRefresh"/>
     </div>
 </template>
 
 <script>
-import uploadimg from '../../uploadImg/index.vue' //图片上传
+import PictureDialog from '/@/components/picture/index.vue' //图片上传
 export default {
   name: 'followStyle',
   props: {
@@ -52,8 +47,8 @@ export default {
 
   methods: {
     // 提交
-    uploadInformation (res) {
-      this.datas.heade = res
+    pictureRefresh (res) {
+      this.datas.heade = res[0].url
     }
   },
 
@@ -61,7 +56,8 @@ export default {
 
   watch: {},
   components: {
-    uploadimg
+    PictureDialog
+
   }
 }
 </script>

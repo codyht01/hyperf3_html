@@ -11,96 +11,47 @@
         <!-- 图片布局 -->
         <!-- 一行二个 -->
         <section v-show="datas.rubiksCubeType === 0" class="buju buju0">
-            <div
-                    v-for="index in 2"
-                    :key="index"
-                    :class="[index - 1 === imgActive ? 'active' : '']"
-                    class="rubiksCubeType0 rubiksCubeType"
-                    @click="imgActive = index - 1"
-            >
+            <div v-for="index in 2" :key="index" :class="[index - 1 === imgActive ? 'active' : '']" class="rubiksCubeType0 rubiksCubeType" @click="imgActive = index - 1">
                 <div v-if="!datas.imageList[index - 1].src" style="font-size: 12px">
                     宽度375像素
                 </div>
-                <img
-                        v-else
-                        :src="datas.imageList[index - 1].src"
-                        alt=""
-                        draggable="false"
-                />
+                <img v-else :src="datas.imageList[index - 1].src" alt="" draggable="false"/>
             </div>
         </section>
 
         <!-- 一行三个 -->
         <section v-show="datas.rubiksCubeType === 1" class="buju buju0">
-            <div
-                    v-for="index in 3"
-                    :key="index"
-                    :class="[index - 1 === imgActive ? 'active' : '']"
-                    class="rubiksCubeType1 rubiksCubeType"
-                    @click="imgActive = index - 1"
-            >
+            <div v-for="index in 3" :key="index" :class="[index - 1 === imgActive ? 'active' : '']" class="rubiksCubeType1 rubiksCubeType" @click="imgActive = index - 1">
                 <div v-if="!datas.imageList[index - 1].src" style="font-size: 12px">
                     宽度250像素
                 </div>
-                <img
-                        v-else
-                        :src="datas.imageList[index - 1].src"
-                        alt=""
-                        draggable="false"
-                />
+                <img v-else :src="datas.imageList[index - 1].src" alt="" draggable="false"/>
             </div>
         </section>
 
         <!-- 一行四个 -->
         <section v-show="datas.rubiksCubeType === 2" class="buju buju0">
-            <div
-                    v-for="index in 4"
-                    :key="index"
-                    :class="[index - 1 === imgActive ? 'active' : '']"
-                    class="rubiksCubeType2 rubiksCubeType"
-                    @click="imgActive = index - 1"
-            >
+            <div v-for="index in 4" :key="index" :class="[index - 1 === imgActive ? 'active' : '']" class="rubiksCubeType2 rubiksCubeType" @click="imgActive = index - 1">
                 <div v-if="!datas.imageList[index - 1].src" style="font-size: 12px">
                     宽度188像素
                 </div>
-                <img
-                        v-else
-                        :src="datas.imageList[index - 1].src"
-                        alt=""
-                        draggable="false"
-                />
+                <img v-else :src="datas.imageList[index - 1].src" alt="" draggable="false"/>
             </div>
         </section>
 
         <!-- 二左二右 -->
         <section v-show="datas.rubiksCubeType === 3" class="buju buju0">
-            <div
-                    v-for="index in 4"
-                    :key="index"
-                    :class="[index - 1 === imgActive ? 'active' : '']"
-                    class="rubiksCubeType3 rubiksCubeType"
-                    @click="imgActive = index - 1"
-            >
+            <div v-for="index in 4" :key="index" :class="[index - 1 === imgActive ? 'active' : '']" class="rubiksCubeType3 rubiksCubeType" @click="imgActive = index - 1">
                 <div v-if="!datas.imageList[index - 1].src" style="font-size: 12px">
                     375x375像素<br/>或同等比例
                 </div>
-                <img
-                        v-else
-                        :src="datas.imageList[index - 1].src"
-                        alt=""
-                        draggable="false"
-                />
+                <img v-else :src="datas.imageList[index - 1].src" alt="" draggable="false"/>
             </div>
         </section>
 
         <!-- 一左二右 -->
         <section v-show="datas.rubiksCubeType === 4" class="buju buju4">
-            <div
-                    :class="[0 === imgActive ? 'active' : '']"
-                    class="rubiksCubeType4 rubiksCubeType"
-                    style="width: 163px; height: 300px"
-                    @click="imgActive = 0"
-            >
+            <div :class="[0 === imgActive ? 'active' : '']" class="rubiksCubeType4 rubiksCubeType" style="width: 163px; height: 300px" @click="imgActive = 0">
                 <div v-if="!datas.imageList[0].src" style="font-size: 12px">
                     375x750像素<br/>或同等比例
                 </div>
@@ -108,22 +59,11 @@
                 <div></div>
             </div>
             <div style="display: inline-flex; flex-direction: column">
-                <div
-                        v-for="index in 2"
-                        :key="index"
-                        :class="[index === imgActive ? 'active' : '']"
-                        class="rubiksCubeType4 rubiksCubeType"
-                        @click="imgActive = index"
-                >
+                <div v-for="index in 2" :key="index" :class="[index === imgActive ? 'active' : '']" class="rubiksCubeType4 rubiksCubeType" @click="imgActive = index">
                     <div v-if="!datas.imageList[index].src" style="font-size: 12px">
                         375x375像素<br/>或同等比例
                     </div>
-                    <img
-                            v-else
-                            :src="datas.imageList[index].src"
-                            alt=""
-                            draggable="false"
-                    />
+                    <img v-else :src="datas.imageList[index].src" alt="" draggable="false"/>
                     <div></div>
                 </div>
             </div>
@@ -131,12 +71,7 @@
 
         <!-- 一上二下 -->
         <section v-show="datas.rubiksCubeType === 5" class="buju buju5">
-            <div
-                    :class="[0 === imgActive ? 'active' : '']"
-                    class="rubiksCubeType4 rubiksCubeType"
-                    style="width: 325px; height: 163px"
-                    @click="imgActive = 0"
-            >
+            <div :class="[0 === imgActive ? 'active' : '']" class="rubiksCubeType4 rubiksCubeType" style="width: 325px; height: 163px" @click="imgActive = 0">
                 <div v-if="!datas.imageList[0].src" style="font-size: 12px">
                     375x750像素<br/>或同等比例
                 </div>
@@ -144,23 +79,11 @@
                 <div></div>
             </div>
             <div style="display: inline-flex">
-                <div
-                        v-for="index in 2"
-                        :key="index"
-                        :class="[index === imgActive ? 'active' : '']"
-                        class="rubiksCubeType4 rubiksCubeType"
-                        @click="imgActive = index"
-                >
+                <div v-for="index in 2" :key="index" :class="[index === imgActive ? 'active' : '']" class="rubiksCubeType4 rubiksCubeType" @click="imgActive = index">
                     <div v-if="!datas.imageList[index].src" style="font-size: 12px">
                         375x375像素<br/>或同等比例
                     </div>
-                    <img
-                            v-else
-                            :src="datas.imageList[index].src"
-                            alt=""
-                            draggable="false"
-                            style="width: 163px; height: 163px"
-                    />
+                    <img v-else :src="datas.imageList[index].src" alt="" draggable="false" style="width: 163px; height: 163px"/>
                     <div></div>
                 </div>
             </div>
@@ -169,12 +92,7 @@
         <!-- 一左三右 -->
         <section v-show="datas.rubiksCubeType === 6" class="buju buju4">
             <!-- 第一张图片 -->
-            <div
-                    :class="[0 === imgActive ? 'active' : '']"
-                    class="rubiksCubeType4 rubiksCubeType"
-                    style="width: 163px; height: 325px"
-                    @click="imgActive = 0"
-            >
+            <div :class="[0 === imgActive ? 'active' : '']" class="rubiksCubeType4 rubiksCubeType" style="width: 163px; height: 325px" @click="imgActive = 0">
                 <div v-if="!datas.imageList[0].src" style="font-size: 12px">
                     375x750像素<br/>或同等比例
                 </div>
@@ -182,11 +100,7 @@
             </div>
             <div style="display: inline-flex; flex-direction: column">
                 <!-- 第二张图片 -->
-                <div
-                        :class="[1 === imgActive ? 'active' : '']"
-                        class="rubiksCubeType4 rubiksCubeType"
-                        @click="imgActive = 1"
-                >
+                <div :class="[1 === imgActive ? 'active' : '']" class="rubiksCubeType4 rubiksCubeType" @click="imgActive = 1">
                     <div v-if="!datas.imageList[1].src" style="font-size: 12px">
                         375x375像素<br/>或同等比例
                     </div>
@@ -194,29 +108,18 @@
                     <div></div>
                 </div>
                 <div class="rubiksCubeType4 rubiksCubeType">
-                    <div
-                            v-for="index in 2"
-                            :key="index"
-                            :class="[index + 1 === imgActive ? 'active' : '']"
-                            style="
+                    <div v-for="index in 2" :key="index" :class="[index + 1 === imgActive ? 'active' : '']" style="
               display: inline-flex;
               width: 82px;
               height: 163px;
               justify-content: center;
               align-items: center;
               border: 1px solid #ebedf0;
-            "
-                            @click="imgActive = index + 1"
-                    >
+            " @click="imgActive = index + 1">
                         <div v-if="!datas.imageList[index + 1].src" style="font-size: 12px">
                             188x375像素<br/>或同等比例
                         </div>
-                        <img
-                                v-else
-                                :src="datas.imageList[index + 1].src"
-                                alt=""
-                                draggable="false"
-                        />
+                        <img v-else :src="datas.imageList[index + 1].src" alt="" draggable="false"/>
                     </div>
                 </div>
             </div>
@@ -226,21 +129,10 @@
 
         <!-- 表单 -->
         <el-form :model="datas" label-width="80px" size="small">
-            <section
-                    v-for="(item, index) in datas.imageList"
-                    v-show="imgActive === index"
-                    :key="index"
-                    class="magiccubestyleList"
-            >
+            <section v-for="(item, index) in datas.imageList" v-show="imgActive === index" :key="index" class="magiccubestyleList">
                 <!-- 图片 -->
-                <div class="imag" @click="$refs.upload.showUpload()">
-                    <img
-                            v-if="!item.src"
-                            alt=""
-                            draggable="false"
-                            src="../../../assets/images/add.png"
-                            style="border: 1px solid #e5e5e5"
-                    />
+                <div class="imag" @click="$refs.pictureRef.openDialog()">
+                    <img v-if="!item.src" alt="" draggable="false" src="../../../assets/images/add.png" style="border: 1px solid #e5e5e5"/>
                     <div v-else style="position: relative">
                         <img :src="item.src" alt="" draggable="false"/>
                         <p>
@@ -251,27 +143,12 @@
                 <!-- 标题和链接 -->
                 <div class="imgText">
                     <!-- 选择类型 -->
-                    <el-select
-                            v-model="item.linktype"
-                            placeholder="请选择跳转类型"
-                            size="small"
-                    >
-                        <el-option
-                                v-for="item in optionsType"
-                                :key="item.name"
-                                :label="item.name"
-                                :value="item.type"
-                        >
-                        </el-option>
+                    <el-select v-model="item.linktype" placeholder="请选择跳转类型" size="small">
+                        <el-option v-for="item in optionsType" :key="item.name" :label="item.name" :value="item.type"></el-option>
                     </el-select>
 
                     <!-- 输入链接 -->
-                    <el-input
-                            v-model="item.http.externalLink"
-                            placeholder="请输入链接，输入前确保可以访问"
-                            size="small"
-                    >
-                    </el-input>
+                    <el-input v-model="item.http.externalLink" placeholder="请输入链接，输入前确保可以访问" size="small"></el-input>
                 </div>
             </section>
 
@@ -284,23 +161,8 @@
 
             <!-- 商品样式选择 -->
             <div class="rubiksCubeType">
-                <el-tooltip
-                        v-for="(item, index) in rubiksCubeTypes"
-                        :key="index"
-                        :content="item.content"
-                        class="item"
-                        effect="dark"
-                        placement="bottom"
-                >
-          <span
-                  :class="[
-              item.linktype === datas.rubiksCubeType ? 'active' : '',
-              item.icon,
-            ]"
-                  class="iconfont"
-                  style="font-size: 21px"
-                  @click="datas.rubiksCubeType = index"
-          />
+                <el-tooltip v-for="(item, index) in rubiksCubeTypes" :key="index" :content="item.content" class="item" effect="dark" placement="bottom">
+                    <span :class="[ item.linktype === datas.rubiksCubeType ? 'active' : '', item.icon, ]" class="iconfonts" style="font-size: 21px" @click="datas.rubiksCubeType = index"/>
                 </el-tooltip>
             </div>
 
@@ -308,41 +170,30 @@
 
             <!-- 页面边距 -->
             <el-form-item class="lef" label="页面边距">
-                <el-slider
-                        v-model="datas.pageMargin"
-                        :max="20"
-                        input-size="small"
-                        show-input
-                >
-                </el-slider>
+                <el-slider v-model="datas.pageMargin" :max="20" input-size="small" show-input></el-slider>
             </el-form-item>
 
             <!-- 图片间隙 -->
             <el-form-item class="lef" label="图片间隙">
-                <el-slider
-                        v-model="datas.imgMargin"
-                        :max="20"
-                        input-size="small"
-                        show-input
-                >
-                </el-slider>
+                <el-slider v-model="datas.imgMargin" :max="20" input-size="small" show-input></el-slider>
             </el-form-item>
         </el-form>
 
         <!-- 上传图片 -->
-        <uploadimg ref="upload" @uploadInformation="uploadInformation"/>
+        <PictureDialog ref="pictureRef" :maxLength="0" :minType="'image'" @refresh="pictureRefresh"/>
     </div>
 </template>
 
 <script>
-import uploadimg from '../../uploadImg/index.vue' //图片上传
+import uploadimg from '../../uploadImg/index.vue'
+import PictureDialog from '/@/components/picture/index.vue' //图片上传
 
 export default {
   name: 'magiccubestyle',
   props: {
     datas: Object
   },
-  components: {uploadimg},
+  components: {PictureDialog, uploadimg},
   data () {
     return {
       rubiksCubeTypes: [
@@ -416,6 +267,9 @@ export default {
     /* 替换 */
     uploadInformation (res) {
       this.datas.imageList[this.imgActive].src = res
+    },
+    pictureRefresh (item) {
+      this.datas.imageList[this.imgActive].src = item[0].url
     }
   }
 }

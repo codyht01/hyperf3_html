@@ -12,60 +12,20 @@
 
             <!-- 轮播图选择 -->
             <div class="swiperType">
-                <el-tooltip
-                        class="item"
-                        content="一行一个"
-                        effect="dark"
-                        placement="bottom"
-                >
-          <span
-                  :class="datas.swiperType === 0 ? 'active' : ''"
-                  class="iconfont icon-yihangyige"
-                  style="font-size: 21px"
-                  @click="datas.swiperType = 0"
-          />
+                <el-tooltip class="item" content="一行一个" effect="dark" placement="bottom">
+                    <span :class="datas.swiperType === 0 ? 'active' : ''" class="iconfonts icon-yihangyige" style="font-size: 21px" @click="datas.swiperType = 0"/>
                 </el-tooltip>
 
-                <el-tooltip
-                        class="item"
-                        content="轮播海报"
-                        effect="dark"
-                        placement="bottom"
-                >
-          <span
-                  :class="datas.swiperType === 1 ? 'active' : ''"
-                  class="iconfont icon-icon_tupian_lunbohaibao"
-                  style="font-size: 20px"
-                  @click="datas.swiperType = 1"
-          />
+                <el-tooltip class="item" content="轮播海报" effect="dark" placement="bottom">
+                    <span :class="datas.swiperType === 1 ? 'active' : ''" class="iconfonts icon-icon_tupian_lunbohaibao" style="font-size: 20px" @click="datas.swiperType = 1"/>
                 </el-tooltip>
 
-                <el-tooltip
-                        class="item"
-                        content="多图单行"
-                        effect="dark"
-                        placement="bottom"
-                >
-          <span
-                  :class="datas.swiperType === 2 ? 'active' : ''"
-                  class="iconfont icon-daohanghengxianghuadong"
-                  style="font-size: 24px"
-                  @click="datas.swiperType = 2"
-          />
+                <el-tooltip class="item" content="多图单行" effect="dark" placement="bottom">
+                    <span :class="datas.swiperType === 2 ? 'active' : ''" class="iconfonts icon-daohanghengxianghuadong" style="font-size: 24px" @click="datas.swiperType = 2"/>
                 </el-tooltip>
 
-                <el-tooltip
-                        class="item"
-                        content="立体轮播"
-                        effect="dark"
-                        placement="bottom"
-                >
-          <span
-                  :class="datas.swiperType === 3 ? 'active' : ''"
-                  class="iconfont icon-xiaotuhengxianghuadong"
-                  style="font-size: 24px"
-                  @click="datas.swiperType = 3"
-          />
+                <el-tooltip class="item" content="立体轮播" effect="dark" placement="bottom">
+                    <span :class="datas.swiperType === 3 ? 'active' : ''" class="iconfonts icon-xiaotuhengxianghuadong" style="font-size: 24px" @click="datas.swiperType = 3"/>
                 </el-tooltip>
             </div>
 
@@ -81,9 +41,7 @@
             <div v-if="datas.imageList[0]">
                 <vuedraggable :animation="200" :forceFallback="true" :list="datas.imageList" item-key="index">
                     <template #item="{ element, index }">
-                        <section
-                                class="imgBanner"
-                        >
+                        <section class="imgBanner">
                             <van-icon class="el-icon-circle-close" name="close" @click="deleteimg(index)"/>
                             <!-- 图片 -->
                             <div class="imag">
@@ -91,35 +49,15 @@
                             </div>
                             <!-- 标题和链接 -->
                             <div class="imgText">
-                                <el-input
-                                        v-model="element.text"
-                                        placeholder="请输入标题，也可不填"
-                                        size="small"
-                                ></el-input>
+                                <el-input v-model="element.text" placeholder="请输入标题，也可不填" size="small"></el-input>
 
                                 <!-- 选择类型 -->
                                 <div class="select-type">
-                                    <el-select
-                                            v-model="element.linktype"
-                                            placeholder="请选择跳转类型"
-                                            size="small"
-                                            style="width: 60%"
-                                    >
-                                        <el-option
-                                                v-for="element in optionsType"
-                                                :key="element.name"
-                                                :label="element.name"
-                                                :value="element.type"
-                                        ></el-option>
+                                    <el-select v-model="element.linktype" placeholder="请选择跳转类型" size="small" style="width: 60%">
+                                        <el-option v-for="element in optionsType" :key="element.name" :label="element.name" :value="element.type"></el-option>
                                     </el-select>
-
                                     <!-- 输入链接 -->
-                                    <el-input
-                                            v-model="element.http.externalLink"
-                                            placeholder="请输入链接，输入前确保可以访问"
-                                            size="small"
-                                            style="width: 100%"
-                                    ></el-input>
+                                    <el-input v-model="element.http.externalLink" placeholder="请输入链接，输入前确保可以访问" size="small" style="width: 100%"></el-input>
                                 </div>
                             </div>
                         </section>
@@ -127,23 +65,14 @@
                 </vuedraggable>
             </div>
             <!-- 上传图片 -->
-            <el-button
-                    class="uploadImg"
-                    plain
-                    type="primary"
-                    @click="$refs.upload.showUpload()"
-            >
+            <el-button class="uploadImg" plain type="primary" @click="$refs.pictureRef.openDialog()">
                 点击添加图片
             </el-button>
 
             <!-- 下划线 -->
             <div class="bor"></div>
 
-            <el-form-item
-                    v-show="datas.swiperType === 2"
-                    class="lef"
-                    label="一行个数"
-            >
+            <el-form-item v-show="datas.swiperType === 2" class="lef" label="一行个数">
                 <!-- 单选框 -->
                 <el-radio-group v-model="datas.rowindividual" class="radi">
                     <el-radio :label="2">2个</el-radio>
@@ -170,59 +99,36 @@
 
             <!-- 图片倒角 -->
             <el-form-item class="lef borrediu" label="图片倒角">
-                <el-slider
-                        v-model="datas.borderRadius"
-                        :max="30"
-                        input-size="small"
-                        show-input
-                ></el-slider>
+                <el-slider v-model="datas.borderRadius" :max="30" input-size="small" show-input></el-slider>
             </el-form-item>
 
             <div style="height: 10px"/>
 
             <!-- 页面边距 -->
-            <el-form-item
-                    v-show="datas.swiperType === 0"
-                    class="lef"
-                    label="页面边距"
-            >
-                <el-slider
-                        v-model="datas.pageMargin"
-                        :max="20"
-                        input-size="small"
-                        show-input
-                ></el-slider>
+            <el-form-item v-show="datas.swiperType === 0" class="lef" label="页面边距">
+                <el-slider v-model="datas.pageMargin" :max="20" input-size="small" show-input></el-slider>
             </el-form-item>
 
             <div style="height: 10px"/>
 
             <!-- 图片边距 -->
-            <el-form-item
-                    v-show="datas.swiperType === 0 || datas.swiperType === 2"
-                    class="lef"
-                    label="图片边距"
-            >
-                <el-slider
-                        v-model="datas.imageMargin"
-                        :max="20"
-                        input-size="small"
-                        show-input
-                ></el-slider>
+            <el-form-item v-show="datas.swiperType === 0 || datas.swiperType === 2" class="lef" label="图片边距">
+                <el-slider v-model="datas.imageMargin" :max="20" input-size="small" show-input></el-slider>
             </el-form-item>
         </el-form>
 
         <!-- 上传图片 -->
-        <uploadimg ref="upload" @uploadInformation="uploadInformation"/>
+        <PictureDialog ref="pictureRef" :maxLength="0" :minType="minType" @refresh="pictureRefresh"/>
     </div>
 </template>
 
 <script>
 import vuedraggable from 'vuedraggable' //拖拽组件
-import uploadimg from '../../uploadImg/index.vue' //图片上传
+import PictureDialog from '/@/components/picture/index.vue' //图片上传
 
 export default {
   name: 'pictureadsstyle',
-  components: {vuedraggable, uploadimg},
+  components: {PictureDialog, vuedraggable},
   props: {
     datas: Object
   },
@@ -238,7 +144,8 @@ export default {
           name: '外部链接'
         }
       ], // 选择跳转类型
-      emptyText: ''
+      emptyText: '',
+      minType: 'image'
     }
   },
 
@@ -248,11 +155,13 @@ export default {
   methods: {
 
     // 提交
-    uploadInformation (res) {
-      this.datas.imageList.push({
-        src: res,
-        text: '',
-        http: {}
+    pictureRefresh (row) {
+      row.forEach(item => {
+        this.datas.imageList.push({
+          src: item.url,
+          text: '',
+          http: {}
+        })
       })
     },
 

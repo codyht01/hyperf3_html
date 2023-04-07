@@ -6,33 +6,14 @@
         <!-- 表单 -->
         <el-form :model="datas" :rules="rules" label-width="80px" size="small">
             <!-- 标题内容 -->
-            <el-form-item
-                    v-show="datas.commoditylisttype !== 2"
-                    class="lef"
-                    label="选择模板"
-            >
+            <el-form-item v-show="datas.commoditylisttype !== 2" class="lef" label="选择模板">
                 <p style="color: #000">{{ styleText }}</p>
             </el-form-item>
 
             <!-- 商品样式选择 -->
             <div v-show="datas.commoditylisttype !== 2" class="commodityType">
-                <el-tooltip
-                        v-for="(item, index) in commodityTypes"
-                        :key="index"
-                        :content="item.content"
-                        class="item"
-                        effect="dark"
-                        placement="bottom"
-                >
-          <span
-                  :class="[
-              item.type === datas.commodityType ? 'active' : '',
-              item.icon,
-            ]"
-                  class="iconfont"
-                  style="font-size: 21px"
-                  @click="datas.commodityType = index"
-          />
+                <el-tooltip v-for="(item, index) in commodityTypes" :key="index" :content="item.content" class="item" effect="dark" placement="bottom">
+                    <span :class="[item.type === datas.commodityType ? 'active' : '',item.icon,]" class="iconfonts" style="font-size: 21px" @click="datas.commodityType = index"/>
                 </el-tooltip>
             </div>
 
@@ -42,26 +23,13 @@
             <!-- 商品类型选择 -->
             <el-form-item class="lef" label="商品类型">
                 <el-radio-group v-model="datas.commoditylisttype">
-                    <el-radio v-for="index in 3" :key="index" :label="index - 1"
-                    >类型{{ index }}
-                    </el-radio
-                    >
+                    <el-radio v-for="index in 3" :key="index" :label="index - 1">类型{{ index }}</el-radio>
                 </el-radio-group>
             </el-form-item>
 
             <!-- tabbar颜色 -->
-            <el-form-item
-                    v-show="datas.commoditylisttype !== 0"
-                    class="lef"
-                    label="标签颜色"
-            >
-                <el-color-picker
-                        v-model="datas.tabColor"
-                        :predefine="predefineColors"
-                        class="picke"
-                        show-alpha
-                >
-                </el-color-picker>
+            <el-form-item v-show="datas.commoditylisttype !== 0" class="lef" label="标签颜色">
+                <el-color-picker v-model="datas.tabColor" :predefine="predefineColors" class="picke" show-alpha></el-color-picker>
             </el-form-item>
 
             <div v-show="datas.commoditylisttype === 0">
@@ -72,43 +40,19 @@
 
                 <!-- 图片广告 -->
                 <div v-if="datas.imageList[0]">
-                    <vuedraggable
-                            :animation="200"
-                            :forceFallback="true"
-                            :list="datas.imageList"
-                            item-key="index"
-                    >
+                    <vuedraggable :animation="200" :forceFallback="true" :list="datas.imageList" item-key="index">
                         <template #item="{ element, index }">
                             <section class="imgBanner">
-                                <van-icon
-                                        class="el-icon-circle-close"
-                                        name="close"
-                                        @click="deleteimg(index)"
-                                />
+                                <van-icon class="el-icon-circle-close" name="close" @click="deleteimg(index)"/>
                                 <div class="imag">
                                     <img :src="element.coverUrl" alt="" draggable="false"/>
                                 </div>
                                 <div class="imgText">
                                     <div>
-                                        <el-input
-                                                v-model="element.name"
-                                                disabled="disabled"
-                                                size="small"
-                                                style="width: 65%"
-                                        />
-                                        <el-input
-                                                v-model.number="element.price"
-                                                disabled="disabled"
-                                                size="small"
-                                                style="width: 35%"
-                                                type="number"
-                                        />
+                                        <el-input v-model="element.name" disabled="disabled" size="small" style="width: 65%"/>
+                                        <el-input v-model.number="element.price" disabled="disabled" size="small" style="width: 35%" type="number"/>
                                     </div>
-                                    <el-input
-                                            v-model="element.introduce"
-                                            disabled="disabled"
-                                            size="small"
-                                    />
+                                    <el-input v-model="element.introduce" disabled="disabled" size="small"/>
                                 </div>
                             </section>
                         </template>
@@ -116,79 +60,41 @@
                 </div>
 
                 <!-- 上传图片 -->
-                <el-button
-                        class="uploadImg"
-                        plain
-                        type="primary"
-                        @click="dialogVisibleshow('imageList', null)"
-                >点击添加商品
-                </el-button
-                >
+                <el-button class="uploadImg" plain type="primary" @click="dialogVisibleshow('imageList', null)">点击添加商品</el-button>
             </div>
 
             <div v-show="datas.commoditylisttype !== 0">
                 <h5 style="color: #000; font-size: 14px; margin-left: 7px">
                     添加商品分组
-                    <el-button
-                            plain
-                            size="small"
-                            style="padding: 2px 4px; margin-left: 200px"
-                            type="primary"
-                            @click="addGrouping"
-                    >
+                    <el-button plain size="small" style="padding: 2px 4px; margin-left: 200px" type="primary" @click="addGrouping">
                         添加
-                    </el-button
-                    >
+                    </el-button>
                 </h5>
-                <p
-                        style="
+                <p style="
             color: #969799;
             font-size: 12px;
             margin-left: 7px;
             margin-top: 10px;
-          "
-                >
+          ">
                     鼠标拖拽调整分组顺序
                 </p>
 
                 <!-- 分类名称 -->
-                <section
-                        v-for="(item, index) in datas.commoditylisttypetab"
-                        :key="index"
-                >
+                <section v-for="(item, index) in datas.commoditylisttypetab" :key="index">
                     <div class="bor"/>
 
-                    <el-input
-                            v-model="item.text"
-                            class="tit"
-                            placeholder="请输入分组名称"
-                            size="small"
-                            style="width: 100px"
-                    />
-                    <van-icon
-                            name="delete-o"
-                            style="
+                    <el-input v-model="item.text" class="tit" placeholder="请输入分组名称" size="small" style="width: 100px"/>
+                    <van-icon name="delete-o" style="
               cursor: pointer;
               padding: 2px 4px;
               margin-left: 200px;
               color: red;
-            "
-                            @click="delecommoditylisttypetab(index)"
-                    />
+            " @click="delecommoditylisttypetab(index)"/>
 
-                    <vuedraggable
-                            :animation="200"
-                            :forceFallback="true"
-                            :list="item.imageList"
-                            item-key="index"
-                    >
+                    <vuedraggable :animation="200" :forceFallback="true" :list="item.imageList" item-key="index">
                         <template #item="{ element, ind }">
                             <section class="imgBanner">
-                                <van-icon
-                                        class="el-icon-circle-close"
-                                        name="close"
-                                        @click="delecommodityimg(index, ind)"
-                                />
+                                <van-icon class="el-icon-circle-close" name="close" @click="delecommodityimg(index, ind)"/>
                                 <!-- 图片 -->
                                 <div class="imag">
                                     <img :src="element.coverUrl" alt="" draggable="false"/>
@@ -196,38 +102,16 @@
                                 <!-- 标题和链接 -->
                                 <div class="imgText">
                                     <div>
-                                        <el-input
-                                                v-model="element.name"
-                                                disabled="disabled"
-                                                size="small"
-                                                style="width: 65%"
-                                        />
-                                        <el-input
-                                                v-model.number="element.price"
-                                                disabled="disabled"
-                                                size="small"
-                                                style="width: 35%"
-                                                type="number"
-                                        />
+                                        <el-input v-model="element.name" disabled="disabled" size="small" style="width: 65%"/>
+                                        <el-input v-model.number="element.price" disabled="disabled" size="small" style="width: 35%" type="number"/>
                                     </div>
-                                    <el-input
-                                            v-model="element.introduce"
-                                            disabled="disabled"
-                                            size="small"
-                                    />
+                                    <el-input v-model="element.introduce" disabled="disabled" size="small"/>
                                 </div>
                             </section>
                         </template>
                     </vuedraggable>
 
-                    <el-button
-                            class="uploadImg"
-                            plain
-                            type="primary"
-                            @click="dialogVisibleshow('commoditylisttypetab', index)"
-                    >点击添加商品
-                    </el-button
-                    >
+                    <el-button class="uploadImg" plain type="primary" @click="dialogVisibleshow('commoditylisttypetab', index)">点击添加商品</el-button>
                 </section>
             </div>
 
@@ -237,14 +121,7 @@
             <el-form-item class="lef" label="商品样式"/>
             <!-- 商品样式选择 -->
             <div class="moditystyle">
-        <span
-                v-for="(item, index) in moditystyles"
-                :key="index"
-                :class="item.type == datas.moditystyle ? 'active' : ''"
-                @click="datas.moditystyle = index"
-        >
-          {{ item.text }}
-        </span>
+                <span v-for="(item, index) in moditystyles" :key="index" :class="item.type == datas.moditystyle ? 'active' : ''" @click="datas.moditystyle = index">          {{ item.text }}        </span>
             </div>
 
             <div class="bor"/>
@@ -252,72 +129,37 @@
             <!-- 显示位置 -->
             <el-form-item class="lef" label="显示位置">
                 <div class="weiz">
-                    <i
-                            :class="datas.positions === 'left' ? 'active' : ''"
-                            class="iconfont icon-horizontal-left"
-                            @click="datas.positions = 'left'"
-                    />
-                    <i
-                            :class="datas.positions === 'center' ? 'active' : ''"
-                            class="iconfont icon-juzhong"
-                            @click="datas.positions = 'center'"
-                    />
+                    <i :class="datas.positions === 'left' ? 'active' : ''" class="iconfonts icon-horizontal-left" @click="datas.positions = 'left'"/>
+                    <i :class="datas.positions === 'center' ? 'active' : ''" class="iconfonts icon-juzhong" @click="datas.positions = 'center'"/>
                 </div>
             </el-form-item>
 
             <div style="height: 10px"/>
 
             <!-- 文本粗细 -->
-            <el-form-item
-                    :hide-required-asterisk="true"
-                    class="lef"
-                    label="文本粗细"
-                    prop="textWeight"
-            >
-                <el-input
-                        v-model.number="datas.textWeight"
-                        placeholder="请输入文本粗细"
-                        type="number"
-                />
+            <el-form-item :hide-required-asterisk="true" class="lef" label="文本粗细" prop="textWeight">
+                <el-input v-model.number="datas.textWeight" placeholder="请输入文本粗细" type="number"/>
             </el-form-item>
 
             <div style="height: 10px"/>
 
             <!-- 图片倒角 -->
             <el-form-item class="lef borrediu" label="图片倒角">
-                <el-slider
-                        v-model="datas.borderRadius"
-                        :max="30"
-                        input-size="small"
-                        show-input
-                >
-                </el-slider>
+                <el-slider v-model="datas.borderRadius" :max="30" input-size="small" show-input></el-slider>
             </el-form-item>
 
             <div style="height: 10px"/>
 
             <!-- 页面边距 -->
             <el-form-item class="lef" label="页面边距">
-                <el-slider
-                        v-model="datas.pageMargin"
-                        :max="20"
-                        input-size="small"
-                        show-input
-                >
-                </el-slider>
+                <el-slider v-model="datas.pageMargin" :max="20" input-size="small" show-input></el-slider>
             </el-form-item>
 
             <div style="height: 10px"/>
 
             <!-- 商品间距 -->
             <el-form-item class="lef" label="商品间距">
-                <el-slider
-                        v-model="datas.commodityMargin"
-                        :max="20"
-                        input-size="small"
-                        show-input
-                >
-                </el-slider>
+                <el-slider v-model="datas.commodityMargin" :max="20" input-size="small" show-input></el-slider>
             </el-form-item>
 
             <div style="height: 10px"/>
@@ -326,18 +168,8 @@
                 <div class="shop-head-pic" style="text-align: center">
                     <img v-if="datas.bgImg" :src="datas.bgImg" alt="" class="home-bg"/>
                     <div class="shop-head-pic-btn" style="text-align: center">
-                        <el-button
-                                class="uploadImg"
-                                plain
-                                type="primary"
-                                @click="showUpload('0')"
-                        >更换图片
-                        </el-button
-                        >
-                        <el-button class="uploadImg" type="primary" @click="clear()"
-                        >清空图片
-                        </el-button
-                        >
+                        <el-button class="uploadImg" plain type="primary" @click="showUpload('0')">更换图片</el-button>
+                        <el-button class="uploadImg" type="primary" @click="clear()">清空图片</el-button>
                     </div>
                 </div>
             </el-form-item>
@@ -345,10 +177,7 @@
             <!--商品价格 -->
             <el-form-item class="lef" label="商品价格">
                 {{ datas.priceofcommodity ? '显示' : '隐藏' }}
-                <el-checkbox
-                        v-model="datas.priceofcommodity"
-                        style="margin-left: 196px"
-                />
+                <el-checkbox v-model="datas.priceofcommodity" style="margin-left: 196px"/>
             </el-form-item>
 
             <div style="height: 10px"/>
@@ -356,28 +185,13 @@
             <!--购买按钮 -->
             <el-form-item class="lef" label="购买按钮">
                 {{ datas.purchasebutton ? '显示' : '隐藏' }}
-                <el-checkbox
-                        v-model="datas.purchasebutton"
-                        style="margin-left: 196px"
-                />
+                <el-checkbox v-model="datas.purchasebutton" style="margin-left: 196px"/>
             </el-form-item>
 
-            <el-radio-group
-                    v-show="datas.purchasebutton"
-                    v-model="datas.purchasebuttonType"
-                    class="radi1"
-            >
-                <el-radio v-for="index in 8" :key="index" :label="index - 1"
-                >样式{{ index }}
-                </el-radio
-                >
+            <el-radio-group v-show="datas.purchasebutton" v-model="datas.purchasebuttonType" class="radi1">
+                <el-radio v-for="index in 8" :key="index" :label="index - 1">样式{{ index }}</el-radio>
 
-                <el-input
-                        v-show="datas.purchasebuttonType > 3"
-                        v-model="datas.purchase"
-                        size="small"
-                        style="width: 40%; margin-top: 10px"
-                />
+                <el-input v-show="datas.purchasebuttonType > 3" v-model="datas.purchase" size="small" style="width: 40%; margin-top: 10px"/>
             </el-radio-group>
 
             <div style="height: 10px"/>
@@ -385,67 +199,43 @@
             <!--商品角标 -->
             <el-form-item class="lef" label="商品角标">
                 {{ datas.commoditycorner ? '显示' : '隐藏' }}
-                <el-checkbox
-                        v-model="datas.commoditycorner"
-                        style="margin-left: 196px"
-                />
+                <el-checkbox v-model="datas.commoditycorner" style="margin-left: 196px"/>
             </el-form-item>
 
-            <el-radio-group
-                    v-show="datas.commoditycorner"
-                    v-model="datas.commoditycornertype"
-                    class="radi1"
-            >
-                <el-radio v-for="(item, index) in marker" :key="index" :label="index">{{
-                    item
-                    }}
-                </el-radio>
+            <el-radio-group v-show="datas.commoditycorner" v-model="datas.commoditycornertype" class="radi1">
+                <el-radio v-for="(item, index) in marker" :key="index" :label="index">{{ item }}</el-radio>
             </el-radio-group>
 
             <el-form-item class="lef" label="颜色">
-                <el-color-picker
-                        v-model="datas.commodityTagColor"
-                        :predefine="predefineColors"
-                        class="picke"
-                        show-alpha
-                >
-                </el-color-picker>
+                <el-color-picker v-model="datas.commodityTagColor" :predefine="predefineColors" class="picke" show-alpha></el-color-picker>
             </el-form-item>
 
             <el-form-item class="lef" label="位置">
                 <el-radio-group v-model="datas.tagPosition" class="radi1">
-                    <el-radio
-                            v-for="(item, index) in tagPosition"
-                            :key="index"
-                            :label="index"
-                    >{{ item }}
-                    </el-radio
-                    >
+                    <el-radio v-for="(item, index) in tagPosition" :key="index" :label="index">{{ item }}</el-radio>
                 </el-radio-group>
             </el-form-item>
         </el-form>
 
         <!-- 上传商品 -->
-        <uploadCommodity
-                ref="upload"
-                @uploadListInformation="uploadListInformation"
-        />
+        <uploadCommodity ref="upload" @uploadListInformation="uploadListInformation"/>
         <!-- 上传图片 -->
-        <uploadimg ref="uploadImg" @uploadInformation="uploadInformation"/>
+        <PictureDialog ref="pictureRef" :maxLength="0" :minType="minType" @refresh="pictureRefresh"/>
     </div>
 </template>
 
 <script>
 import uploadCommodity from '../../uploadCommodity/index.vue' //图片上传
 import uploadimg from '../../uploadImg/index.vue' //图片上传
-import vuedraggable from 'vuedraggable' //拖拽组件
+import vuedraggable from 'vuedraggable'
+import PictureDialog from '/@/components/picture/index.vue' //拖拽组件
 
 export default {
   name: 'listswitchingstyle',
   props: {
     datas: Object
   },
-  components: {vuedraggable, uploadCommodity, uploadimg},
+  components: {PictureDialog, vuedraggable, uploadCommodity, uploadimg},
   data () {
     let kon = (rule, value, callback) => {
       if (value.length === 0) callback(new Error('请输入有效数字'))
@@ -571,14 +361,14 @@ export default {
 
     showUpload (type) {
       this.uploadImgDataType = type
-      this.$refs.uploadImg.showUpload()
+      this.$refs.pictureRef.openDialog()
     },
 
     // 背景图
-    uploadInformation (res) {
+    pictureRefresh (res) {
       console.log(res, '---------uploadImg')
       if (this.uploadImgDataType === '0') {
-        this.datas.bgImg = res
+        this.datas.bgImg = res[0].url
         console.log(this.datas.bgImg, '---------uploadImg')
       }
     },
@@ -652,7 +442,7 @@ export default {
     .home-bg {
       width: 100px;
       height: 100px;
-      margin: 10px auto;
+      //margin: 10px auto;
     }
 
     .shop-head-pic-btn {

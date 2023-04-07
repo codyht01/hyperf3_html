@@ -37,7 +37,7 @@
                                     <template #deles>
                                         <div v-show="deleShow" class="deles" @click.stop="deleteObj(index)">
                                             <!-- 删除组件 -->
-                                            <span class="iconfont icon-sanjiaoxingzuo"></span>
+                                            <span class="iconfonts icon-sanjiaoxingzuo"></span>
                                             {{ element.text }}
                                             <van-icon name="delete"/>
                                         </div>

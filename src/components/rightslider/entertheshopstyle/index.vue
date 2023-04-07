@@ -4,49 +4,20 @@
         <h2>{{ datas.text }}</h2>
 
         <!-- 表单 -->
-        <el-form
-                :model="datas"
-                :rules="rules"
-                label-position="top"
-                label-width="80px"
-                size="small"
-        >
-            <el-form-item
-                    :hide-required-asterisk="true"
-                    label="左侧标题"
-                    prop="shopName"
-            >
-                <el-input
-                        v-model="datas.shopName"
-                        maxlength="10"
-                        placeholder="请输入左侧标题"
-                        show-word-limit
-                />
+        <el-form :model="datas" :rules="rules" label-position="top" label-width="80px" size="small">
+            <el-form-item :hide-required-asterisk="true" label="左侧标题" prop="shopName">
+                <el-input v-model="datas.shopName" maxlength="10" placeholder="请输入左侧标题" show-word-limit/>
             </el-form-item>
 
             <!-- 文案 -->
-            <el-form-item
-                    :hide-required-asterisk="true"
-                    label="右侧内容"
-                    prop="copywriting"
-            >
-                <el-input
-                        v-model="datas.copywriting"
-                        maxlength="8"
-                        placeholder="请输入右侧内容"
-                        show-word-limit
-                />
+            <el-form-item :hide-required-asterisk="true" label="右侧内容" prop="copywriting">
+                <el-input v-model="datas.copywriting" maxlength="8" placeholder="请输入右侧内容" show-word-limit/>
             </el-form-item>
 
             <el-form-item label="左侧图标">
                 <img v-if="datas.icon" :src="datas.icon"/>
                 <!-- 添加导航按钮 -->
-                <el-button
-                        class="uploadImg"
-                        plain
-                        type="primary"
-                        @click="$refs.upload.showUpload()"
-                >
+                <el-button class="uploadImg" plain type="primary" @click="$refs.pictureRef.openDialog()">
                     点击{{ datas.icon ? '更换' : '添加' }}图片
                 </el-button>
             </el-form-item>
@@ -54,35 +25,18 @@
             <!-- 跳转页面 -->
             <el-form-item label="跳转页面">
                 <div class="imgText">
-                    <el-select
-                            v-model="datas.type"
-                            placeholder="请选择跳转类型"
-                            size="small"
-                            style="width: 60%"
-                    >
-                        <el-option
-                                v-for="item in optionsType"
-                                :key="item.name"
-                                :label="item.name"
-                                :value="item.type"
-                        >
-                        </el-option>
+                    <el-select v-model="datas.type" placeholder="请选择跳转类型" size="small" style="width: 60%">
+                        <el-option v-for="item in optionsType" :key="item.name" :label="item.name" :value="item.type"></el-option>
                     </el-select>
 
                     <!-- 输入链接 -->
-                    <el-input
-                            v-model="datas.http.externalLink"
-                            placeholder="请输入链接，输入前确保可以访问"
-                            size="small"
-                            style="width: 100%"
-                    >
-                    </el-input>
+                    <el-input v-model="datas.http.externalLink" placeholder="请输入链接，输入前确保可以访问" size="small" style="width: 100%"></el-input>
                 </div>
             </el-form-item>
         </el-form>
 
         <!-- 上传图片 -->
-        <uploadimg ref="upload" @uploadInformation="uploadInformation"/>
+        <PictureDialog ref="pictureRef" :maxLength="0" :minType="'image'" @refresh="pictureRefresh"/>
     </div>
 </template>
 
@@ -121,8 +75,8 @@ export default {
   },
   methods: {
     // 提交
-    uploadInformation (res) {
-      this.datas.icon = res
+    pictureRefresh (res) {
+      this.datas.icon = res[0].url
       console.log(res)
     }
   },

@@ -1,76 +1,26 @@
 <template>
     <div class="uploadCommodity">
         <!-- 选择商品 -->
-        <el-dialog
-                v-model="dialogVisible"
-                :close-on-click-modal="false"
-                :close-on-press-escape="false"
-                :lock-scroll="true"
-                :show-close="false"
-                center
-                title="选择商品"
-                width="500px"
-        >
+        <el-dialog v-model="dialogVisible" :close-on-click-modal="false" :close-on-press-escape="false" :lock-scroll="true" :show-close="false" center title="选择商品" width="500px">
             <!-- 选择类型 -->
-            <el-select
-                    v-model="type"
-                    placeholder="请选择跳转类型"
-                    size="small"
-                    style="width: 60%"
-                    @change="selectType()"
-            >
-                <el-option
-                        v-for="item in optionsType"
-                        :key="item.name"
-                        :label="item.name"
-                        :value="item.type"
-                ></el-option>
+            <el-select v-model="type" placeholder="请选择跳转类型" size="small" style="width: 60%" @change="selectType()">
+                <el-option v-for="item in optionsType" :key="item.name" :label="item.name" :value="item.type"></el-option>
             </el-select>
 
             <!-- 选择 -->
-            <el-select
-                    v-if="type !== '11'"
-                    v-model="dialogImageUrl.name"
-                    :no-data-text="emptyText"
-                    placeholder="请选择图片跳转链接"
-                    size="small"
-                    style="width: 60%; margin-top: 15px"
-                    @change="changeId"
-                    @visible-change="
-          (isVisible) => {
-            return changeType(isVisible, type)
-          }
-        "
-            >
-                <el-option
-                        v-for="item in options"
-                        :key="item.id"
-                        :disabled="item.disabled"
-                        :label="item.name"
-                        :value="item"
-                ></el-option>
+            <el-select v-if="type !== '11'" v-model="dialogImageUrl.name" :no-data-text="emptyText" placeholder="请选择图片跳转链接" size="small" style="width: 60%; margin-top: 15px" @change="changeId" @visible-change="(isVisible) => {return changeType(isVisible, type)}">
+                <el-option v-for="item in options" :key="item.id" :disabled="item.disabled" :label="item.name" :value="item"></el-option>
             </el-select>
 
             <!-- 输入外部链接 -->
-            <el-input
-                    v-if="type === '11'"
-                    v-model="externalLink"
-                    placeholder="请输入链接，输入前确保可以访问"
-                    size="small"
-                    style="width: 60%; margin-top: 15px"
-            ></el-input>
+            <el-input v-if="type === '11'" v-model="externalLink" placeholder="请输入链接，输入前确保可以访问" size="small" style="width: 60%; margin-top: 15px"/>
 
             <!-- 按钮 -->
             <template #footer>
-        <span class="dialog-footer">
-          <el-button @click="handleClose">取 消 上 传</el-button>
-          <el-button
-                  :disabled="disabl"
-                  type="primary"
-                  @click="uploadInformation"
-          >点 击 上 传</el-button
-          >
-        </span>
+                <div class="dialog-footer">
+                    <el-button @click="handleClose">取 消 上 传</el-button>
+                    <el-button :disabled="disabl" type="primary" @click="uploadInformation">点 击 上 传</el-button>
+                </div>
             </template>
         </el-dialog>
     </div>

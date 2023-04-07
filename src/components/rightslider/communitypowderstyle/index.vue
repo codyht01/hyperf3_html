@@ -4,24 +4,13 @@
         <h2>{{ datas.text }}</h2>
         <div style="height: 20px"/>
         <!-- 表单 -->
-        <el-form
-                :model="datas"
-                :rules="rules"
-                label-position="top"
-                label-width="80px"
-                size="small"
-        >
+        <el-form :model="datas" :rules="rules" label-position="top" label-width="80px" size="small">
             <div style="height: 10px"/>
 
             <!-- 描述 -->
             <el-form-item :hide-required-asterisk="true" label="入口图片">
                 <div class="backgroundImg" @click="showImg('mainImg')">
-                    <img
-                            v-if="!datas.mainImg"
-                            alt=""
-                            draggable="false"
-                            src="../../../assets/images/powder.png"
-                    />
+                    <img v-if="!datas.mainImg" alt="" draggable="false" src="../../../assets/images/powder.png"/>
                     <img v-else :src="datas.mainImg" alt="" draggable="false"/>
                     <p>更换图片</p>
                 </div>
@@ -38,38 +27,21 @@
 
             <!-- 标题 -->
             <el-form-item :hide-required-asterisk="true" label="标题" prop="title">
-                <el-input
-                        v-model="datas.title"
-                        placeholder="个人微信号, 群名称或活动标题"
-                        show-word-limit
-                />
+                <el-input v-model="datas.title" placeholder="个人微信号, 群名称或活动标题" show-word-limit/>
             </el-form-item>
 
             <div style="height: 10px"/>
 
             <!-- 描述 -->
             <el-form-item :hide-required-asterisk="true" label="描述" prop="describe">
-                <el-input
-                        v-model="datas.describe"
-                        placeholder="请添加描述"
-                        show-word-limit
-                />
+                <el-input v-model="datas.describe" placeholder="请添加描述" show-word-limit/>
             </el-form-item>
 
             <div style="height: 10px"/>
 
             <!-- 按钮名称 -->
-            <el-form-item
-                    :hide-required-asterisk="true"
-                    label="按钮名称"
-                    prop="buttonName"
-            >
-                <el-input
-                        v-model="datas.buttonName"
-                        maxlength="8"
-                        placeholder="请输入按钮名称"
-                        show-word-limit
-                />
+            <el-form-item :hide-required-asterisk="true" label="按钮名称" prop="buttonName">
+                <el-input v-model="datas.buttonName" maxlength="8" placeholder="请输入按钮名称" show-word-limit/>
             </el-form-item>
 
             <div style="height: 10px"/>
@@ -77,23 +49,17 @@
             <!-- 背景颜色 -->
             <el-form-item class="color-select" label="背景颜色">
                 <!-- 颜色选择器 -->
-                <el-color-picker
-                        v-model="datas.backColor"
-                        :predefine="predefineColors"
-                        class="picke"
-                        show-alpha
-                >
-                </el-color-picker>
+                <el-color-picker v-model="datas.backColor" :predefine="predefineColors" class="picke" show-alpha></el-color-picker>
             </el-form-item>
         </el-form>
 
         <!-- 上传图片 -->
-        <uploadimg ref="upload" @uploadInformation="uploadInformation"/>
+        <PictureDialog ref="pictureRef" :maxLength="0" :minType="'image'" @refresh="pictureRefresh"/>
     </div>
 </template>
 
 <script>
-import uploadimg from '../../uploadImg/index.vue' //图片上传
+import PictureDialog from '/@/components/picture/index.vue'
 
 export default {
   name: 'communitypowderstyle',
@@ -141,15 +107,15 @@ export default {
   },
   methods: {
     // 提交
-    uploadInformation (res) {
-      this.datas[this.imgText] = res
+    pictureRefresh (res) {
+      this.datas[this.imgText] = res[0].url
     },
     showImg (res) {
       this.imgText = res
-      this.$refs.upload.showUpload()
+      this.$refs.pictureRef.openDialog()
     }
   },
-  components: {uploadimg}
+  components: {PictureDialog}
 }
 </script>
 

@@ -6,59 +6,22 @@
         </div>
 
         <!-- 一行一个 -->
-        <div
-                v-if="imageList[0] && swiperType === 0"
-                :style="{
-        'padding-left': datas.pageMargin + 'px',
-        'padding-right': datas.pageMargin + 'px',
-      }"
-                class="type0"
-        >
-            <div
-                    v-for="(item, index) in imageList"
-                    :key="index"
-                    :style="{ 'margin-bottom': datas.imageMargin + 'px' }"
-                    class="imgLis"
-            >
+        <div v-if="imageList[0] && swiperType === 0" :style="{'padding-left': datas.pageMargin + 'px','padding-right': datas.pageMargin + 'px',}" class="type0">
+            <div v-for="(item, index) in imageList" :key="index" :style="{ 'margin-bottom': datas.imageMargin + 'px'}" class="imgLis">
                 <!-- 图片 -->
-                <img
-                        :src="item.src"
-                        :style="{ 'border-radius': datas.borderRadius + 'px' }"
-                        draggable="false"
-                />
+                <img :src="item.src" :style="{ 'border-radius': datas.borderRadius + 'px' }" draggable="false"/>
                 <!-- 图片标题 -->
                 <p v-show="item.text ? true : false" class="title">{{ item.text }}</p>
             </div>
         </div>
 
         <!-- 轮播组件 -->
-        <div
-                v-if="
-        (imageList[0] && swiperType === 1) ||
-        swiperType === 2 ||
-        swiperType === 3
-      "
-                class="swiper-container pointer-events"
-        >
-            <div
-                    :class="
-          swiperType === 3 && imageList[0]
-            ? 'type3 type1 swiper-wrapper type3H'
-            : 'swiper-wrapper type1'
-        "
-            >
-                <div
-                        v-for="(item, index) in imageList"
-                        :key="index"
-                        class="swiper-slide"
-                >
+
+        <div v-if="(imageList[0] && swiperType === 1) || swiperType === 2 || swiperType === 3" class="swiper-container pointer-events">
+            <div :class="swiperType === 3 && imageList[0] ? 'type3 type1 swiper-wrapper type3H':'swiper-wrapper type1'">
+                <div v-for="(item, index) in imageList" :key="index" class="swiper-slide">
                     <!-- 图片 -->
-                    <img
-                            :src="item.src"
-                            :style="{ 'border-radius': datas.borderRadius + 'px' }"
-                            alt=""
-                            draggable="false"
-                    />
+                    <img :src="item.src" :style="{ 'border-radius': datas.borderRadius + 'px' }" alt="" draggable="false"/>
                     <!-- 图片标题 -->
                     <p v-show="item.text ? true : false" class="title">{{ item.text }}</p>
                 </div>
@@ -66,6 +29,7 @@
 
             <!-- 分页器 -->
             <div class="swiper-pagination" style="color: #007aff"></div>
+
         </div>
 
         <!-- 删除组件 -->
@@ -74,8 +38,8 @@
 </template>
 
 <script>
-import { Swiper } from 'swiper/vue'
-import 'swiper/css'
+import 'swiper/css/swiper.min.css'
+import Swiper from 'swiper'
 
 export default {
   name: 'pictureads',
@@ -241,6 +205,7 @@ export default {
     .swiper-slide {
       width: 100%;
       height: 250px;
+      overflow: hidden !important;
     }
 
     img {

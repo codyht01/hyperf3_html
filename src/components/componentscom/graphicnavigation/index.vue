@@ -1,80 +1,29 @@
 <template>
-    <div
-            :style="{ backgroundImage: 'url(' + datas.bgImg + ')' }"
-            class="graphicnavigation"
-    >
+    <div :style="{ backgroundImage: 'url(' + datas.bgImg + ')' }" class="graphicnavigation">
         <!-- 默认导航 -->
-        <section
-                v-if="!datas.imageList[0]"
-                :style="{
-        background: datas.backgroundColor,
-        display: datas.imgStyle === 0 ? 'flex' : '-webkit-box',
-        'overflow-x': datas.imgStyle === 0 ? '' : 'scroll',
-      }"
-                class="defaultNavigation"
-        >
+        <section v-if="!datas.imageList[0]" :style="{background: datas.backgroundColor || '#fff',display: datas.imgStyle === 0 ? 'flex' : '-webkit-box','overflow-x': datas.imgStyle === 0 ? '' : 'scroll',}" class="defaultNavigation">
             <!-- 导航 -->
-            <div
-                    v-for="index in 5"
-                    :key="index"
-                    :style="{
-          width:
-            datas.imgStyle === 0 ? 'auto' : 375 / datas.showSize - 1 + 'px',
-        }"
-                    class="navigationList"
-            >
+            <div v-for="index in 5" :key="index" :style="{width:datas.imgStyle === 0 ? 'auto' : 375 / datas.showSize - 1 + 'px',}" class="navigationList">
                 <!-- 图片 -->
-                <img
-                        v-show="datas.navigationType === 0"
-                        :style="{ 'border-radius': datas.borderRadius + '%' }"
-                        alt="默认图片"
-                        draggable="false"
-                        src="../../../assets/images/imgs.png"
-                />
+                <img v-show="datas.navigationType === 0" :style="{ 'border-radius': datas.borderRadius + '%' }" alt="默认图片" draggable="false" src="../../../assets/images/imgs.png"/>
                 <!-- 文字 -->
                 <p :style="{ color: datas.textColor }">导航</p>
             </div>
         </section>
 
         <!-- 导航列表 -->
-        <section
-                v-else
-                :style="{
-        background: datas.backgroundColor,
-        display: datas.imgStyle === 0 ? 'flex' : '-webkit-box',
-        'flex-wrap': datas.imgStyle === 0 ? 'wrap' : 'nowrap',
-        'justify-content':
-          datas.imgStyle === 0 ? 'space-evenly' : 'space-around',
-        'overflow-x': datas.imgStyle === 0 ? '' : 'scroll',
-      }"
-                class="defaultNavigation"
-        >
+        <section v-else :style="{display: datas.imgStyle === 0 ? 'flex' : '-webkit-box','flex-wrap': datas.imgStyle === 0 ? 'wrap' : 'nowrap','justify-content':datas.imgStyle === 0 ? 'space-evenly' : 'space-around','overflow-x': datas.imgStyle === 0 ? '' : 'scroll',}" class="defaultNavigation">
             <!-- 导航 -->
-            <div
-                    v-for="(item, index) in datas.imageList"
-                    :key="index"
-                    :style="{
-          width: datas.imgStyle === 0 ? '20%' : 375 / datas.showSize - 1 + 'px',
-        }"
-                    class="navigationList"
-            >
+            <div v-for="(item, index) in datas.imageList" :key="index" :style="{width: datas.imgStyle === 0 ? '20%' : 375 / datas.showSize - 1 + 'px',}" class="navigationList">
                 <!-- 图片 -->
-                <img
-                        v-show="datas.navigationType === 0"
-                        :src="item.src"
-                        :style="{ 'border-radius': datas.borderRadius + '%' }"
-                        alt="默认图片"
-                        draggable="false"
-                />
+                <img v-show="datas.navigationType === 0" :src="item.src" :style="{ 'border-radius': datas.borderRadius + '%' }" alt="默认图片" draggable="false"/>
                 <!-- 文字 -->
-                <p
-                        :style="{
+                <p :style="{
             color: datas.textColor,
             'font-size': datas.textSize + 'px',
             height: datas.textHeight + 'px',
             'line-height': datas.textHeight + 'px',
-          }"
-                >
+          }">
                     {{ item.text }}
                 </p>
             </div>
