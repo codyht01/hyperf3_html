@@ -9,7 +9,6 @@ import request from '/@/utils/request'
  */
 export function useGoodsApi() {
     return {
-        //账号密码登录
         getGoodsEditInfo: (data: object) => {
             return request({
                 url: '/api/goods/getInfo',

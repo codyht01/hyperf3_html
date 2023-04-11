@@ -21,6 +21,7 @@ const modules = import.meta.globEager('./components/**/*.vue')
 Object.keys(modules).forEach((path) => {
     const name = path.match(/\.\/components\/(.*)\.vue$/)?.[1]
     if (name) {
+        // @ts-ignore
         app.component(modules[path].default.name, modules[path].default)
     }
 })
@@ -28,4 +29,5 @@ Object.keys(modules).forEach((path) => {
 directive(app)
 other.elSvg(app)
 
+// @ts-ignore
 app.use(pinia).use(router).use(ElementPlus, {i18n: i18n.global.t}).use(i18n).use(VueGridLayout).use(Vant).mount('#app')
