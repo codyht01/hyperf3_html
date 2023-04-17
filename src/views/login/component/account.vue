@@ -1,47 +1,47 @@
 <template>
-  <el-form class="login-content-form" size="large">
-    <el-form-item class="login-animation1">
-      <el-input v-model="state.ruleForm.userName" :placeholder="$t('message.account.accountPlaceholder1')" autocomplete="off" clearable text>
-        <template #prefix>
-          <el-icon class="el-input__icon">
-            <ele-User/>
-          </el-icon>
-        </template>
-      </el-input>
-    </el-form-item>
-    <el-form-item class="login-animation2">
-      <el-input v-model="state.ruleForm.password" :placeholder="$t('message.account.accountPlaceholder2')" :type="state.isShowPassword ? 'text' : 'password'" autocomplete="off">
-        <template #prefix>
-          <el-icon class="el-input__icon">
-            <ele-Unlock/>
-          </el-icon>
-        </template>
-        <template #suffix>
-          <i :class="state.isShowPassword ? 'icon-yincangmima' : 'icon-xianshimima'" class="iconfont el-input__icon login-content-password" @click="state.isShowPassword = !state.isShowPassword"> </i>
-        </template>
-      </el-input>
-    </el-form-item>
-    <el-form-item class="login-animation3">
-      <el-col :span="15">
-        <el-input v-model="state.ruleForm.code" :placeholder="$t('message.account.accountPlaceholder3')" autocomplete="off" clearable maxlength="4" text @keyup.enter.native="onSignIn">
-          <template #prefix>
-            <el-icon class="el-input__icon">
-              <ele-Position/>
-            </el-icon>
-          </template>
-        </el-input>
-      </el-col>
-      <el-col :span="1"></el-col>
-      <el-col :span="8" class="captcha_bg">
-        <el-image v-waves :src="captcha_src" class="login-content-code" fit="contain" @click="click_Captcha"/>
-      </el-col>
-    </el-form-item>
-    <el-form-item class="login-animation4">
-      <el-button v-waves :loading="state.loading.signIn" class="login-content-submit" round type="primary" @click="onSignIn">
-        <span>{{ $t('message.account.accountBtnText') }}</span>
-      </el-button>
-    </el-form-item>
-  </el-form>
+    <el-form class="login-content-form" size="large">
+        <el-form-item class="login-animation1">
+            <el-input v-model="state.ruleForm.userName" :placeholder="$t('message.account.accountPlaceholder1')" autocomplete="off" clearable text>
+                <template #prefix>
+                    <el-icon class="el-input__icon">
+                        <ele-User/>
+                    </el-icon>
+                </template>
+            </el-input>
+        </el-form-item>
+        <el-form-item class="login-animation2">
+            <el-input v-model="state.ruleForm.password" :placeholder="$t('message.account.accountPlaceholder2')" :type="state.isShowPassword ? 'text' : 'password'" autocomplete="off">
+                <template #prefix>
+                    <el-icon class="el-input__icon">
+                        <ele-Unlock/>
+                    </el-icon>
+                </template>
+                <template #suffix>
+                    <i :class="state.isShowPassword ? 'icon-yincangmima' : 'icon-xianshimima'" class="iconfont el-input__icon login-content-password" @click="state.isShowPassword = !state.isShowPassword"> </i>
+                </template>
+            </el-input>
+        </el-form-item>
+        <el-form-item class="login-animation3">
+            <el-col :span="15">
+                <el-input v-model="state.ruleForm.code" :placeholder="$t('message.account.accountPlaceholder3')" autocomplete="off" clearable maxlength="4" text @keyup.enter.native="onSignIn">
+                    <template #prefix>
+                        <el-icon class="el-input__icon">
+                            <ele-Position/>
+                        </el-icon>
+                    </template>
+                </el-input>
+            </el-col>
+            <el-col :span="1"></el-col>
+            <el-col :span="8" class="captcha_bg" @click="click_Captcha">
+                <el-image v-waves :src="captcha_src" class="login-content-code" fit="contain"/>
+            </el-col>
+        </el-form-item>
+        <el-form-item class="login-animation4">
+            <el-button v-waves :loading="state.loading.signIn" class="login-content-submit" round type="primary" @click="onSignIn">
+                <span>{{ $t('message.account.accountBtnText') }}</span>
+            </el-button>
+        </el-form-item>
+    </el-form>
 </template>
 
 <script lang="ts" name="loginAccount" setup>
@@ -65,76 +65,76 @@ const {themeConfig} = storeToRefs(storesThemeConfig)
 const route = useRoute()
 const router = useRouter()
 const state = reactive({
-  isShowPassword: false,
-  ruleForm: {
-    userName: '',
-    password: '',
-    code: '',
-  },
-  loading: {
-    signIn: false,
-  },
+    isShowPassword: false,
+    ruleForm: {
+        userName: '',
+        password: '',
+        code: '',
+    },
+    loading: {
+        signIn: false,
+    },
 })
 let captcha_src = ref("/api/captcha?math=" + Math.random())
 
 const click_Captcha = () => {
-  captcha_src.value = "/api/captcha?math=" + Math.random()
+    captcha_src.value = "/api/captcha?math=" + Math.random()
 }
 // 时间获取
 const currentTime = computed(() => {
-  return formatAxis(new Date())
+    return formatAxis(new Date())
 })
 // 登录
 const onSignIn = async () => {
-  state.loading.signIn = true
-  useLoginApi().signIn({
-    ...state.ruleForm
-  }).then(async res => {
-    if (res.code == 1) {
-      state.loading.signIn = false
-      // 存储 token 到浏览器缓存
-      Session.set('token', res.data.token)
-      if (!themeConfig.value.isRequestRoutes) {
-        // 前端控制路由，2、请注意执行顺序
-        const isNoPower = await initFrontEndControlRoutes()
-        signInSuccess(isNoPower)
-      } else {
-        // 模拟后端控制路由，isRequestRoutes 为 true，则开启后端控制路由
-        // 添加完动态路由，再进行 router 跳转，否则可能报错 No match found for location with path "/"
-        const isNoPower = await initBackEndControlRoutes()
-        // 执行完 initBackEndControlRoutes，再执行 signInSuccess
-        signInSuccess(isNoPower)
-      }
-    }
-  }).catch(() => {
-    state.loading.signIn = false
-  })
+    state.loading.signIn = true
+    useLoginApi().signIn({
+        ...state.ruleForm
+    }).then(async res => {
+        if (res.code == 1) {
+            state.loading.signIn = false
+            // 存储 token 到浏览器缓存
+            Session.set('token', res.data.token)
+            if (!themeConfig.value.isRequestRoutes) {
+                // 前端控制路由，2、请注意执行顺序
+                const isNoPower = await initFrontEndControlRoutes()
+                signInSuccess(isNoPower)
+            } else {
+                // 模拟后端控制路由，isRequestRoutes 为 true，则开启后端控制路由
+                // 添加完动态路由，再进行 router 跳转，否则可能报错 No match found for location with path "/"
+                const isNoPower = await initBackEndControlRoutes()
+                // 执行完 initBackEndControlRoutes，再执行 signInSuccess
+                signInSuccess(isNoPower)
+            }
+        }
+    }).catch(() => {
+        state.loading.signIn = false
+    })
 }
 // 登录成功后的跳转
 const signInSuccess = (isNoPower: boolean | undefined) => {
-  if (isNoPower) {
-    ElMessage.warning('抱歉，您没有登录权限')
-    Session.clear()
-  } else {
-    // 初始化登录成功时间问候语
-    let currentTimeInfo = currentTime.value
-    // 登录成功，跳到转首页
-    // 如果是复制粘贴的路径，非首页/登录页，那么登录成功后重定向到对应的路径中
-    if (route.query?.redirect) {
-      router.push({
-        path: <string>route.query?.redirect,
-        query: Object.keys(<string>route.query?.params).length > 0 ? JSON.parse(<string>route.query?.params) : '',
-      })
+    if (isNoPower) {
+        ElMessage.warning('抱歉，您没有登录权限')
+        Session.clear()
     } else {
-      router.push('/')
+        // 初始化登录成功时间问候语
+        let currentTimeInfo = currentTime.value
+        // 登录成功，跳到转首页
+        // 如果是复制粘贴的路径，非首页/登录页，那么登录成功后重定向到对应的路径中
+        if (route.query?.redirect) {
+            router.push({
+                path: <string>route.query?.redirect,
+                query: Object.keys(<string>route.query?.params).length > 0 ? JSON.parse(<string>route.query?.params) : '',
+            })
+        } else {
+            router.push('/')
+        }
+        // 登录成功提示
+        const signInText = t('message.signInText')
+        ElMessage.success(`${currentTimeInfo}，${signInText}`)
+        // 添加 loading，防止第一次进入界面时出现短暂空白
+        NextLoading.start()
     }
-    // 登录成功提示
-    const signInText = t('message.signInText')
-    ElMessage.success(`${currentTimeInfo}，${signInText}`)
-    // 添加 loading，防止第一次进入界面时出现短暂空白
-    NextLoading.start()
-  }
-  state.loading.signIn = false
+    state.loading.signIn = false
 }
 </script>
 
