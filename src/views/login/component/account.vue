@@ -103,7 +103,7 @@ const onSignIn = async () => {
                 // 添加完动态路由，再进行 router 跳转，否则可能报错 No match found for location with path "/"
                 const isNoPower = await initBackEndControlRoutes()
                 // 执行完 initBackEndControlRoutes，再执行 signInSuccess
-                signInSuccess(isNoPower)
+                signInSuccess(false)
             }
         }
     }).catch(() => {

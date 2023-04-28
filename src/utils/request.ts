@@ -35,6 +35,7 @@ service.interceptors.response.use(
     (response) => {
         // 对响应数据做点什么
         const res = response.data
+        return res
         if (res.code != 1) {
             // `token` 过期或者账号已在别处登录
             if (res.code === 401 || res.code === 4001) {

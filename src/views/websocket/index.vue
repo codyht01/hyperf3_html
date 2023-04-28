@@ -51,7 +51,12 @@ import {Session} from "/@/utils/storage"
 
 
 const sendMessage = () => {
-    socket.value.send(keywords.value)
+    const sendData = {
+        type: 'message',
+        token: Session.get('token'),
+        msg: keywords.value
+    }
+    sendPushData(sendData)
 }
 const keywords = ref()
 const scrollable = ref()
@@ -60,15 +65,12 @@ const messages = ref([
     {sender: 'me', text: 'Hi', time: '09:01'},
     {sender: 'friend', text: 'How are you?', time: '09:02'}
 ])
-
+const sendPushData = (data: object) => {
+    const sendData = JSON.stringify(data)
+    socket.value.send(sendData)
+}
 const reconnectTimer = ref()
 const socket = ref()
-const headers = new Headers({
-    'Authorization': 'Bearer myToken',
-    'Custom-Header': 'Some value'
-})
-const token = "111111111111"
-const userId = "2222222222222"
 const connect = () => {
     socket.value = new WebSocket("ws://192.168.0.88:9502")
     socket.value.addEventListener("open", handleOpenMessage)
@@ -83,7 +85,11 @@ const reconnect = () => {
     }, 3000)
 }
 const handleOpenMessage = (event: any) => {
-    socket.value.send(Session.get('token'))
+    const sendData = {
+        type: 'login',
+        token: Session.get('token')
+    }
+    sendPushData(sendData)
 }
 const handleMessage = (event: { data: any; }) => {
     console.log("message", event.data)
