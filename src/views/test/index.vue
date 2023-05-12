@@ -9,58 +9,57 @@ import {useTestApi} from "/@/api/test"
 
 
 const arr = [
-    "1fb3ed80",
-    "1fde1790",
-    "1fe136a8",
-    "1fe6c1d8",
-    "1fe81e08",
-    "1fe2fa28",
-    "242e1858",
-    "24231e70",
-    "2435f8c8",
-    "1fccb408",
-    "1fccb5f0",
-    "1fccc160",
-    "24569570",
-    "24569d10",
-    "24569758",
-    "2456ac50",
-    "24569940",
-    "24569ef8",
-    "2456a0e0",
-    "2456a2c8",
-    "24569b28",
-    "2456a698",
-    "2456a4b0",
-    "2456ae38",
-    "2456b020",
-    "2456a880",
-    "2456aa68",
-    "24569388",
-    "24963f78",
-    "24964160",
-    "24964900",
-    "24964ae8",
-    "24963408",
-    "249637d8",
-    "249639c0",
-    "24bba698",
-    "24bb9570",
-    "24bb9570",
-    "24ffd8b0",
-    "24ffd8b0",
-    "24ffde68",
-    "24ffe238",
-    "24ffcb58",
-    "297d8980",
-    "297d7488",
-    "297d7488",
-    "2c956860",
+    "203ebb50",
+    "2045ede8",
+    "20ec3b78",
+    "20458848",
+    "1f7a4960",
+    "1f7a5e58",
+    "210dfd20",
+    "210df580",
+    "210e04c0",
+    "210e06a8",
+    "210dea10",
+    "214d7d30",
+    "214d7f18",
+    "214d8c70",
+    "214d8100",
+    "214d7778",
+    "214d82e8",
+    "214d7590",
+    "214d86b8",
+    "214d8e58",
+    "214d88a0",
+    "214d84d0",
+    "214d8a88",
+    "214d7b48",
+    "214d9040",
+    "214d73a8",
+    "214d7960",
+    "218d6190",
+    "218d72b8",
+    "218d6560",
+    "218d6ee8",
+    "218d70d0",
+    "218d7688",
+    "218d6748",
+    "218d6d00",
+    "1f77d618",
+    "1f77c8c0",
+    "1f77caa8",
+    "1f77d430",
+    "1f7a5e58",
+    "1f7a4960",
+    "25dc8b60",
+    "25dc7a38",
+    "25dc7c20",
+    "25dc8790",
+    "265b5750",
 ]
 const new_arr = arr.filter(function (item, index) {
     return arr.indexOf(item) === index  // 因为indexOf 只能查找到第一个
 })
-new_arr.forEach(async item => {
+new_arr.forEach(item => {
     const json = {
         "action": "query_db",
         "data": {
@@ -68,10 +67,10 @@ new_arr.forEach(async item => {
             "sql": "select name from sqlite_master where type='table'"
         }
     }
-    await useTestApi().setTestApi(json).then(res => {
+    useTestApi().setTestApi(json).then(res => {
         if (res) {
             res.forEach(async (value: { name: string; }, index: string) => {
-
+                //
                 const json1 = {
                     "action": "query_db",
                     "data": {
@@ -85,7 +84,7 @@ new_arr.forEach(async item => {
                         await writeToFile(JSON.stringify(rr), value.name + index)
                     } else {
                         console.log("-------------" + item + "     " + value.name, rr)
-                        await writeToFile(JSON.stringify(rr), value.name + index)
+                        await writeToFile(JSON.stringify(json1), value.name + index)
                     }
                 })
 

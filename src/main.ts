@@ -29,5 +29,6 @@ Object.keys(modules).forEach((path) => {
 directive(app)
 other.elSvg(app)
 
-// @ts-ignore
+// app.provide('$webSocket', webSocket)
+
 app.use(pinia).use(router).use(ElementPlus, {i18n: i18n.global.t}).use(i18n).use(VueGridLayout).use(Vant).mount('#app')

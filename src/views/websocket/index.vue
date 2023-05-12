@@ -3,10 +3,11 @@
         <el-card class="layout-padding-auto" shadow="hover">
             <div class="chat w100">
                 <div class="chat_left hidden-md-and-down">
-                    111
+                    <User :selectIndex="selectIndex" @handleIndex="handleIndex"/>
                 </div>
                 <div class="chat_right padding_con">
                     <div ref="scrollable" class="chat_content w100">
+
                         <div v-for="(item,index) in messages" :key="index">
                             <div v-if="item.sender == 'friend'">
                                 <div class="message-time">{{ item.time }}</div>
@@ -45,19 +46,22 @@
 </template>
 
 <script lang="ts" setup>
-import {onMounted, onUnmounted, ref} from "vue"
+import {onBeforeMount, onMounted, ref} from "vue"
 import 'element-plus/theme-chalk/display.css'
-import {Session} from "/@/utils/storage"
+import User from "./components/User.vue"
+import WebSocketService from "/@/plugins/websocket/WebSocketService"
 
+const userList = WebSocketService.userList
+const messageList = WebSocketService.messageList
+console.log("***********", messageList)
+const handleIndex = () => {
 
-const sendMessage = () => {
-    const sendData = {
-        type: 'message',
-        token: Session.get('token'),
-        msg: keywords.value
-    }
-    sendPushData(sendData)
 }
+const selectIndex = ref(0)
+const sendMessage = () => {
+    WebSocketService.sendMessage(keywords.value)
+}
+
 const keywords = ref()
 const scrollable = ref()
 const messages = ref([
@@ -65,57 +69,19 @@ const messages = ref([
     {sender: 'me', text: 'Hi', time: '09:01'},
     {sender: 'friend', text: 'How are you?', time: '09:02'}
 ])
-const sendPushData = (data: object) => {
-    const sendData = JSON.stringify(data)
-    socket.value.send(sendData)
-}
-const reconnectTimer = ref()
-const socket = ref()
-const connect = () => {
-    socket.value = new WebSocket("ws://192.168.0.88:9502")
-    socket.value.addEventListener("open", handleOpenMessage)
-    socket.value.addEventListener("message", handleMessage)
-    socket.value.addEventListener("error", handleErrorMessage)
-    socket.value.addEventListener("close", handleCloseMessage)
-}
-const reconnect = () => {
-    clearTimeout(reconnectTimer.value)
-    reconnectTimer.value = setTimeout(() => {
-        connect()
-    }, 3000)
-}
-const handleOpenMessage = (event: any) => {
-    const sendData = {
-        type: 'login',
-        token: Session.get('token')
-    }
-    sendPushData(sendData)
-}
-const handleMessage = (event: { data: any; }) => {
-    console.log("message", event.data)
-}
-const handleErrorMessage = (event) => {
-    console.log("错误")
-    reconnect()
-}
-const handleCloseMessage = (event) => {
-    console.log("关闭比")
-    reconnect()
-}
+
+
 const setContentScroll = () => {
     //滚动到底部
     scrollable.value.scrollTop = scrollable.value.scrollHeight - scrollable.value.clientHeight
 }
+
 onMounted(() => {
-    connect()
+    WebSocketService.initWebSocket()
     setContentScroll()
 })
-
-onUnmounted(() => {
-    if (socket.value) {
-        socket.value.close()
-    }
-    clearTimeout(reconnectTimer.value)
+onBeforeMount(() => {
+    WebSocketService.closeWebSocket()
 })
 </script>
 
@@ -129,6 +95,12 @@ onUnmounted(() => {
     min-width: 260px;
     border-right: 1px solid #e5e7eb;
     padding-right: 20px;
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+  }
+
+  .chat_left::-webkit-scrollbar {
+    width: 1px;
   }
 
   .chat_right {
