@@ -9,10 +9,17 @@ export function useUserApi() {
                 params,
             })
         },
-        getTestMenu: (params?: object) => {
+        getUserListInfo: (params?: object) => {
             return request({
-                url: '/gitee/lyt-top/vue-next-admin-images/raw/master/menu/testMenu.json',
-                method: 'get',
+                url: '/api/user/getUserListInfo',
+                method: 'post',
+                params,
+            })
+        },
+        updateUserInfo: (params?: object) => {
+            return request({
+                url: '/api/user/updateUserInfo',
+                method: 'post',
                 params,
             })
         },
