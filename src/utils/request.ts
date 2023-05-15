@@ -1,4 +1,4 @@
-import axios, {AxiosInstance, AxiosRequestConfig} from 'axios'
+import axios, {AxiosInstance} from 'axios'
 import {ElMessage, ElMessageBox} from 'element-plus'
 import {Session} from '/@/utils/storage'
 import qs from 'qs'
@@ -17,7 +17,7 @@ const service: AxiosInstance = axios.create({
 
 // 添加请求拦截器
 service.interceptors.request.use(
-    (config: AxiosRequestConfig) => {
+    (config) => {
         // 在发送请求之前做些什么 token
         if (Session.get('token')) {
             config.headers!['Authorization'] = `Bearer ${Session.get('token')}`
@@ -35,7 +35,7 @@ service.interceptors.response.use(
     (response) => {
         // 对响应数据做点什么
         const res = response.data
-        
+
         if (res.code != 1) {
             // `token` 过期或者账号已在别处登录
             if (res.code === 401 || res.code === 4001) {
