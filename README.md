@@ -44,7 +44,8 @@
 
 ```bash
 # 克隆项目
-git clone https://gitee.com/codyht/hyperf3_html.git
+git clone https://gitee.com/codyht/hyperf3_html.git && git clone https://github.com/codyht01/hyperf3_html.git
+
 
 # 进入项目
 cd vue-next-admin
@@ -68,6 +69,7 @@ cnpm run build
 #### 💒 后端
 
 <a href="https://gitee.com/codyht/hyperf3" target="_blank">gitee</a>
+<a href="https://github.com/codyht01/hyperf3_html" target="_blank">github</a>
 
 #### ❤️ 鸣谢列表
 
