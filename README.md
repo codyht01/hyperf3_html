@@ -1,5 +1,4 @@
 <div align="center">
-	<img src="https://img-blog.csdnimg.cn/9efd5420327a46b7bd6d93524a97229d.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAbHl0LXRvcA==,size_14,color_FFFFFF,t_70,g_se,x_16">
 	<p align="center">
 	    <a href="https://v3.vuejs.org/" target="_blank">
 	        <img src="https://img.shields.io/badge/vue.js-vue3.x-green" alt="vue">
@@ -22,17 +21,7 @@
 
 #### 🌈 介绍
 
-基于 vue3.x + CompositionAPI setup 语法糖 + typescript + vite + element plus + vue-router-next + pinia 技术，适配手机、平板、pc 的后台开源免费模板，希望减少工作量，帮助大家实现快速开发。
-
-#### ⛱️ 线上预览
-
-- vue3.x 版本预览（vue-next-admin）<a href="https://lyt-top.gitee.io/vue-next-admin-preview/#/login" target="_blank">https://lyt-top.gitee.io/vue-next-admin-preview/#/login</a>
-- vue2.x 版本预览（vue-prev-admin）<a href="https://lyt-top.gitee.io/vue-prev-admin-preview/#/login" target="_blank">https://lyt-top.gitee.io/vue-prev-admin-preview/#/login</a>
-
-#### 💒 代码仓库
-
-- vue3.x 版本 <a href="https://gitee.com/lyt-top/vue-next-admin" target="_blank">https://gitee.com/lyt-top/vue-next-admin</a>
-- vue2.x 版本 <a href="https://gitee.com/lyt-top/vue-next-admin/tree/vue-prev-admin" target="_blank">https://gitee.com/lyt-top/vue-next-admin/tree/vue-prev-admin</a>
+基于 vue3.x + CompositionAPI setup 语法糖 + typescript + vite + element plus + vue-router-next + pinia + swoole(hyperf3) 技术，适配手机、平板、pc 的后台开源免费模板，希望减少工作量，帮助大家实现快速开发。
 
 #### 🚧 安装 cnpm、yarn
 
@@ -42,7 +31,7 @@
 #### 🏭 环境支持
 
 | Edge      | Firefox      | Chrome      | Safari      |
-| --------- | ------------ | ----------- | ----------- |
+|-----------|--------------|-------------|-------------|
 | Edge ≥ 88 | Firefox ≥ 78 | Chrome ≥ 87 | Safari ≥ 13 |
 
 > 由于 Vue3 不再支持 IE11，故而 ElementPlus 也不支持 IE11 及之前版本。
@@ -55,7 +44,7 @@
 
 ```bash
 # 克隆项目
-git clone https://gitee.com/lyt-top/vue-next-admin.git
+git clone https://gitee.com/codyht/hyperf3_html.git
 
 # 进入项目
 cd vue-next-admin
@@ -70,43 +59,15 @@ cnpm run dev
 cnpm run build
 ```
 
-#### 📚 开发文档
-
-- 查看开发文档：<a href="https://lyt-top.gitee.io/vue-next-admin-doc-preview" target="_blank">vue-next-admin-doc</a>
-
 #### 💯 学习交流加 QQ 群
 
 > 若加群了没同意（一般秒过），那就是群满了（500 人群），请换一个群试试。群会定期清理半年（6 个月）未发言的群友，资源有限，请谅解。建议勿加多群，可能会误伤！微信群由于只有 `7天有效` 就不放这里了。
 
-- 1 群：<a target="_blank" href="https://qm.qq.com/cgi-bin/qm/qr?k=RdUY97Vx0T0vZ_1OOu-X1yFNkWgDwbjC&jump_from=webapi">665452019</a>
-- 2 群：<a target="_blank" href="https://qm.qq.com/cgi-bin/qm/qr?k=zVfy3gNy7pNWVK3kMduDzwU369PZg2fw&jump_from=webapi">766356862</a>
-- 3 群：<a target="_blank" href="https://qm.qq.com/cgi-bin/qm/qr?k=02EWb5P2JkP-8iwzaDadgFdxA0HSHPpn&jump_from=webapi">795345435</a>
-- 4 群：<a target="_blank" href="https://qm.qq.com/cgi-bin/qm/qr?k=0gTFO04WwkeZZ6R4lju6gucbeXHK-wNd&jump_from=webapi">736626228</a>
+- 1 群：<a target="_blank" href="https://qm.qq.com/cgi-bin/qm/qr?k=RdUY97Vx0T0vZ_1OOu-X1yFNkWgDwbjC&jump_from=webapi">548591567</a>
 
-  <a target="_blank" href="https://qm.qq.com/cgi-bin/qm/qr?k=RdUY97Vx0T0vZ_1OOu-X1yFNkWgDwbjC&jump_from=webapi">
-  	<img src="https://img-blog.csdnimg.cn/35e00f12a3fe4820892ec630ca72f15f.png" width="220" height="220" alt="vue-next-admin 讨论群1" title="vue-next-admin 讨论群1"/>
-  </a>
-  <a target="_blank" href="https://qm.qq.com/cgi-bin/qm/qr?k=zVfy3gNy7pNWVK3kMduDzwU369PZg2fw&jump_from=webapi">
-  	<img src="https://img-blog.csdnimg.cn/5f1b548abd9f434eb41edde31d1c1fa9.png" width="220" height="220" alt="vue-next-admin 讨论群2" title="vue-next-admin 讨论群2"/>
-  </a>
-  <a target="_blank" href="https://qm.qq.com/cgi-bin/qm/qr?k=02EWb5P2JkP-8iwzaDadgFdxA0HSHPpn&jump_from=webapi">
-  	<img src="https://img-blog.csdnimg.cn/70c8a012dd304246bddeac2184c4ab3a.png" width="220" height="220" alt="vue-next-admin 讨论群3" title="vue-next-admin 讨论群3"/>
-  </a>
-  <a target="_blank" href="https://qm.qq.com/cgi-bin/qm/qr?k=0gTFO04WwkeZZ6R4lju6gucbeXHK-wNd&jump_from=webapi">
-  	<img src="https://img-blog.csdnimg.cn/e5c9704eed1342bc9d9e74b37203402d.png" width="220" height="220" alt="vue-next-admin 讨论群4" title="vue-next-admin 讨论群4"/>
-  </a>
+#### 💒 后端
 
-#### 💒 集成后端
-
-- <a target="_blank" href="https://github.com/PandaGoAdmin/PandaX">@熊猫 PandaGoAdmin</a>
-- <a target="_blank" href="https://toscode.gitee.com/GionConnection/gopro_free">@甜蜜蜜 GoPro 平台</a>
-- <a target="_blank" href="https://gitee.com/GionConnection/niupi-free">@甜蜜蜜 NiuPi 平台</a>
-- <a target="_blank" href="https://gitee.com/tiger1103/gfast/tree/os-v3/">@游子 GFast-V3</a>
-- <a target="_blank" href="https://gitee.com/diygw/diygw-ui-php/">@diygw.com gw-ui-php</a>
-- <a target="_blank" href="https://gitee.com/zsvg/vboot-net">@zsvg vboot-net</a>
-- <a target="_blank" href="https://gitee.com/zsvg/vboot-java">@zsvg vboot-java</a>
-- <a target="_blank" href="https://gitee.com/wonderful-code/buildadmin">@青红造了个白 buildadmin</a>
-- <a target="_blank" href="https://github.com/xiaodingding/iotfast">@Goodwell iotfast(一个开源的物联网平台)</a>
+<a href="https://gitee.com/codyht/hyperf3" target="_blank">gitee</a>
 
 #### ❤️ 鸣谢列表
 
@@ -135,15 +96,7 @@ cnpm run build
 - <a href="https://github.com/antoniandre/splitpanes" target="_blank">splitpanes</a>
 - <a href="https://github.com/jsplumb/jsplumb" target="_blank">jsplumb</a>
 - <a href="https://github.com/hxj9102/table2excel" target="_blank">js-table2excel</a>
-
-#### 💕 特别感谢
-
-特别感谢老哥们的建议、指导与帮忙。谢谢！
-
-- <a href="https://gitee.com/click33/sa-plus" target="_blank">@省长</a>
-- <a href="https://gitee.com/jskz/Jskz-SpringCloud" target="_blank">@唐参</a>
-- <a href="https://gitee.com/chuange" target="_blank">@川歌</a>
-- @华仔
+- <a href="https://gitee.com/lyt-top/vue-next-admin" target="_blank">vue-next-admin</a>
 
 #### 💌 支持作者
 
