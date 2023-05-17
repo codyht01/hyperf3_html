@@ -13,14 +13,21 @@ export function useUserApi() {
             return request({
                 url: '/api/user/getUserListInfo',
                 method: 'post',
-                params,
+                data: params,
             })
         },
         updateUserInfo: (params?: object) => {
             return request({
                 url: '/api/user/updateUserInfo',
                 method: 'post',
-                params,
+                data: params,
+            })
+        },
+        updatePwdInfo: (params?: object) => {
+            return request({
+                url: '/api/user/updatePwdInfo',
+                method: 'post',
+                data: params,
             })
         },
     }

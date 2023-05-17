@@ -133,7 +133,7 @@
                                 <div class="personal-edit-safe-item-left-value">当前密码强度：强</div>
                             </div>
                             <div class="personal-edit-safe-item-right">
-                                <el-button text type="primary">立即修改</el-button>
+                                <el-button text type="primary" @click="updatePwd()">立即修改</el-button>
                             </div>
                         </div>
                     </div>
@@ -173,16 +173,37 @@
                 </el-card>
             </el-col>
         </el-row>
+        <el-dialog v-model="dialogState.dialogVisible" title="修改密码">
+            <el-form ref="ruleFormRef" :model="dialogState.dialogForm" :rules="dialogState.rules" autocapitalize="off" label-width="80px" status-icon>
+                <el-form-item label="原密码" prop="pwd">
+                    <el-input v-model="dialogState.dialogForm.pwd" placeholder="请输入原密码" show-password type="password"/>
+                </el-form-item>
+                <el-form-item label="新密码" prop="new_pwd">
+                    <el-input v-model="dialogState.dialogForm.new_pwd" placeholder="请输入新密码" show-password type="password"/>
+                </el-form-item>
+                <el-form-item label="确认密码" prop="com_pwd">
+                    <el-input v-model="dialogState.dialogForm.com_pwd" placeholder="确认密码" show-password type="password"/>
+                </el-form-item>
+            </el-form>
+            <template #footer>
+      <span class="dialog-footer">
+        <el-button size="default" @click="dialogState.dialogVisible = false">取 消</el-button>
+        <el-button size="default" type="primary" @click="dialogSubmit(ruleFormRef)">修 改</el-button>
+      </span>
+            </template>
+        </el-dialog>
     </div>
 </template>
 
 <script lang="ts" name="personal" setup>
-import {computed, onMounted, reactive} from 'vue'
+import {computed, onMounted, reactive, ref} from 'vue'
 import {formatAxis} from '/@/utils/formatTime'
 import {newsInfoList, recommendList} from './mock'
 import {useUserApi} from "/@/api/user"
 import {ElMessage} from "element-plus"
+import {Session} from "/@/utils/storage"
 
+const ruleFormRef = ref()
 // 定义变量内容
 const state = reactive<PersonalState>({
     newsInfoList,
@@ -196,7 +217,64 @@ const state = reactive<PersonalState>({
         id: 0
     },
 })
+const validatePass2 = (rule: any, value: any, callback: any) => {
+    if (value === '') {
+        callback(new Error('请输入密码'))
+    } else if (value !== dialogState.dialogForm.new_pwd) {
+        callback(new Error("两次密码不一致"))
+    } else {
+        callback()
+    }
+}
+const dialogState = reactive({
+    dialogVisible: false,
+    dialogForm: {
+        pwd: '',
+        new_pwd: '',
+        com_pwd: ''
+    },
+    rules: {
+        pwd: [{
+            required: true,
+            message: '请输入原密码',
+            trigger: 'blur',
+        }],
+        new_pwd: [{
+            required: true,
+            message: '请输入新密码',
+            trigger: 'blur',
+        }],
+        com_pwd: [{
+            required: true,
+            message: '请输入确认密码',
+            trigger: 'blur',
+        }, {validator: validatePass2, trigger: 'blur'}]
+    }
+})
 
+const dialogSubmit = (formEl: { validate: (arg0: (valid: any) => false | undefined) => void; }) => {
+    if (!formEl) {
+        return
+    }
+    formEl.validate((valid) => {
+        if (valid) {
+            useUserApi().updatePwdInfo({
+                ...dialogState.dialogForm
+            }).then(res => {
+                if (res) {
+                    Session.set('token', res.data.token)
+                    ElMessage.success(res.msg)
+                }
+            })
+        } else {
+            ElMessage.warning("请先处理错误！")
+            return false
+        }
+    })
+}
+const updatePwd = () => {
+    dialogState.dialogVisible = true
+}
 const rules = reactive({})
 // 当前时间提示语
 const currentTime = computed(() => {
