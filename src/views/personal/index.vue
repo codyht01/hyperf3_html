@@ -6,22 +6,24 @@
                 <el-card header="个人信息" shadow="hover">
                     <div class="personal-user">
                         <div class="personal-user-left">
-                            <el-upload :limit="1" action="https://jsonplaceholder.typicode.com/posts/" class="h100 personal-user-left-upload" multiple>
-                                <img src="https://img2.baidu.com/it/u=1978192862,2048448374&fm=253&fmt=auto&app=138&f=JPEG?w=504&h=500"/>
-                            </el-upload>
+                            <div class="h100 personal-user-left-upload" @click="clickPicture">
+                                <img :src="state.personalForm.avatar_url || 'https://img2.baidu.com/it/u=1978192862,2048448374&fm=253&fmt=auto&app=138&f=JPEG?w=504&h=500'"/>
+                            </div>
                         </div>
                         <div class="personal-user-right">
                             <el-row>
-                                <el-col :span="24" class="personal-title mb18">{{ currentTime }}，admin，生活变的再糟糕，也不妨碍我变得更好！</el-col>
+                                <el-col :span="24" class="personal-title mb18">{{ currentTime }}，{{ state.personalForm.userName }}，{{ state.personalForm.autograph }}</el-col>
                                 <el-col :span="24">
                                     <el-row>
                                         <el-col :sm="8" :xs="24" class="personal-item mb6">
                                             <div class="personal-item-label">昵称：</div>
-                                            <div class="personal-item-value">小柒</div>
+                                            <div class="personal-item-value">{{ state.personalForm.userName }}</div>
                                         </el-col>
                                         <el-col :sm="16" :xs="24" class="personal-item mb6">
-                                            <div class="personal-item-label">身份：</div>
-                                            <div class="personal-item-value">超级管理</div>
+                                            <div class="personal-item-label">性别：</div>
+                                            <div v-if="state.personalForm.sex == 1" class="personal-item-value">男</div>
+                                            <div v-else-if="state.personalForm.sex == 2" class="personal-item-value">女</div>
+                                            <div v-else class="personal-item-value">保密</div>
                                         </el-col>
                                     </el-row>
                                 </el-col>
@@ -29,11 +31,11 @@
                                     <el-row>
                                         <el-col :sm="8" :xs="24" class="personal-item mb6">
                                             <div class="personal-item-label">登录IP：</div>
-                                            <div class="personal-item-value">192.168.1.1</div>
+                                            <div class="personal-item-value">{{ state.personalForm.last_login_ip }}</div>
                                         </el-col>
                                         <el-col :sm="16" :xs="24" class="personal-item mb6">
                                             <div class="personal-item-label">登录时间：</div>
-                                            <div class="personal-item-value">2021-02-05 18:47:26</div>
+                                            <div class="personal-item-value">{{ formatDate(new Date(state.personalForm.last_login_time * 1000), 'YYYY-mm-dd HH:MM:SS') }}</div>
                                         </el-col>
                                     </el-row>
                                 </el-col>
@@ -85,12 +87,17 @@
                         <el-row :gutter="35">
                             <el-col :lg="6" :md="8" :sm="12" :xl="4" :xs="24" class="mb20">
                                 <el-form-item label="昵称" prop="name">
-                                    <el-input v-model="state.personalForm.userName" clearable placeholder="请输入昵称"></el-input>
+                                    <el-input v-model="state.personalForm.userName" clearable disabled placeholder="请输入昵称"></el-input>
                                 </el-form-item>
                             </el-col>
                             <el-col :lg="6" :md="8" :sm="12" :xl="4" :xs="24" class="mb20">
                                 <el-form-item label="邮箱">
-                                    <el-input v-model="state.personalForm.email" clearable placeholder="请输入邮箱"></el-input>
+                                    <el-input v-model="state.personalForm.email" clearable disabled placeholder="请输入邮箱"></el-input>
+                                </el-form-item>
+                            </el-col>
+                            <el-col :lg="6" :md="8" :sm="12" :xl="4" :xs="24" class="mb20">
+                                <el-form-item label="手机">
+                                    <el-input v-model="state.personalForm.phone" clearable disabled placeholder="请输入手机"></el-input>
                                 </el-form-item>
                             </el-col>
                             <el-col :lg="6" :md="8" :sm="12" :xl="4" :xs="24" class="mb20">
@@ -99,14 +106,8 @@
                                 </el-form-item>
                             </el-col>
                             <el-col :lg="6" :md="8" :sm="12" :xl="4" :xs="24" class="mb20">
-                                <el-form-item label="手机">
-                                    <el-input v-model="state.personalForm.phone" clearable placeholder="请输入手机"></el-input>
-                                </el-form-item>
-                            </el-col>
-                            <el-col :lg="6" :md="8" :sm="12" :xl="4" :xs="24" class="mb20">
                                 <el-form-item label="性别">
                                     <el-select v-model="state.personalForm.sex" class="w100" clearable placeholder="请选择性别">
-
                                         <el-option :value="2" label="女"></el-option>
                                         <el-option :value="1" label="男"></el-option>
                                         <el-option :value="3" label="保密"></el-option>
@@ -186,26 +187,49 @@
                 </el-form-item>
             </el-form>
             <template #footer>
-      <span class="dialog-footer">
-        <el-button size="default" @click="dialogState.dialogVisible = false">取 消</el-button>
-        <el-button size="default" type="primary" @click="dialogSubmit(ruleFormRef)">修 改</el-button>
-      </span>
+                <div class="dialog-footer">
+                    <el-button size="default" @click="dialogState.dialogVisible = false">取 消</el-button>
+                    <el-button size="default" type="primary" @click="dialogSubmit(ruleFormRef)">修 改</el-button>
+                </div>
             </template>
         </el-dialog>
+        <PictureDialog ref="pictureRef" :maxLength="0" :minType="dialogPicture.minType" @refresh="pictureRefresh"/>
     </div>
 </template>
 
 <script lang="ts" name="personal" setup>
-import {computed, onMounted, reactive, ref} from 'vue'
-import {formatAxis} from '/@/utils/formatTime'
+import {computed, nextTick, onMounted, reactive, ref} from 'vue'
+import {formatAxis, formatDate} from '/@/utils/formatTime'
 import {newsInfoList, recommendList} from './mock'
 import {useUserApi} from "/@/api/user"
 import {ElMessage} from "element-plus"
 import {Session} from "/@/utils/storage"
+import PictureDialog from "/@/components/picture/index.vue"
+import {useUserInfo} from "/@/stores/userInfo"
 
+const pictureRef = ref()
+const dialogPicture = reactive({
+    minType: 'image'
+})
+const pictureRefresh = (e: { url: string; }[]) => {
+    useUserApi().updateUserAvatar({
+        url: e[0].url
+    }).then(res => {
+        if (res) {
+            state.personalForm.avatar_url = e[0].url
+            ElMessage.success(res.msg)
+        }
+    })
+
+}
+const clickPicture = () => {
+    nextTick(() => {
+        pictureRef.value.openDialog()
+    })
+}
 const ruleFormRef = ref()
 // 定义变量内容
-const state = reactive<PersonalState>({
+const state = reactive({
     newsInfoList,
     recommendList,
     personalForm: {
@@ -214,7 +238,10 @@ const state = reactive<PersonalState>({
         autograph: '',
         phone: '',
         sex: '',
-        id: 0
+        id: 0,
+        last_login_ip: '',
+        last_login_time: '',
+        avatar_url: ''
     },
 })
 const validatePass2 = (rule: any, value: any, callback: any) => {
@@ -280,32 +307,34 @@ const rules = reactive({})
 const currentTime = computed(() => {
     return formatAxis(new Date())
 })
+const stores = useUserInfo()
 const getUserInfo = () => {
-    useUserApi().getUserListInfo({}).then(res => {
-        if (res.code) {
-            state.personalForm.userName = res.data.userName
-            state.personalForm.email = res.data.email
-            state.personalForm.autograph = res.data.autograph
-            state.personalForm.phone = res.data.phone
-            if (res.data.sex == 0) {
-                state.personalForm.sex = ''
-            } else {
-                state.personalForm.sex = res.data.sex
-            }
-            state.personalForm.id = res.data.id
-        }
-    })
+    const userInfos = stores.userInfos
+    state.personalForm.userName = userInfos.userName
+    state.personalForm.email = userInfos.email
+    state.personalForm.autograph = userInfos.autograph
+    state.personalForm.phone = userInfos.phone
+    state.personalForm.last_login_ip = userInfos.last_login_ip
+    state.personalForm.last_login_time = userInfos.last_login_time
+    state.personalForm.avatar_url = userInfos.avatar_url
+    if (userInfos.sex == 0) {
+        state.personalForm.sex = ''
+    } else {
+        state.personalForm.sex = userInfos.sex
+    }
+    state.personalForm.id = Number(userInfos.id)
 }
+
 const updatePersonal = () => {
     useUserApi().updateUserInfo({
         ...state.personalForm
     }).then(res => {
         if (res.code) {
             ElMessage.success(res.msg)
-            getUserInfo()
         }
     })
 }
+
 onMounted(() => {
     getUserInfo()
 })
@@ -330,6 +359,8 @@ onMounted(() => {
       }
 
       .personal-user-left-upload {
+        cursor: pointer;
+
         img {
           width: 100%;
           height: 100%;

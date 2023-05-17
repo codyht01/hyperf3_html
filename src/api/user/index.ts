@@ -30,5 +30,12 @@ export function useUserApi() {
                 data: params,
             })
         },
+        updateUserAvatar: (params?: object) => {
+            return request({
+                url: '/api/user/updateUserAvatar',
+                method: 'post',
+                data: params,
+            })
+        },
     }
 }

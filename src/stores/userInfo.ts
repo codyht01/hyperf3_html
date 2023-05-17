@@ -7,13 +7,21 @@ import {useUserApi} from "/@/api/user"
  * @methods setUserInfos 设置用户信息
  */
 export const useUserInfo = defineStore('userInfo', {
-    state: (): UserInfosState => ({
+    state: () => ({
         userInfos: {
             userName: '',
-            photo: '',
+            avatar_url: '',
             time: 0,
             roles: [],
             authBtnList: [],
+            autograph: '',
+            phone: '',
+            email: '',
+            last_login_ip: '',
+            last_login_time: '',
+            sex: '',
+            id: ''
+
         },
     }),
     actions: {
@@ -65,7 +73,7 @@ export const useUserInfo = defineStore('userInfo', {
                 // 	};
                 // 	resolve(userInfos);
                 // }, 0);
-                useUserApi().getUserInfo().then(res => {
+                useUserApi().getUserListInfo().then(res => {
                     if (res.code == 1) {
                         resolve(res.data)
                     }

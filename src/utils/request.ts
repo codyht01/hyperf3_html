@@ -43,7 +43,7 @@ service.interceptors.response.use(
                 ElMessageBox.alert('你已被登出，请重新登录', '提示', {}).then(() => {
                 }).catch(() => {
                 })
-            } else if (res.code) {
+            } else if (res) {
                 ElMessage.error(res.msg)
             } else {
                 ElMessage.error("发生错误")
