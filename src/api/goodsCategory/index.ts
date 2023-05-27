@@ -9,8 +9,7 @@ import request from '/@/utils/request'
  */
 export function useGoodsCategoryApi() {
     return {
-        //账号密码登录
-        getGoodsCategoryByList: (data: object) => {
+        getGoodsCategoryByList: (data: object = {}) => {
             return request({
                 url: '/api/goodsCategory/getGoodsCategoryByList',
                 method: 'post',

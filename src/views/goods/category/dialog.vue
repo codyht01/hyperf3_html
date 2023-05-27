@@ -4,6 +4,17 @@
       <el-form ref="userDialogFormRef" :model="dialogForm" :rules="dialogRules" autocapitalize="off" label-width="90px" size="default">
         <el-row :gutter="35">
           <el-col :lg="24" :md="24" :sm="24" :xl="24" :xs="24" class="mb20">
+            {{ dialogForm.parent_id }}
+            <el-form-item label="选择分类" prop="parent_id">
+              <el-cascader v-model="dialogForm.parent_id" :options="categoryList" :props="{value:'parent_id',label:'title',multiple:true,checkStrictly:false,emitPath:true}" :show-all-levels="true" clearable collapse-tags style="width:100%">
+                <template #default="{ node, data }">
+                  <span>{{ data.title }}</span>
+                  <span v-if="!node.isLeaf"> ({{ data.children.length }}) </span>
+                </template>
+              </el-cascader>
+            </el-form-item>
+          </el-col>
+          <el-col :lg="24" :md="24" :sm="24" :xl="24" :xs="24" class="mb20">
             <el-form-item label="分类名称" prop="title">
               <el-input v-model="dialogForm.title" clearable placeholder="请输入账户名称"></el-input>
             </el-form-item>
@@ -40,6 +51,7 @@
 import {defineAsyncComponent, reactive, ref} from 'vue'
 import {ElMessage, FormRules} from "element-plus"
 import {useBaseApi} from "/@/api/base"
+import {useGoodsCategoryApi} from "/@/api/goodsCategory"
 
 const PictureDialog = defineAsyncComponent(() => import('/@/components/picture/index.vue'))
 
@@ -52,6 +64,7 @@ const pictureRefresh = (row: { url: any; }[]) => {
 const btnClickPicture = () => {
   pictureRef.value.openDialog()
 }
+const categoryList = ref([])
 // 定义变量内容
 const userDialogFormRef = ref()
 const dialogTitle = ref('')
@@ -60,7 +73,8 @@ const dialogForm = reactive({
   id: 0,
   logo: '',
   title: '',
-  sort: 0
+  sort: 0,
+  parent_id: []
 })
 const isShowDialog = ref(false)
 const submitLoading = ref(false)
@@ -73,7 +87,6 @@ const dialogRules = reactive<FormRules>({
 
 // 打开弹窗
 const openDialog = (type: string, row: any) => {
-
   if (type == 'edit') {
     dialogForm.id = row.id
     dialogForm.title = row.title
@@ -81,15 +94,25 @@ const openDialog = (type: string, row: any) => {
     dialogForm.logo = row.logo
     dialogTitle.value = "编 辑"
     dialogSubmitTitle.value = "修 改"
+    dialogForm.parent_id = row.parent_id
   } else {
     dialogForm.id = 0
     dialogForm.title = ''
     dialogForm.sort = 0
     dialogForm.logo = ''
+    dialogForm.parent_id = []
     dialogTitle.value = "新 增"
     dialogSubmitTitle.value = "添 加"
   }
+  getCategoryChild()
   isShowDialog.value = true
+}
+const getCategoryChild = () => {
+  useGoodsCategoryApi().getGoodsCategoryByList().then(res => {
+    if (res.code) {
+      categoryList.value = res.data
+    }
+  })
 }
 // 提交
 const onSubmit = () => {
