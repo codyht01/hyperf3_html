@@ -4,9 +4,8 @@
       <el-form ref="userDialogFormRef" :model="dialogForm" :rules="dialogRules" autocapitalize="off" label-width="90px" size="default">
         <el-row :gutter="35">
           <el-col :lg="24" :md="24" :sm="24" :xl="24" :xs="24" class="mb20">
-            {{ dialogForm.parent_id }}
             <el-form-item label="选择分类" prop="parent_id">
-              <el-cascader v-model="dialogForm.parent_id" :options="categoryList" :props="{value:'parent_id',label:'title',multiple:true,checkStrictly:false,emitPath:true}" :show-all-levels="true" clearable collapse-tags style="width:100%">
+              <el-cascader v-model="dialogForm.parent_id" :options="categoryList" :props="{value:'id',label:'title',checkStrictly:true,emitPath:true}" :show-all-levels="true" clearable collapse-tags style="width:100%">
                 <template #default="{ node, data }">
                   <span>{{ data.title }}</span>
                   <span v-if="!node.isLeaf"> ({{ data.children.length }}) </span>
@@ -94,7 +93,16 @@ const openDialog = (type: string, row: any) => {
     dialogForm.logo = row.logo
     dialogTitle.value = "编 辑"
     dialogSubmitTitle.value = "修 改"
-    dialogForm.parent_id = row.parent_id
+    if (row.parent_ids.length >= 3) {
+      row.parent_ids = [row.parent_ids[0], row.parent_ids[1]]
+    } else if (row.parent_ids.length === 2) {
+      row.parent_ids = [row.parent_ids[0]]
+    }
+    if (row.parent_id == 0) {
+      dialogForm.parent_id = []
+    } else {
+      dialogForm.parent_id = row.parent_ids
+    }
   } else {
     dialogForm.id = 0
     dialogForm.title = ''

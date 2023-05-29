@@ -3,7 +3,7 @@
     <el-card class="layout-padding-auto" shadow="hover">
       <div class="system-user-search mb15">
         <el-input placeholder="请输入用户名称" size="default" style="max-width: 180px"></el-input>
-        <el-button v-loading="tableData.loading" class="ml10" size="default" type="primary" @click="tableData.fetchData()">
+        <el-button v-loading="tableData.isLoading" class="ml10" size="default" type="primary" @click="tableData.fetchData()">
           <el-icon>
             <ele-Search/>
           </el-icon>
@@ -16,12 +16,13 @@
           新增分类
         </el-button>
       </div>
-      <el-table v-loading="tableData.loading" :data="tableData.data" style="width: 100%">
-        <el-table-column label="序号" type="index" width="60"/>
+      <el-table v-loading="tableData.isLoading" :data="tableData.data" row-key="id" style="width: 100%">
+        <!--        <el-table-column label="序号" type="index" width="60"/>-->
         <el-table-column label="标题" prop="title" show-overflow-tooltip></el-table-column>
         <el-table-column label="图标" prop="status" show-overflow-tooltip>
           <template #default="scope">
-            <el-image :src="scope.row.logo" style="width:40px;height: 40px"/>
+            <el-image v-if="scope.row.parent_id != 0" :src="scope.row.logo" style="width:40px;height: 40px"/>
+            <span v-else>-</span>
           </template>
         </el-table-column>
         <el-table-column :formatter="formatTime" label="创建时间" prop="create_time" show-overflow-tooltip></el-table-column>
@@ -32,19 +33,19 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination
-          v-model:current-page="tableData.pagination.current"
-          v-model:page-size="tableData.pagination.pageSize"
-          :page-sizes="tableData.pagination.pageList"
-          :pager-count="5"
-          :total="tableData.pagination.total"
-          background
-          class="mt15"
-          layout="total, sizes, prev, pager, next, jumper"
-          @size-change="tableData.handleSizeChange"
-          @current-change="tableData.handleCurrentChange"
-      >
-      </el-pagination>
+      <!--      <el-pagination-->
+      <!--          v-model:current-page="tableData.pagination.current"-->
+      <!--          v-model:page-size="tableData.pagination.pageSize"-->
+      <!--          :page-sizes="tableData.pagination.pageList"-->
+      <!--          :pager-count="5"-->
+      <!--          :total="tableData.pagination.total"-->
+      <!--          background-->
+      <!--          class="mt15"-->
+      <!--          layout="total, sizes, prev, pager, next, jumper"-->
+      <!--          @size-change="tableData.handleSizeChange"-->
+      <!--          @current-change="tableData.handleCurrentChange"-->
+      <!--      >-->
+      <!--      </el-pagination>-->
     </el-card>
     <UserDialog ref="userDialogRef" @refresh="tableData.fetchData()"/>
   </div>
