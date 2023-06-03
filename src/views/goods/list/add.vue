@@ -24,14 +24,10 @@
               </el-form-item>
             </el-col>
             <el-col :lg="16" :md="16" :sm="16" :xl="16" :xs="24" class="mb20">
-              {{ dialogForm.category_id }}
               <el-form-item :rules="[
                                 { required: true, message: '请选择商品分类' }
                               ]" label="商品分类" prop="category_id">
-                <!--                                <el-select v-model="dialogForm.category_id" filterable placeholder="选择商品分类">-->
-                <!--                                    <el-option v-for="item in seleCategory" :key="item.id" :label="item.title" :value="item.id"/>-->
-                <!--                                </el-select>-->
-                <el-cascader v-model="dialogForm.category_id" :options="selectCategory" :props="{value:'id',label:'title',checkStrictly:true,emitPath:true}" :show-all-levels="true" clearable collapse-tags style="width:100%">
+                <el-cascader v-model="dialogForm.category_id" :options="selectCategory" :props="{value:'id',label:'title',checkStrictly:false,emitPath:true,multiple:true}" :show-all-levels="true" clearable collapse-tags style="width:100%">
                   <template #default="{ node, data }">
                     <span>{{ data.title }}</span>
                     <span v-if="!node.isLeaf"> ({{ data.children.length }}) </span>
@@ -473,7 +469,7 @@ const onLeft = () => {
   indexActive.value--
 }
 const getGoodsCategory = () => {
-  useGoodsCategoryApi().getGoodsCategoryByList({}).then(res => {
+  useGoodsCategoryApi().getGoodsCategoryThreeList({}).then(res => {
     if (res.code) {
       selectCategory.value = res.data
     }
@@ -527,7 +523,7 @@ const pictureRefresh = (pic_list: any[]) => {
 const videoList = ref({
   url: ''
 })
-
+const data_type = ref()
 const getInfo = () => {
   useGoodsApi().getGoodsEditInfo({
     id: dialogForm.id
@@ -585,11 +581,15 @@ const getInfo = () => {
       dialogForm.title_keywords = res.data.title_keywords
       dialogForm.title_description = res.data.title_description
       goodsImgs.value.url = res.data.url
+      if (!data_type.value || data_type.value == 'copy') {
+        dialogForm.id = 0
+      }
     }
   })
 }
 onMounted(() => {
   let id = Number(route.query.id)
+  data_type.value = route.query.type
   if (id) {
     dialogForm.id = id
     getInfo()

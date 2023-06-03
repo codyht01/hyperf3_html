@@ -16,6 +16,12 @@ export function useGoodsCategoryApi() {
                 data,
             })
         },
-
+        getGoodsCategoryThreeList: (data: object = {}) => {
+            return request({
+                url: '/api/goodsCategory/getGoodsCategoryThreeList',
+                method: 'post',
+                data,
+            })
+        },
     }
 }
