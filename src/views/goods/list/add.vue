@@ -157,12 +157,12 @@
               <!--                                    <el-input  v-model="dialogForm.product_id" placeholder="请输入商品编号"/>-->
               <!--                                </el-form-item>-->
               <!--                            </el-col>-->
-              <el-col v-if="false" :lg="16" :md="16" :sm="16" :xl="16" :xs="24" class="mb20">
+              <el-col :lg="16" :md="16" :sm="16" :xl="16" :xs="24" class="mb20">
                 <el-form-item label="重量(KG)" prop="status">
                   <el-input-number v-model="dialogForm.weight" :min="0" :precision="2" placeholder="请输入重量"/>
                 </el-form-item>
               </el-col>
-              <el-col v-if="false" :lg="16" :md="16" :sm="16" :xl="16" :xs="24" class="mb20">
+              <el-col :lg="16" :md="16" :sm="16" :xl="16" :xs="24" class="mb20">
                 <el-form-item label="体积(m³)" prop="status">
                   <el-input-number v-model="dialogForm.volume" :min="0" :precision="2" placeholder="请输入体积"/>
                 </el-form-item>
@@ -224,6 +224,7 @@
                     <!--                        :value="item.value"-->
                     <!--                    />-->
                   </el-select>
+                  <el-button link @click="addLogistics">添加模板</el-button>
                 </el-form-item>
               </el-col>
             </div>
@@ -342,6 +343,9 @@ const specsRef = ref()
 
 const btnDialogSpecs = (row: any) => {
   specsRef.value.openDialog(row)
+}
+const addLogistics = () => {
+
 }
 const specsRefresh = (specs_list: never) => {
   if (specData.value.length > 0) {

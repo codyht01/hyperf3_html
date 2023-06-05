@@ -3,7 +3,7 @@
     <el-card class="layout-padding-auto" shadow="hover">
       <div class="system-user-search mb15">
         <el-input placeholder="请输入用户名称" size="default" style="max-width: 180px"></el-input>
-        <el-button v-loading="tableData.loading" class="ml10" size="default" type="primary" @click="tableData.fetchData()">
+        <el-button v-loading="tableData.isLoading" class="ml10" size="default" type="primary" @click="tableData.fetchData()">
           <el-icon>
             <ele-Search/>
           </el-icon>
@@ -16,7 +16,7 @@
           新增用户
         </el-button>
       </div>
-      <el-table v-loading="tableData.loading" :data="tableData.data" style="width: 100%">
+      <el-table v-loading="tableData.isLoading" :data="tableData.data" style="width: 100%">
         <el-table-column label="序号" type="index" width="60"/>
         <el-table-column label="账户名称" prop="userName" show-overflow-tooltip></el-table-column>
         <el-table-column label="最后登录ip" prop="last_login_ip" show-overflow-tooltip></el-table-column>
