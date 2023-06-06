@@ -53,7 +53,7 @@
   </div>
 </template>
 
-<script lang="ts" name="systemUser" setup>
+<script lang="ts" setup>
 import {defineAsyncComponent, onMounted, reactive, ref} from 'vue'
 import {ElMessage, ElMessageBox} from 'element-plus'
 import usePagination from "/@/utils/usePagination"

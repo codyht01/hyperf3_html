@@ -10,27 +10,78 @@
           </el-col>
           <el-col :lg="24" :md="24" :sm="24" :xl="24" :xs="24" class="mb24">
             <el-form-item label="计费方式" prop="userName">
-              <el-input v-model="dialogForm.type" clearable placeholder="请输入账户名称"></el-input>
+              <el-radio-group v-model="dialogForm.type">
+                <el-radio :label="1">按件数</el-radio>
+                <el-radio :label="2">按重量</el-radio>
+                <el-radio :label="3">按体积 C</el-radio>
+              </el-radio-group>
             </el-form-item>
           </el-col>
           <el-col :lg="24" :md="24" :sm="24" :xl="24" :xs="24" class="mb24">
             <el-form-item label="配送区域及运费" prop="userName">
-              <el-input v-model="dialogForm.type" clearable placeholder="请输入账户名称"></el-input>
+              <el-table :data="areaAndFreight" style="width: 100%">
+                <el-table-column label="区域" prop="address" width="180">
+                  <template #header>
+                    <el-text>区域</el-text>
+                  </template>
+                  <template #default="scope">
+                    <el-input v-model="scope.row.address"/>
+                  </template>
+                </el-table-column>
+                <el-table-column label="首件" prop="first" width="180">
+                  <template #header>
+                    <el-text v-if="dialogForm.type === 1">首件</el-text>
+                    <el-text v-if="dialogForm.type === 2">首件重量（KG）</el-text>
+                    <el-text v-if="dialogForm.type === 3">首件体积（m³）</el-text>
+                  </template>
+                  <template #default="scope">
+                    <el-input-number v-model="scope.row.first" :min="1"/>
+                  </template>
+                </el-table-column>
+                <el-table-column label="运费（元）" prop="price" width="180">
+                  <template #default="scope">
+                    <el-input-number v-model="scope.row.price" :min="0" :precision="2"/>
+                  </template>
+                </el-table-column>
+                <el-table-column label="续件" prop="second" width="180">
+                  <template #header>
+                    <el-text v-if="dialogForm.type === 1">续件</el-text>
+                    <el-text v-if="dialogForm.type === 2">续件重量（KG）</el-text>
+                    <el-text v-if="dialogForm.type === 3">续件体积（m³）</el-text>
+                  </template>
+                  <template #default="scope">
+                    <el-input v-model="scope.row.second"/>
+                  </template>
+                </el-table-column>
+                <el-table-column label="续费" prop="second_price" width="180">
+                  <template #default="scope">
+                    <el-input-number v-model="scope.row.second_price" :min="0" :precision="2"/>
+                  </template>
+                </el-table-column>
+                <el-table-column label="操作" prop="date" width="180">
+                  <template #default>
+                    <el-button link size="small" type="primary">删除</el-button>
+                  </template>
+                </el-table-column>
+              </el-table>
+              <el-button type="primary">添加区域</el-button>
             </el-form-item>
           </el-col>
           <el-col :lg="24" :md="24" :sm="24" :xl="24" :xs="24" class="mb24">
             <el-form-item label="指定包邮" prop="userName">
-              <el-input v-model="dialogForm.type" clearable placeholder="请输入账户名称"></el-input>
+              <el-table :data="specifyPackageShipping">
+
+              </el-table>
             </el-form-item>
           </el-col>
           <el-col :lg="24" :md="24" :sm="24" :xl="24" :xs="24" class="mb24">
             <el-form-item label="指定不送达" prop="userName">
-              <el-input v-model="dialogForm.type" clearable placeholder="请输入账户名称"></el-input>
+              <el-table :data="designatedNonDelivery"></el-table>
             </el-form-item>
           </el-col>
           <el-col :lg="24" :md="24" :sm="24" :xl="24" :xs="24" class="mb24">
-            <el-form-item label="排序" prop="userName">
-              <el-input v-model="dialogForm.type" clearable placeholder="请输入账户名称"></el-input>
+            <el-form-item label="排序" prop="sort">
+              <el-input-number v-model="dialogForm.sort" :min="0" :precision="0"></el-input-number>
             </el-form-item>
           </el-col>
 
@@ -60,59 +111,29 @@ const dialogTitle = ref('')
 const dialogSubmitTitle = ref('')
 const dialogForm = reactive({
   id: 0,
-  userName: '',
-  password: '',
-  password_confirmation: '',
-  phone: '',
-  email: '',
-  status: 1,
-  description: ''
+  title: '',
+  type: 1,
+  second: 0,
+  second_price: 0,
+  sort: 0
 })
+const areaAndFreight = ref([])  //区域及配送费
+const specifyPackageShipping = ref([]) //指定包邮
+const designatedNonDelivery = ref([]) //指定不送达
 const isShowDialog = ref(false)
 const submitLoading = ref(false)
-const dialogRules = reactive<FormRules>({
-  userName: [
-    {required: true, message: '请输入用户名', trigger: ['blur', 'change']},
-    {min: 5, max: 25, message: '用户名的长度在5-25位', trigger: ['blur', 'change']},
-  ],
-  password: [
-    {min: 6, max: 55, message: '用户名的长度在6-55位', trigger: ['blur', 'change']},
-    {pattern: /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,20}$/, message: '请输入6-20位由字母和数字组成', trigger: ['blur', 'change']}
-  ],
-  password_confirmation: {
-    validator(rule, value) {
-      return dialogForm.password === value
-    },
-    message: '两次密码输入不一致',
-  },
-  phone: [
-    {pattern: /^(?:(?:\+|00)86)?1(?:(?:3[\d])|(?:4[5-7|9])|(?:5[0-3|5-9])|(?:6[5-7])|(?:7[0-8])|(?:8[\d])|(?:9[1|8|9]))\d{8}$/, message: '请输入正确的手机号', trigger: ['blur', 'change']}
-  ],
-  email: [
-    {pattern: /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.(com|cn|net)$/, message: '请输入正确的手机号', trigger: ['blur', 'change']}
-  ],
-})
+const dialogRules = reactive<FormRules>({})
 
 // 打开弹窗
 const openDialog = (type: string, row: any) => {
-  dialogForm.password = ''
-  dialogForm.password_confirmation = ''
   if (type == 'edit') {
     dialogForm.id = row.id
-    dialogForm.userName = row.userName
-    dialogForm.phone = row.phone
-    dialogForm.email = row.email
-    dialogForm.status = row.status
-    dialogForm.description = row.description
+
     dialogTitle.value = "编 辑"
     dialogSubmitTitle.value = "修 改"
   } else {
     dialogForm.id = 0
-    dialogForm.userName = ''
-    dialogForm.phone = ''
-    dialogForm.email = ''
-    dialogForm.status = 1
-    dialogForm.description = ''
+
     dialogTitle.value = "新 增"
     dialogSubmitTitle.value = "添 加"
   }
